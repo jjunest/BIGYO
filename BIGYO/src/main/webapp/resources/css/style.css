@@ -4459,6 +4459,7 @@ footer {
 .brandSection {
 	padding: 55px 0 45px;
 	background: #fbfbfb;
+	
 }
 
 .brandSection .partnersLogoSlider .slide {
@@ -4478,6 +4479,7 @@ footer {
 .brandSection .partnersLogoSlider .slide .partnersLogo img {
 	width: auto;
 	margin: 0 auto;
+	
 }
 
 @media ( min-width : 768px) {

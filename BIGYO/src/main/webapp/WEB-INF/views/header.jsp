@@ -49,11 +49,11 @@
                 <ul class="nav navbar-nav navbar-right">
 
          
-                  <li class=""><a href="serviceIntro">서비스 소개 </a></li>
-                  <li class=""><a href="companyIntro">회사 소개 </a></li>
-                  <li class=""><a href="eventHospitals">할인 병원 </a></li>
-                  <li class=""><a href="allHospitals">전국 검진 병원 </a></li>
-                  <li class=""><a href="questions">문의 사항 </a></li>
+                  <li class=""><a href="serviceIntro" id ="navmenu_serviceIntro">서비스 소개 </a></li>
+                  <li class=""><a href="companyIntro" id="navmenu_companyIntro">회사 소개 </a></li>
+                  <li class=""><a href="eventHospitals" id = "navmenu_eventHospitals">할인 병원 </a></li>
+                  <li class=""><a href="allHospitals" id = "navmenu_allHospitals">전국 검진 병원 </a></li>
+                  <li class=""><a href="questions" id = "navmenu_questions">문의 사항 </a></li>
                 </ul>
             </div>
           </div>

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="ko">
@@ -13,39 +12,23 @@
 <title>프리미엄 건강검진 비교 검색 서비스 BIGYO</title>
 
 <!-- PLUGINS CSS STYLE -->
-<link href="resources/plugins/jquery-ui/jquery-ui.min.css"
-	rel="stylesheet">
-<link href="resources/plugins/bootstrap/css/bootstrap.min.css"
-	rel="stylesheet">
-<link href="resources/plugins/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet">
+<link href="resources/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<link href="resources/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="resources/plugins/listtyicons/style.css" rel="stylesheet">
-<link
-	href="resources/plugins/bootstrapthumbnail/bootstrap-thumbnail.css"
-	rel="stylesheet">
-<link href="resources/plugins/datepicker/datepicker.min.css"
-	rel="stylesheet">
-<link href="resources/plugins/selectbox/select_option1.css"
-	rel="stylesheet">
-<link href="resources/plugins/owl-carousel/owl.carousel.min.css"
-	rel="stylesheet">
-<link href="resources/plugins/fancybox/jquery.fancybox.pack.css"
-	rel="stylesheet">
+<link href="resources/plugins/bootstrapthumbnail/bootstrap-thumbnail.css" rel="stylesheet">
+<link href="resources/plugins/datepicker/datepicker.min.css" rel="stylesheet">
+<link href="resources/plugins/selectbox/select_option1.css" rel="stylesheet">
+<link href="resources/plugins/owl-carousel/owl.carousel.min.css" rel="stylesheet">
+<link href="resources/plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
 <link href="resources/plugins/isotope/isotope.min.css" rel="stylesheet">
 <link href="resources/plugins/map/css/map.css" rel="stylesheet">
 
 <!-- GOOGLE FONT -->
-<link
-	href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700,800,900"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"
-	rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700,800,900" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">
 
 <!-- CUSTOM CSS -->
 <link href="resources/css/style.css" rel="stylesheet">
@@ -62,8 +45,7 @@
 </head>
 
 <body class="body-wrapper">
-	<div class="page-loader"
-		style="background: url(resources/img/preloader.gif) center no-repeat #fff;"></div>
+	<div class="page-loader" style="background: url(resources/img/preloader.gif) center no-repeat #fff;"></div>
 
 	<div class="main-wrapper">
 		<!-- HEADER FILE INCLUDE  -->
@@ -71,13 +53,12 @@
 
 
 		<!-- PAGE TITLE SECTION -->
-		<section class="clearfix pageTitleSection bg-image"
-			style="background-image: url(resources/img/background/bg-page-title.jpg);">
+		<section class="clearfix pageTitleSection bg-image" style="background-image: url(resources/img/background/bg-page-title.jpg);">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="pageTitle">
-						<h2> BIGYO 란 ? </h2>
+						<h2>BIGYO 란 ?</h2>
 					</div>
 				</div>
 			</div>
@@ -111,14 +92,25 @@
 	<script src="resources/plugins/isotope/isotope.min.js"></script>
 	<script src="resources/plugins/fancybox/jquery.fancybox.pack.js"></script>
 	<script src="resources/plugins/isotope/isotope-triger.min.js"></script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58"></script>
 	<script src="resources/plugins/map/js/rich-marker.js"></script>
 	<script src="resources/plugins/map/js/infobox_packed.js"></script>
 	<script src="resources/js/single-map.js"></script>
 	<script src="resources/js/map.js"></script>
 	<script src="resources/js/custom.js"></script>
+	<script>
+		// html dom 이 다 로딩된 후 실행된다.
+		$(document).ready(function() {
+			/* navigation menu 주소에 따라서 active 설정 시작 */
+			var urlpath = $(location).attr("pathname");
+			if (urlpath.includes("/bigyo/serviceIntro")) {
 
+				$("#navmenu_serviceIntro").css("color","#39a1f4");
+		
+			}
+			/* navigation menu 주소에 따라서 active 설정 끝 */
+		});
+	</script>
 </body>
 
 </html>

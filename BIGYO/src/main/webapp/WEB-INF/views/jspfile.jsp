@@ -14,8 +14,10 @@
 		<button type="submit">버튼입니다.</button>
 	</form>
 	<div class="thumbnail blogInner">
+		<div class="embed-responsive embed-responsive-16by9">
 			<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/jdMXyXuualc"></iframe>
 		</div>
+	</div>
 
 
 </body>

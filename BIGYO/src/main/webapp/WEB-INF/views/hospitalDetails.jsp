@@ -1,4 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- 나누기의 몫을 정수값으로 구하기 위한 jstl 태그 라이브러리 설정 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<!-- Listsize를 위한 jstl태그라이브러리 설정 -->
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<%
+	String cp = request.getContextPath();
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="ko">
@@ -32,7 +42,7 @@
 
 <!-- CUSTOM CSS -->
 <link href="resources/css/style.css" rel="stylesheet">
-
+<link href="resources/css/ninja-slider8.css" rel="stylesheet">
 <!-- FAVICON -->
 <link href="resources/img/favicon.png" rel="shortcut icon">
 
@@ -45,7 +55,10 @@
 </head>
 
 <body class="body-wrapper">
-	<div class="page-loader" style="background: url(resources/img/preloader.gif) center no-repeat #fff;"></div>
+	<div class="page-loader"
+		style="background: url(resources/ img/ prelo.thumbnail { 
+	 margin-bottom : 6px; } .carousel-control .left , .cariousel-control .right { background-image: none; margin-top: 10%; width: 5%;"
+	></div>
 
 	<div class="main-wrapper">
 		<!-- HEADER FILE INCLUDE  -->
@@ -97,7 +110,7 @@
 
 
 
-		<!-- BRAND SECTION -->
+		<!-- MODAL IMAGE GALLERY FRONT SECTION -->
 		<section class="brandSection clearfix">
 		<div class="container">
 			<div class="row">
@@ -105,42 +118,60 @@
 					<div class="owl-carousel partnersLogoSlider">
 						<div class="slide">
 							<div class="partnersLogo clearfix">
-								<img src="resources/img/listing/listing-details-1.jpg" alt="Image Brand">
-							</div>resources/img/listing/listing-details-1.jpg
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<img src="resources/img/listing/listing-details-2.jpg" alt="Image Brand">
+								<!-- Trigger the modal with a button -->
+								<a title="lightbox0" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-1.jpg" onclick="lightbox(0)" />
+								</a>
+
 							</div>
 						</div>
 						<div class="slide">
 							<div class="partnersLogo clearfix">
-								<img src="resources/img/listing/listing-details-3.jpg" alt="Image Brand">
+								<!-- Trigger the modal with a button -->
+								<a title="lightbox1" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-2.jpg" onclick="lightbox(1)" />
+								</a>
 							</div>
 						</div>
 						<div class="slide">
 							<div class="partnersLogo clearfix">
-								<img src="resources/img/listing/listing-details-4.jpg" alt="Image Brand">
+								<!-- Trigger the modal with a button -->
+								<a title="lightbox2" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-3.jpg" onclick="lightbox(2)" />
+								</a>
 							</div>
 						</div>
 						<div class="slide">
 							<div class="partnersLogo clearfix">
-								<img src="resources/img/listing/listing-details-1.jpg" alt="Image Brand">
+								<!-- Trigger the modal with a button -->
+								<a title="lightbox3" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-4.jpg" onclick="lightbox(3)" />
+								</a>
 							</div>
 						</div>
 						<div class="slide">
 							<div class="partnersLogo clearfix">
-								<img src="resources/img/listing/listing-details-2.jpg" alt="Image Brand">
+								<!-- Trigger the modal with a button -->
+								<a title="lightbox4" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-1.jpg" onclick="lightbox(4)" />
+								</a>
+
 							</div>
 						</div>
 						<div class="slide">
 							<div class="partnersLogo clearfix">
-								<img src="resources/img/listing/listing-details-3.jpg" alt="Image Brand">
+								<!-- Trigger the modal with a button -->
+								<a title="lightbox5" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-2.jpg" onclick="lightbox(5)" />
+								</a>
 							</div>
 						</div>
 						<div class="slide">
 							<div class="partnersLogo clearfix">
-								<img src="resources/img/listing/listing-details-4.jpg" alt="partner-img">
+								<!-- Trigger the modal with a button -->
+								<a title="Image 1" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-3.jpg" onclick="lightbox(2)" />
+								</a>
+							</div>
+						</div>
+						<div class="slide">
+							<div class="partnersLogo clearfix">
+								<!-- Trigger the modal with a button -->
+								<a title="Image 1" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-4.jpg" onclick="lightbox(3)" />
+								</a>
 							</div>
 						</div>
 					</div>
@@ -167,6 +198,75 @@
 								ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
 								dolores eos qui</p>
 						</div>
+
+						<div class="detailsInfoBox">
+							<h3>About This Hotel</h3>
+							<ul class="nav nav-tabs">
+								<li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+								<li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+								<li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+								<li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
+							</ul>
+
+							<div class="tab-content">
+								<div id="home" class="tab-pane fade in active">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Firstname</th>
+												<th>Lastname</th>
+												<th>Email</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Default</td>
+												<td>Defaultson</td>
+												<td>def@somemail.com</td>
+											</tr>
+											<tr class="success">
+												<td>Success</td>
+												<td>Doe</td>
+												<td>john@example.com</td>
+											</tr>
+											<tr class="danger">
+												<td>Danger</td>
+												<td>Moe</td>
+												<td>mary@example.com</td>
+											</tr>
+											<tr class="info">
+												<td>Info</td>
+												<td>Dooley</td>
+												<td>july@example.com</td>
+											</tr>
+											<tr class="warning">
+												<td>Warning</td>
+												<td>Refs</td>
+												<td>bo@example.com</td>
+											</tr>
+											<tr class="active">
+												<td>Active</td>
+												<td>Activeson</td>
+												<td>act@example.com</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div id="menu1" class="tab-pane fade">
+									<h3>Menu 1</h3>
+									<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+								</div>
+								<div id="menu2" class="tab-pane fade">
+									<h3>Menu 2</h3>
+									<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+								</div>
+								<div id="menu3" class="tab-pane fade">
+									<h3>Menu 3</h3>
+									<p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+								</div>
+							</div>
+						</div>
+
 						<div class="detailsInfoBox">
 							<h3>Features</h3>
 							<ul class="list-inline featuresItems">
@@ -257,7 +357,7 @@
 				</div>
 				<div class="col-sm-4 col-xs-12">
 					<div class="clearfix map-sidebar map-right">
-						<div id="map" style="position: relative; margin: 0; padding: 0; height: 538px; max-width: none;"></div>
+						<div id="map-canvas" style="position: relative; margin: 0; padding: 0; height: 538px; max-width: none;"></div>
 					</div>
 					<div class="listSidebar">
 						<h3>Location</h3>
@@ -278,7 +378,7 @@
 							<li><span class="pull-left">Thrusday</span> <span class="pull-right">08.00am - 05.00pm</span></li>
 							<li><span class="pull-left">Friday</span> <span class="pull-right">08.00am - 05.00pm</span></li>
 							<li><span class="pull-left">Saturday</span> <span class="pull-right"><a href="#">Closed</a></span></li>
-							<li><span class="pull-left">Sunday</span> <span class="pull-right"><a href="#">Closed</a></span></li>
+							<li><span class="pull-left">Sunday</span> <span class="pull-right"><a href="#">Clo>ed</a></span></li>
 						</ul>
 					</div>
 				</div>
@@ -291,9 +391,59 @@
 
 
 
+
 		<!-- FOOTER FILE INCLUDE  -->
 		<jsp:include page="footer.jsp"></jsp:include>
+
+
+
 	</div>
+
+
+	<!--start-->
+	<!-- hidden slider image part -->
+
+	<div style="display: none;">
+		<div id="ninja-slider">
+			<div class="slider-inner">
+				<ul>
+					<li><a class="ns-img" href="resources/img/listing/listing-details-1.jpg"></a>
+						<div class="caption">
+							<h3>Dummy Caption 11</h3>
+							<p>picture11 ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan purus.</p>
+						</div></li>
+					<li><a class="ns-img" href="resources/img/listing/listing-details-2.jpg"></a>
+						<div class="caption">
+							<h3>Dummy Caption 22</h3>
+							<p>picture22 porro quisquam est, qui dolorem ipsum quia dolor sit amet</p>
+						</div></li>
+					<li><span class="ns-img" style="background-image: url(resources/img/listing/listing-details-3.jpg);"></span>
+						<div class="caption">
+							<h3>Dummy Caption 33</h3>
+							<p>picture33 fringilla arcu convallis urna commodo, et tempus velit posuere.</p>
+						</div></li>
+					<li><a class="ns-img" href="resources/img/listing/listing-details-4.jpg"></a>
+						<div class="caption">
+							<h3>Dummy Caption 44</h3>
+							<p>picture44 semper dolor sed neque consequat scelerisque at sed ex. Nam gravida massa.</p>
+						</div></li>
+					<li><a class="ns-img" href="resources/img/listing/listing-details-1.jpg"></a>
+						<div class="caption">
+							<h3>Dummy Caption 55</h3>
+							<p>picture55 non dui at metus suscipit bibendum.</p>
+						</div></li>
+					<li><a class="ns-img" href="resources/img/listing/listing-details-1.jpg"></a>
+						<div class="caption">
+							<h3>Dummy Caption 66</h3>
+							<p>picture66 non dui at metus suscipit bibendum.</p>
+						</div></li>
+				</ul>
+				<div id="fsBtn" class="fs-icon" title="Expand/Close"></div>
+			</div>
+		</div>
+	</div>
+
+
 
 	<!-- JAVASCRIPTS -->
 	<script src="resources/plugins/jquery/jquery.min.js"></script>
@@ -314,7 +464,40 @@
 	<script src="resources/js/single-map.js"></script>
 	<script src="resources/js/map.js"></script>
 	<script src="resources/js/custom.js"></script>
+	<script src="resources/js/jjunestjs.js"></script>
+	<script src="resources/js/ninja-slider8.js"></script>
+	<script>
+		// html dom 이 다 로딩된 후 실행된다.
+		$(document).ready(function() {
+			/* PAGENAVIGATION 색칠 */
+			var activePageNum = '${pNo % 5}';
+			$("#pageNavi" + activePageNum).addClass("active");
+
+		});
+		//닌자 슬라이드 시작
+		function lightbox(idx) {
+			//show the slider's wrapper: this is required when the transitionType has been set to "slide" in the ninja-slider.js
+			var ninjaSldr = document.getElementById("ninja-slider");
+			ninjaSldr.parentNode.style.display = "block";
+
+			nslider.init(idx);
+
+			var fsBtn = document.getElementById("fsBtn");
+			fsBtn.click();
+		}
+
+		function fsIconClick(isFullscreen) { //fsIconClick is the default event handler of the fullscreen button
+			if (isFullscreen) {
+				var ninjaSldr = document.getElementById("ninja-slider");
+				ninjaSldr.parentNode.style.display = "none";
+			}
+		}
+		//닌자 슬라이드 끝
+	</script>
 
 </body>
 
 </html>
+
+
+

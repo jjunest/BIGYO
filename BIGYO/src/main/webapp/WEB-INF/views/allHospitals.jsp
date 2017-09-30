@@ -75,7 +75,6 @@
 
 
 
-
 		<!-- FOOTER FILE INCLUDE  -->
 		<jsp:include page="footer.jsp"></jsp:include>
 	</div>

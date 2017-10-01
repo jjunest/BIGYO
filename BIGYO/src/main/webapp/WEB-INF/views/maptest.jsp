@@ -1,14 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- 나누기의 몫을 정수값으로 구하기 위한 jstl 태그 라이브러리 설정 -->
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!-- Listsize를 위한 jstl태그라이브러리 설정 -->
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
-<%
-	String cp = request.getContextPath();
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="ko">
@@ -61,152 +51,25 @@
 		<!-- HEADER FILE INCLUDE  -->
 		<jsp:include page="header.jsp"></jsp:include>
 
-		<!-- PAGE TITLE SECTION -->
-		<section class="clearfix pageTitleSection bg-image" style="background-image: url(resources/img/background/bg-page-title.jpg);">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="pageTitle">
-						<h2>할인 제휴 병원 목록</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-		</section>
 
 
-		<!-- CATEGORY SEARCH SECTION -->
-		<section class="clearfix searchArea banerInfo searchAreaGray">
-		<form action="">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-4 col-xs-12">
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">Find</div>
-								<input type="text" class="form-control" id="findItem" placeholder="What are you looking for?">
-								<div class="input-group-addon addon-right"></div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-4 col-xs-12">
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">Near</div>
-								<input type="text" class="form-control" id="nearLocation" placeholder="Location">
-								<div class="input-group-addon addon-right">
-									<i class="icon-listy icon-target" aria-hidden="true"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-4 col-xs-12">
-
-						<button type="submit" class="btn btn-primary">Search</button>
-
-					</div>
-
-
-				</div>
-
-			</div>
-		</form>
-		</section>
-
-		<!-- MAP SECTION -->
 		<section>
 		<div id="map" style="position: relative; margin: 0; padding: 0; height: 538px; max-width: none;"></div>
 		</section>
 
+		<section></section>
 
-		<!-- HOSPITALS LIST SECTION -->
-		<section class="clerfix">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12 col-xs-12">
-					<div class="resultBar barSpaceAdjust">
-						<h2>
-							We found <span>${fn:length(result_list)}</span> Results for you
-						</h2>
-					</div>
-					<c:forEach var="listValue" items="${result_list}">
-						<div class="listContent">
-							<div class="row">
-								<div class="col-sm-5 col-xs-12">
-									<div class="categoryImage">
-										<a href="hospitalDetails?hmcNo=${listValue.hmcNo}"><img src="resources/img/things/things-1.jpg" alt="Image category" class="img-responsive img-rounded"> <span
-											class="label label-primary"
-										>Verified</span> </a>
-									</div>
-								</div>
-								<div class="col-sm-7 col-xs-12">
-									<div class="categoryDetails">
-										<ul class="list-inline rating">
-											<li><i class="fa fa-star" aria-hidden="true"></i></li>
-											<li><i class="fa fa-star" aria-hidden="true"></i></li>
-											<li><i class="fa fa-star" aria-hidden="true"></i></li>
-											<li><i class="fa fa-star" aria-hidden="true"></i></li>
-											<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										</ul>
-										<h2>
-											<a href="hospitalDetails?hmcNo=${listValue.hmcNo}" style="color: #222222">${listValue.hmcNm}</a> <span class="likeCount"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span>
-										</h2>
-										<p>
-											1569 Queen Street West <span class="placeName">Toronto</span>
-										</p>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-										<ul class="list-inline list-tag">
-											<li><a href="hospitalDetails?hmcNo=${listValue.hmcNo}">${listValue.locAddr}</a></li>
-											<li><a href="hospitalDetails?hmcNo=${listValue.hmcNo}">Restaurant</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</c:forEach>
-				</div>
+		<section></section>
 
-			</div>
-		</div>
+
+
+
+
+
+
+		<!-- FOOTER FILE INCLUDE  -->
+		<jsp:include page="footer.jsp"></jsp:include>
 	</div>
-	</section>
-
-
-	<!--  페이지게이션 시작! -->
-	<!--  pNo_shre 부분은 나눗셈의 몫을 만들어 주는 역할을 한다.  -->
-	<fmt:parseNumber var="pNo_share" value="${(pNo-1)/5}" integerOnly="true" />
-
-
-	<div class="row" style="border-top: 1px solid #ccc;">
-		<nav style="text-align: center">
-		<ul class="pagination">
-			<li><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-			</a></li>
-
-			<li id="pageNavi1"><a href="eventHospitals?pNo=${pNo_share*5+1}">${pNo_share*5+1}</a></li>
-			<li id="pageNavi2"><a href="eventHospitals?pNo=${pNo_share*5+2}">${pNo_share*5+2}</a></li>
-			<li id="pageNavi3"><a href="eventHospitals?pNo=${pNo_share*5+3}">${pNo_share*5+3}</a></li>
-			<li id="pageNavi4"><a href="eventHospitals?pNo=${pNo_share*5+4}">${pNo_share*5+4}</a></li>
-			<li id="pageNavi0"><a href="eventHospitals?pNo=${pNo_share*5+5}">${pNo_share*5+5}</a></li>
-			<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-			</a></li>
-		</ul>
-		</nav>
-	</div>
-
-	<!--  페이지게이션 끝! -->
-
-	<section></section>
-
-
-
-
-
-
-
-	<!-- FOOTER FILE INCLUDE  -->
-	<jsp:include page="footer.jsp"></jsp:include>
-
 
 	<!-- JAVASCRIPTS -->
 	<script src="resources/plugins/jquery/jquery.min.js"></script>
@@ -224,38 +87,25 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58"></script>
 	<script src="resources/plugins/map/js/rich-marker.js"></script>
 	<script src="resources/plugins/map/js/infobox_packed.js"></script>
-	<!-- 	<script src="resources/js/single-map.js"></script>
-	<script src="resources/js/map.js"></script> -->
+	<!-- 	<script src="resources/js/single-map.js"></script> -->
+	<!-- 	<script src="resources/js/map.js"></script> -->
+	<!-- 	<script src="resources/js/searchmap.js"></script> -->
 	<script src="resources/js/custom.js"></script>
 	<!-- GOOGLE MAP CLUSTERING LIBRARY -->
 	<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-
 	<script>
 		// html dom 이 다 로딩된 후 실행된다.
 		$(document).ready(function() {
-			/* PAGENAVIGATION 색칠 */
-			var activePageNum = '${pNo % 5}';
-			$("#pageNavi" + activePageNum).addClass("active");
-
-			/* navigation menu 주소에 따라서 active 설정 시작 */
-			var urlpath = $(location).attr("pathname");
-			if (urlpath.includes("/bigyo/eventHospitals")) {
-
-				$("#navmenu_eventHospitals").css("color", "#39a1f4");
-
-			}
-			/* navigation menu 주소에 따라서 active 설정 끝 */
-			/*  GOOGLE MAP */
 			initMap();
 		});
 
 		function initMap() {
 
 			var map = new google.maps.Map(document.getElementById('map'), {
-				zoom : 12,
+				zoom : 3,
 				center : {
-					lat : markerLists[0].lat,
-					lng : markerLists[0].lng
+					lat : -28.024,
+					lng : 140.887
 				}
 			});
 
@@ -267,7 +117,7 @@
 			// create an array of markers based on a given "locations" array.
 			// The map() method here has nothing to do with the Google Maps API.
 
-			var markers = markerLists
+			var markers = locations
 					.map(function(location, i) {
 						var marker = new google.maps.Marker({
 							position : location,
@@ -318,17 +168,76 @@
 						imagePath : 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
 					});
 		}
-	
-
-		/* 10개의 객체에서 경도와 위도 뽑아오기, el을 활용해서 javascript 변수 받아오고 marker 표시*/
-		var markerLists = new Array();
-		<c:forEach items = "${result_list}" var = "list">
-		var json = new Object();
-		json.lat = parseFloat("${list.cxVl}");
-		json.lng = parseFloat("${list.cyVl}");
-		markerLists.push(json);
-		</c:forEach>
-
+		var locations = [ {
+			lat : -31.563910,
+			lng : 147.154312
+		}, {
+			lat : -33.718234,
+			lng : 150.363181
+		}, {
+			lat : -33.727111,
+			lng : 150.371124
+		}, {
+			lat : -33.848588,
+			lng : 151.209834
+		}, {
+			lat : -33.851702,
+			lng : 151.216968
+		}, {
+			lat : -34.671264,
+			lng : 150.863657
+		}, {
+			lat : -35.304724,
+			lng : 148.662905
+		}, {
+			lat : -36.817685,
+			lng : 175.699196
+		}, {
+			lat : -36.828611,
+			lng : 175.790222
+		}, {
+			lat : -37.750000,
+			lng : 145.116667
+		}, {
+			lat : -37.759859,
+			lng : 145.128708
+		}, {
+			lat : -37.765015,
+			lng : 145.133858
+		}, {
+			lat : -37.770104,
+			lng : 145.143299
+		}, {
+			lat : -37.773700,
+			lng : 145.145187
+		}, {
+			lat : -37.774785,
+			lng : 145.137978
+		}, {
+			lat : -37.819616,
+			lng : 144.968119
+		}, {
+			lat : -38.330766,
+			lng : 144.695692
+		}, {
+			lat : -39.927193,
+			lng : 175.053218
+		}, {
+			lat : -41.330162,
+			lng : 174.865694
+		}, {
+			lat : -42.734358,
+			lng : 147.439506
+		}, {
+			lat : -42.734358,
+			lng : 147.501315
+		}, {
+			lat : -42.735258,
+			lng : 147.438000
+		}, {
+			lat : -43.999792,
+			lng : 170.463352
+		} ]
 	</script>
 </body>
 

@@ -215,7 +215,7 @@ function initialize() {
 	$.getJSON(url, mapdata, getContent);
 
 } // map initialize function ends
-var existId = document.getElementById("map-canva");
+var existId = document.getElementById("map-canvas");
 if (existId) {
 	console.log('this is map.js existId()');
 	google.maps.event.addDomListener(window, 'load', initialize);

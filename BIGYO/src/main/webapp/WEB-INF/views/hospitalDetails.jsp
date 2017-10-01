@@ -459,8 +459,8 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58"></script>
 	<script src="resources/plugins/map/js/rich-marker.js"></script>
 	<script src="resources/plugins/map/js/infobox_packed.js"></script>
-	<!-- <script src="resources/js/single-map.js"></script> -->
-	<script src="resources/js/map.js"></script>
+	<!-- 	<script src="resources/js/single-map.js"></script> -->
+	<!-- 	<script src="resources/js/map.js"></script> -->
 	<script src="resources/js/custom.js"></script>
 	<script src="resources/js/ninja-slider8.js"></script>
 	<script>
@@ -514,15 +514,31 @@
 						styles : mapStyles
 					});
 			console.log('lat:' + myLatLng.lat + ', lng:' + myLatLng.lng);
-			var image = 'resources/img/map/inactive.png';
+			var image = 'resources/img/map/marker.png';
+			var contentString = '<div id="content">'
+					+ '<div id="siteNotice">'
+					+ '</div>'
+					+ '<h5 id="firstHeading" class="firstHeading">${hospital_BasicInfo.hmcNm}</h1>'
+					+ '<div id="bodyContent">'
+					+ '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194" target="_blank">'
+					+ 'https://en.wikipedia.org/w/index.php?title=Uluru</a> '
+					+ '(last visited June 22, 2009).</p>' + '</div>' + '</div>';
 			var marker = new google.maps.Marker({
 				position : myLatLng,
 				map : map,
-				icon : image
+				icon : image,
+				animation : google.maps.Animation.BOUNCE
 			});
+			google.maps.event.addListener(marker, 'click', function() {
+				var infowindow = new google.maps.InfoWindow({
+					content : contentString
+				});
+				infowindow.open(map, marker);
+			});
+
 		}
 
-		var mapStyles2 = [ {
+		var mapStyles = [ {
 			'elementType' : 'geometry',
 			'stylers' : [ {
 				'color' : '#f5f5f5'

@@ -19,7 +19,7 @@
 					<div class="col-sm-7 col-xs-12">
 						<div class="footerText">
 							<a href="index" class="footerLogo"><img
-								src="img/logo-footer.png" alt="Footer Logo"></a>
+								src="resources/img/logo-footer.png" alt="Footer Logo"></a>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
 								sed do eiusmod tempor incididunt ut labore et dolore magna
 								aliqua. Ut enim ad minim veniam, quis nostrud exercitation

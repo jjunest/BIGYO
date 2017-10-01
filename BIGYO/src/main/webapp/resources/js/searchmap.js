@@ -107,6 +107,7 @@ var mapStyles = [ {
 var id = document.getElementById('map-canvas');
 if (id) {
 	console.log('this is searchmap.js id()');
+	initMap();
 	function initMap() {
 		console.log('this is searchmap.js initMap()');
 		var map = new google.maps.Map(id, {

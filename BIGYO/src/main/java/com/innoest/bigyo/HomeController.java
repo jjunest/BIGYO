@@ -167,4 +167,13 @@ public class HomeController {
 
 		return "dbtest";
 	}
+	
+	
+	@RequestMapping("/maptest")
+	public String maptest(Model model) {
+		System.out.println("this is maptest");
+		return "maptest";
+	}
+
+	
 }

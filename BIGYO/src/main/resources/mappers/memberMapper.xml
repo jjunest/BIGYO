@@ -34,11 +34,11 @@
 
 	<insert id="insertPublicData_Test">
 		INSERT INTO hospital_testdb
-		(hmcNm, hcmNo,
+		(hmcNm, hmcNo,
 		hmcTelNo,
 		locAddr, locPostNo, cxVl, cyVl, exmdrFaxNo, siDoCd,siGunGuCd)
 		VALUES
-		(#{hmcNm},#{hcmNo},#{hmcTelNo},#{locAddr},#{locPostNo},#{cxVl},#{cyVl},#{exmdrFaxNo},#{siDoCd},#{siGunGuCd})
+		(#{hmcNm},#{hmcNo},#{hmcTelNo},#{locAddr},#{locPostNo},#{cxVl},#{cyVl},#{exmdrFaxNo},#{siDoCd},#{siGunGuCd})
 	</insert>
 
 	<insert id="insertPublicData_Test_Detail">
@@ -52,9 +52,25 @@
 		VALUES
 		(#{hmcNo},#{buildingName},#{buildingHo},#{gunmulFl},#{cityBusStopName},#{cityBusStopInfo},#{subwayStopName},#{subwayInfo},#{subwayDirect},#{villageBusStopName},#{villageBusInfo})
 	</insert>
-
+	
+	<!-- select LIST DATA FROM DATABASE -->
 	<select id="selectAllhosDTO" resultType="com.innovest.dto.HospitalDto_Test">
-		SELECT * FROM hospital_testdb LIMIT #{offset}, 10
+		SELECT * FROM
+		hospital_testdb LIMIT #{offset}, 10
 	</select>
+
+	<!-- select ONE DATA FROM DATABASE _ DETAIL INFO -->
+	<select id="selectDetailHosInfo" resultType="com.innovest.dto.HospitalDto_Test_Detail">
+		SELECT * FROM
+		hospital_testdb_detail where hmcNo = #{hmcNo}
+	</select>
+
+	<!-- select ONE DATA FROM DATABASE _ BASIC INFO -->
+	<select id="selectBasicInfo" resultType="com.innovest.dto.HospitalDto_Test">
+		SELECT * FROM
+		hospital_testdb where hmcNo = #{hmcNo}
+	</select>
+	
+
 </mapper>
 

@@ -24,6 +24,7 @@ pageEncoding="UTF-8"%>
 <link href="resources/plugins/isotope/isotope.min.css" rel="stylesheet">
 <link href="resources/plugins/map/css/map.css" rel="stylesheet">
 
+
 <!-- GOOGLE FONT -->
 <link
 	href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700,800,900"

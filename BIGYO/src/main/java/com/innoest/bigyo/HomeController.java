@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.innovest.dao.MemberDao;
 import com.innovest.dto.HospitalDto_Test;
+import com.innovest.dto.HospitalDto_Test_Detail;
 import com.innovest.dto.MemberDto;
 
 /**
@@ -111,7 +112,6 @@ public class HomeController {
 
 	@RequestMapping("/eventHospitals")
 	public String eventHospitals(HttpServletRequest httpServletRequest, Model model) {
-
 		System.out.println("this is eventHospitals");
 		String pNo;
 		if (httpServletRequest.getParameter("pNo") != null) {
@@ -119,39 +119,38 @@ public class HomeController {
 		} else {
 			pNo = "1";
 		}
-
 		// pageNo에 따라서 10개씩 가져오기. offset = (pNo-1) * 10
 		int offset = (Integer.parseInt(pNo) - 1) * 10;
 		List<HospitalDto_Test> result_list = memberdao.selectAllhosDTO(offset);
 		model.addAttribute("result_list", result_list);
-
 		// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
-
 		model.addAttribute("pNo", pNo);
 		return "eventHospitals";
 	}
 
 	@RequestMapping("/allHospitals")
 	public String allHospitals(Model model) {
-
 		System.out.println("this is allHospitals");
-
 		return "allHospitals";
 	}
 
 	@RequestMapping("/questions")
 	public String questions(Model model) {
-
 		System.out.println("this is questions");
 
 		return "questions";
 	}
 
 	@RequestMapping("/hospitalDetails")
-	public String hospitalDetails(Model model) {
-
-		System.out.println("this is hospitalDetails");
-
+	public String hospitalDetails(HttpServletRequest httpServletRequest, Model model) {
+		String hmcNo = httpServletRequest.getParameter("hmcNo");
+		System.out.println("this is hospitalDetails and hmcNo :"+hmcNo);
+		
+		HospitalDto_Test hospital_BasicInfo = memberdao.selectBasicInfo(hmcNo);
+		
+		HospitalDto_Test_Detail hospital_DetailInfo = memberdao.selectDetailHosInfo(hmcNo);
+		model.addAttribute("hospital_DetailInfo", hospital_DetailInfo);
+		model.addAttribute("hospital_BasicInfo", hospital_BasicInfo);
 		return "hospitalDetails";
 	}
 

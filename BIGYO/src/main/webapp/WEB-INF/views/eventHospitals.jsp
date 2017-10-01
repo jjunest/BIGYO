@@ -127,7 +127,7 @@
 							<div class="row">
 								<div class="col-sm-5 col-xs-12">
 									<div class="categoryImage">
-										<a href="hospitalDetails?hcnNo=${listValue.hcmNo}"><img src="resources/img/things/things-1.jpg" alt="Image category" class="img-responsive img-rounded"> <span
+										<a href="hospitalDetails?hmcNo=${listValue.hmcNo}"><img src="resources/img/things/things-1.jpg" alt="Image category" class="img-responsive img-rounded"> <span
 											class="label label-primary"
 										>Verified</span> </a>
 									</div>
@@ -142,15 +142,15 @@
 											<li><i class="fa fa-star" aria-hidden="true"></i></li>
 										</ul>
 										<h2>
-											<a href="hospitalDetails?hcnNo=${listValue.hcmNo}" style="color: #222222">${listValue.hmcNm}</a> <span class="likeCount"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span>
+											<a href="hospitalDetails?hmcNo=${listValue.hmcNo}" style="color: #222222">${listValue.hmcNm}</a> <span class="likeCount"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span>
 										</h2>
 										<p>
 											1569 Queen Street West <span class="placeName">Toronto</span>
 										</p>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
 										<ul class="list-inline list-tag">
-											<li><a href="hospitalDetails?hcnNo=${listValue.hcmNo}">${listValue.locAddr}</a></li>
-											<li><a href="hospitalDetails?hcnNo=${listValue.hcmNo}">Restaurant</a></li>
+											<li><a href="hospitalDetails?hmcNo=${listValue.hmcNo}">${listValue.locAddr}</a></li>
+											<li><a href="hospitalDetails?hmcNo=${listValue.hmcNo}">Restaurant</a></li>
 										</ul>
 									</div>
 								</div>
@@ -227,7 +227,17 @@
 			var activePageNum = '${pNo % 5}';
 			$("#pageNavi" + activePageNum).addClass("active");
 
+			/* navigation menu 주소에 따라서 active 설정 시작 */
+			var urlpath = $(location).attr("pathname");
+			if (urlpath.includes("/bigyo/eventHospitals")) {
+
+				$("#navmenu_eventHospitals").css("color","#39a1f4");
+		
+			}
+			/* navigation menu 주소에 따라서 active 설정 끝 */
 		});
+			
+		
 	</script>
 </body>
 

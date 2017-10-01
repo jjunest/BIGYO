@@ -4,7 +4,7 @@ public class HospitalDto_Test {
 
 	
 	public String hmcNm;
-	public String hcmNo;
+	public String hmcNo;
 	public String hmcTelNo;
 	public String locAddr;
 	public String locPostNo;
@@ -17,11 +17,11 @@ public class HospitalDto_Test {
 	
 	
 	
-	public HospitalDto_Test(String hmcNm, String hcmNo, String hmcTelNo, String locAddr, String locPostNo, String cxVl,
+	public HospitalDto_Test(String hmcNm, String hmcNo, String hmcTelNo, String locAddr, String locPostNo, String cxVl,
 			String cyVl, String exmdrFaxNo, String siDoCd, String siGunGuCd) {
 		super();
 		this.hmcNm = hmcNm;
-		this.hcmNo = hcmNo;
+		this.hmcNo = hmcNo;
 		this.hmcTelNo = hmcTelNo;
 		this.locAddr = locAddr;
 		this.locPostNo = locPostNo;
@@ -42,12 +42,12 @@ public class HospitalDto_Test {
 		this.hmcNm = hmcNm;
 	}
 
-	public String getHcmNo() {
-		return hcmNo;
+	public String gethmcNo() {
+		return hmcNo;
 	}
 
-	public void setHcmNo(String hcmNo) {
-		this.hcmNo = hcmNo;
+	public void sethmcNo(String hmcNo) {
+		this.hmcNo = hmcNo;
 	}
 
 	public String getHmcTelNo() {

@@ -78,5 +78,16 @@ public class MemberDao {
 		return result_list;
 	}
 	
+	public HospitalDto_Test_Detail selectDetailHosInfo(String hmcNo) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		HospitalDto_Test_Detail result_one = dao.selectDetailHosInfo(hmcNo);
+		return result_one;
+	}
+
+	public HospitalDto_Test selectBasicInfo(String hmcNo) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		HospitalDto_Test result_one = dao.selectBasicInfo(hmcNo);
+		return result_one;
+	}
 
 }

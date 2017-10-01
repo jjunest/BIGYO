@@ -66,7 +66,7 @@ var center = new google.maps.LatLng(37.51816434588495, 126.93697119523038);
 // Map initialize function
 function initialize() {
 
-	console.log('this is log');
+	console.log('this is map.js initialize()');
 	var mapOptions = {
 		center : center,
 		zoom : 15,
@@ -215,9 +215,9 @@ function initialize() {
 	$.getJSON(url, mapdata, getContent);
 
 } // map initialize function ends
-var existId = document.getElementById("map-canvas");
+var existId = document.getElementById("map-canva");
 if (existId) {
-	
+	console.log('this is map.js existId()');
 	google.maps.event.addDomListener(window, 'load', initialize);
 }
 

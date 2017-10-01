@@ -27,5 +27,9 @@ public interface IDao {
 	public int insertPublicData_Test_Detail(HospitalDto_Test_Detail public_insertObj);
 
 	public List<HospitalDto_Test> selectAllhosDTO(int offset);
+	
+	public HospitalDto_Test_Detail selectDetailHosInfo(String hmcNo);
+	
+	public HospitalDto_Test selectBasicInfo(String hmcNo);
 
 }

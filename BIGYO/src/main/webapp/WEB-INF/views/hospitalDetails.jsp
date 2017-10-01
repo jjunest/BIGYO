@@ -55,10 +55,8 @@
 </head>
 
 <body class="body-wrapper">
-	<div class="page-loader"
-		style="background: url(resources/ img/ prelo.thumbnail { 
-	 margin-bottom : 6px; } .carousel-control .left , .cariousel-control .right { background-image: none; margin-top: 10%; width: 5%;"
-	></div>
+	<div class="page-loader" style="background: url(resources/img/preloader.gif) center no-repeat #fff;"></div>
+
 
 	<div class="main-wrapper">
 		<!-- HEADER FILE INCLUDE  -->
@@ -83,9 +81,9 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="listingTitleArea">
-						<h2>Glory Hole Doughnuts</h2>
+						<h2>${hospital_BasicInfo.hmcNm}</h2>
 						<p>
-							1150 Queen Street West Toronto <br>Ontario M6J 1J3, Canada
+							${hospital_BasicInfo.locAddr} <br>${hospital_DetailInfo.cityBusStopName}
 						</p>
 						<div class="listingReview">
 							<ul class="list-inline rating">
@@ -461,27 +459,23 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58"></script>
 	<script src="resources/plugins/map/js/rich-marker.js"></script>
 	<script src="resources/plugins/map/js/infobox_packed.js"></script>
-	<script src="resources/js/single-map.js"></script>
+	<!-- <script src="resources/js/single-map.js"></script> -->
 	<script src="resources/js/map.js"></script>
 	<script src="resources/js/custom.js"></script>
-	<script src="resources/js/jjunestjs.js"></script>
 	<script src="resources/js/ninja-slider8.js"></script>
 	<script>
 		// html dom 이 다 로딩된 후 실행된다.
 		$(document).ready(function() {
-			/* PAGENAVIGATION 색칠 */
-			var activePageNum = '${pNo % 5}';
-			$("#pageNavi" + activePageNum).addClass("active");
+			console.log("javascript in hospitalDetails.jsp");
+			googlemapSingleMarker();
 
 		});
-		//닌자 슬라이드 시작
+		//닌자 슬라이드 시작 - 클릭시 MODAL GALLERY SHOW
 		function lightbox(idx) {
 			//show the slider's wrapper: this is required when the transitionType has been set to "slide" in the ninja-slider.js
 			var ninjaSldr = document.getElementById("ninja-slider");
 			ninjaSldr.parentNode.style.display = "block";
-
 			nslider.init(idx);
-
 			var fsBtn = document.getElementById("fsBtn");
 			fsBtn.click();
 		}
@@ -492,7 +486,149 @@
 				ninjaSldr.parentNode.style.display = "none";
 			}
 		}
-		//닌자 슬라이드 끝
+		//닌자 슬라이드 끝 - 클릭시 MODAL GALLERY SHOW
+
+		// googlemapSingleMarker() started
+		function googlemapSingleMarker() {
+			var id = document.getElementById('map-canvas');
+			if (id) {
+				console.log('this is hospitalDetails.js id()');
+				initMap();
+			}
+
+		}
+
+		function initMap() {
+			console.log('this is hospitalDetails.js initMap()');
+			var myLatLng = {
+				lat : parseFloat('${hospital_BasicInfo.cxVl}'),
+				lng : parseFloat('${hospital_BasicInfo.cyVl}')
+
+			};
+			var lat2 = 151.23300;
+			typeof lat2;
+			var map = new google.maps.Map(
+					document.getElementById('map-canvas'), {
+						zoom : 16,
+						center : myLatLng,
+						styles : mapStyles
+					});
+			console.log('lat:' + myLatLng.lat + ', lng:' + myLatLng.lng);
+			var image = 'resources/img/map/inactive.png';
+			var marker = new google.maps.Marker({
+				position : myLatLng,
+				map : map,
+				icon : image
+			});
+		}
+
+		var mapStyles2 = [ {
+			'elementType' : 'geometry',
+			'stylers' : [ {
+				'color' : '#f5f5f5'
+			} ]
+		}, {
+			'elementType' : 'labels.icon',
+			'stylers' : [ {
+				'visibility' : 'off'
+			} ]
+		}, {
+			'elementType' : 'labels.text.fill',
+			'stylers' : [ {
+				'color' : '#616161'
+			} ]
+		}, {
+			'elementType' : 'labels.text.stroke',
+			'stylers' : [ {
+				'color' : '#f5f5f5'
+			} ]
+		}, {
+			'featureType' : 'administrative.land_parcel',
+			'elementType' : 'labels.text.fill',
+			'stylers' : [ {
+				'color' : '#bdbdbd'
+			} ]
+		}, {
+			'featureType' : 'poi',
+			'elementType' : 'geometry',
+			'stylers' : [ {
+				'color' : '#eeeeee'
+			} ]
+		}, {
+			'featureType' : 'poi',
+			'elementType' : 'labels.text.fill',
+			'stylers' : [ {
+				'color' : '#757575'
+			} ]
+		}, {
+			'featureType' : 'poi.park',
+			'elementType' : 'geometry',
+			'stylers' : [ {
+				'color' : '#e5e5e5'
+			} ]
+		}, {
+			'featureType' : 'poi.park',
+			'elementType' : 'labels.text.fill',
+			'stylers' : [ {
+				'color' : '#9e9e9e'
+			} ]
+		}, {
+			'featureType' : 'road',
+			'elementType' : 'geometry',
+			'stylers' : [ {
+				'color' : '#ffffff'
+			} ]
+		}, {
+			'featureType' : 'road.arterial',
+			'elementType' : 'labels.text.fill',
+			'stylers' : [ {
+				'color' : '#757575'
+			} ]
+		}, {
+			'featureType' : 'road.highway',
+			'elementType' : 'geometry',
+			'stylers' : [ {
+				'color' : '#dadada'
+			} ]
+		}, {
+			'featureType' : 'road.highway',
+			'elementType' : 'labels.text.fill',
+			'stylers' : [ {
+				'color' : '#616161'
+			} ]
+		}, {
+			'featureType' : 'road.local',
+			'elementType' : 'labels.text.fill',
+			'stylers' : [ {
+				'color' : '#9e9e9e'
+			} ]
+		}, {
+			'featureType' : 'transit.line',
+			'elementType' : 'geometry',
+			'stylers' : [ {
+				'color' : '#e5e5e5'
+			} ]
+		}, {
+			'featureType' : 'transit.station',
+			'elementType' : 'geometry',
+			'stylers' : [ {
+				'color' : '#eeeeee'
+			} ]
+		}, {
+			'featureType' : 'water',
+			'elementType' : 'geometry',
+			'stylers' : [ {
+				'color' : '#0000e6'
+			} ]
+		}, {
+			'featureType' : 'water',
+			'elementType' : 'labels.text.fill',
+			'stylers' : [ {
+				'color' : '#9e9e9e'
+			} ]
+		} ];
+
+		// googlemapSingleMarker() ended */
 	</script>
 
 </body>

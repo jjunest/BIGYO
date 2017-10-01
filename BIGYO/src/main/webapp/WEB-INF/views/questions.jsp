@@ -118,7 +118,22 @@
 	<script src="resources/js/single-map.js"></script>
 	<script src="resources/js/map.js"></script>
 	<script src="resources/js/custom.js"></script>
+	<script>
+		// html dom 이 다 로딩된 후 실행된다.
+		$(document).ready(function() {
 
+			/* navigation menu 주소에 따라서 active 설정 시작 */
+			var urlpath = $(location).attr("pathname");
+			if (urlpath.includes("/bigyo/questions")) {
+
+				$("#navmenu_questions").css("color","#39a1f4");
+		
+			}
+			/* navigation menu 주소에 따라서 active 설정 끝 */
+		});
+			
+		
+	</script>
 </body>
 
 </html>

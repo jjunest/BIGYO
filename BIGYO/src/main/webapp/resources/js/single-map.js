@@ -1,4 +1,6 @@
 $(document).ready(function(){
+	
+	console.log('this is single-map.js readyfunction()');
     'use strict';
     var mapStyles = [{
         'elementType': 'geometry',
@@ -125,24 +127,33 @@ $(document).ready(function(){
     ];
 
     function initMap() {
+    	console.log('this is single-map.js initMap()');
         var myLatLng = {lat: -33.91722, lng: 151.23064};
-
-        var map = new google.maps.Map(document.getElementById('map'), {
+        var myLatLng2 = {lat: -33.91722, lng: 151.23300};
+        var map = new google.maps.Map(document.getElementById('map-canvas'), {
             zoom: 16,
             center: myLatLng,
             styles:mapStyles
         });
-
-        var image = '../img/map/marker.png';
+     
+        var image = 'resources/img/map/marker.png';
         var marker = new google.maps.Marker({
             position: myLatLng,
             map: map,
             icon : image
         });
+        var marker2 = new google.maps.Marker({
+            position: myLatLng2,
+            map: map,
+            icon : image
+        });
 
     }
-    var id = document.getElementById('map');
+    var id = document.getElementById('map-canvas');
     if (id) {
+     	console.log('this is single-map.js id()');
         initMap();
     }
 });
+
+

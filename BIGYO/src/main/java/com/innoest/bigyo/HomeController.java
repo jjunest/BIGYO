@@ -34,16 +34,9 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+	
 
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
-		String formattedDate = dateFormat.format(date);
-
-		model.addAttribute("serverTime", formattedDate);
-
-		return "home";
+		return "redirect:index";
 	}
 
 	@RequestMapping("/index")
@@ -127,6 +120,23 @@ public class HomeController {
 		model.addAttribute("pNo", pNo);
 		return "eventHospitals";
 	}
+	@RequestMapping("/eventHospitals_map")
+	public String eventHospitals_map(HttpServletRequest httpServletRequest, Model model) {
+		System.out.println("this is eventHospitals_map");
+		String pNo;
+		if (httpServletRequest.getParameter("pNo") != null) {
+			pNo = httpServletRequest.getParameter("pNo");
+		} else {
+			pNo = "1";
+		}
+		// pageNo에 따라서 10개씩 가져오기. offset = (pNo-1) * 10
+		int offset = (Integer.parseInt(pNo) - 1) * 10;
+		List<HospitalDto_Test> result_list = memberdao.selectAllhosDTO(offset);
+		model.addAttribute("result_list", result_list);
+		// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
+		model.addAttribute("pNo", pNo);
+		return "eventHospitals_map";
+	}
 
 	@RequestMapping("/allHospitals")
 	public String allHospitals(Model model) {
@@ -138,7 +148,7 @@ public class HomeController {
 	public String questions(Model model) {
 		System.out.println("this is questions");
 
-		return "questions";
+		return "/questions";
 	}
 
 	@RequestMapping("/hospitalDetails")
@@ -175,5 +185,45 @@ public class HomeController {
 		return "maptest";
 	}
 
+	@RequestMapping("/login.html")
+	public String login(Locale locale, Model model) {
+		
+		return "security/login";
+	}
+	
+	@RequestMapping("/welcome.html")
+	public String welcome(Locale locale, Model model) {
+		
+		return "security/welcome";
+	}
+	
+
+	
+	@RequestMapping("/logoutsuccess")
+	public String logoutsuccess(Locale locale, Model model) {
+		
+		return "logoutsuccess";
+	}
+	
+	@RequestMapping("/loginform_custom")
+	public String loginform_custom(Locale locale, Model model) {
+		
+		return "loginform_custom";
+	}
+	@RequestMapping("/defaultpage")
+	public String defaultpage(Locale locale, Model model) {
+		
+		return "defaultpage";
+	}
+	@RequestMapping("/accessdenial")
+	public String accessdenial(Locale locale, Model model) {
+		
+		return "accessdenial";
+	}
+	@RequestMapping("/signup")
+	public String signup(Locale locale, Model model) {
+		
+		return "signup";
+	}
 	
 }

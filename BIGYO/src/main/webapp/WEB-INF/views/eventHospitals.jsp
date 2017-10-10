@@ -80,30 +80,29 @@
 		<form action="">
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-4 col-xs-12">
+					<div class="col-sm-6 col-xs-12">
 						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">Find</div>
-								<input type="text" class="form-control" id="findItem" placeholder="What are you looking for?">
-								<div class="input-group-addon addon-right"></div>
+							<div class="searchSelectbox">
+								<select name="guiest_id2" id="guiest_id2" class="select-drop">
+									<option value="0">시/도 선택</option>
+									<option value="1">전체 선택</option>
+									<option value="2">서울특별시</option>
+									<option value="3">경기도</option>
+									<option value="4">충청북도</option>
+									<option value="5">충청남도</option>
+									<option value="6">경상북도</option>
+									<option value="7">경상남도</option>
+									<option value="8">강원도</option>
+									<option value="9">전라북도</option>
+									<option value="10">전라남도</option>
+									<option value="11">제주도</option>
+								</select>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-4 col-xs-12">
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">Near</div>
-								<input type="text" class="form-control" id="nearLocation" placeholder="Location">
-								<div class="input-group-addon addon-right">
-									<i class="icon-listy icon-target" aria-hidden="true"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-4 col-xs-12">
 
-						<button type="submit" class="btn btn-primary">Search</button>
-
+					<div class="col-sm-6 col-xs-12">
+						<button type="submit" class="btn btn-primary">검색하기</button>
 					</div>
 
 
@@ -113,28 +112,26 @@
 		</form>
 		</section>
 
-		<!-- MAP SECTION -->
-		<section>
-		<div id="map" style="position: relative; margin: 0; padding: 0; height: 538px; max-width: none;"></div>
-		</section>
 
 
-		<!-- HOSPITALS LIST SECTION -->
+
+		<!-- CATEGORY LIST SECTION -->
 		<section class="clerfix">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-12 col-xs-12">
+				<div class="col-sm-8 col-xs-12">
 					<div class="resultBar barSpaceAdjust">
 						<h2>
 							We found <span>${fn:length(result_list)}</span> Results for you
 						</h2>
+
 					</div>
-					<c:forEach var="listValue" items="${result_list}">
+					<c:forEach var="listValue" items="${result_list}" varStatus="status">
 						<div class="listContent">
 							<div class="row">
 								<div class="col-sm-5 col-xs-12">
 									<div class="categoryImage">
-										<a href="hospitalDetails?hmcNo=${listValue.hmcNo}"><img src="resources/img/things/things-1.jpg" alt="Image category" class="img-responsive img-rounded"> <span
+										<a href="hospitalDetails?hmcNo=${listValue.hmcNo}" index=${status.index}><img src="resources/img/things/things-1.jpg" alt="Image category" class="img-responsive img-rounded"> <span
 											class="label label-primary"
 										>Verified</span> </a>
 									</div>
@@ -149,54 +146,75 @@
 											<li><i class="fa fa-star" aria-hidden="true"></i></li>
 										</ul>
 										<h2>
-											<a href="hospitalDetails?hmcNo=${listValue.hmcNo}" style="color: #222222">${listValue.hmcNm}</a> <span class="likeCount"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span>
+											<a href="hospitalDetails?hmcNo=${listValue.hmcNo}" index=${status.index } style="color: #222222">${listValue.hmcNm}</a> <span class="likeCount"><i class="fa fa-heart-o"
+												aria-hidden="true"
+											></i> 10 k</span>
 										</h2>
 										<p>
 											1569 Queen Street West <span class="placeName">Toronto</span>
 										</p>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
 										<ul class="list-inline list-tag">
-											<li><a href="hospitalDetails?hmcNo=${listValue.hmcNo}">${listValue.locAddr}</a></li>
-											<li><a href="hospitalDetails?hmcNo=${listValue.hmcNo}">Restaurant</a></li>
+											<li><a href="hospitalDetails?hmcNo=${listValue.hmcNo}" index=${status.index}>${listValue.locAddr}</a></li>
+											<li><a href="hospitalDetails?hmcNo=${listValue.hmcNo}" index=${status.index}>Restaurant</a></li>
 										</ul>
 									</div>
 								</div>
 							</div>
 						</div>
 					</c:forEach>
-				</div>
 
+					<!--  페이지게이션 시작! -->
+					<!--  pNo_shre 부분은 나눗셈의 몫을 만들어 주는 역할을 한다.  -->
+					<fmt:parseNumber var="pNo_share" value="${(pNo-1)/5}" integerOnly="true" />
+
+
+					<div class="row" style="border-top: 1px solid #ccc;">
+						<nav style="text-align: center">
+						<ul class="pagination">
+							<li><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+							</a></li>
+
+							<li id="pageNavi1"><a href="eventHospitals?pNo=${pNo_share*5+1}">${pNo_share*5+1}</a></li>
+							<li id="pageNavi2"><a href="eventHospitals?pNo=${pNo_share*5+2}">${pNo_share*5+2}</a></li>
+							<li id="pageNavi3"><a href="eventHospitals?pNo=${pNo_share*5+3}">${pNo_share*5+3}</a></li>
+							<li id="pageNavi4"><a href="eventHospitals?pNo=${pNo_share*5+4}">${pNo_share*5+4}</a></li>
+							<li id="pageNavi0"><a href="eventHospitals?pNo=${pNo_share*5+5}">${pNo_share*5+5}</a></li>
+							<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+							</a></li>
+						</ul>
+						</nav>
+					</div>
+
+					<!--  페이지게이션 끝! -->
+				</div>
+				<div class="col-sm-4 col-xs-12">
+					<div id="quickMapMenu" class="clearfix map-sidebar map-right map-margin-btm">
+
+						<div class="clearfix map-sidebar map-right">
+							<div id="map-canvas_eventList" style="position: relative; margin: 0; padding: 0; height: 538px; max-width: none;"></div>
+						</div>
+	<!-- 					<div id="map-canvas_eventList" style="position: relative; margin: 0; padding: 0; height: 538px; max-width: none;"></div> -->
+						<div class="listSidebar">
+							<h3>Location</h3>
+							<div class="contactInfo">
+								<ul class="list-unstyled list-address">
+									<li><i class="fa fa-map-marker" aria-hidden="true"></i> 16/14 Babor Road, Mohammad pur <br> Dhaka, Bangladesh</li>
+									<li><i class="fa fa-phone" aria-hidden="true"></i> +55 654 545 122 <br> +55 654 545 123</li>
+									<li><i class="fa fa-envelope" aria-hidden="true"></i> <a href="#">info @example.com</a> <a href="#">info@startravelbangladesh.com</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
 			</div>
 		</div>
-	</div>
-	</section>
+		</section>
 
 
-	<!--  페이지게이션 시작! -->
-	<!--  pNo_shre 부분은 나눗셈의 몫을 만들어 주는 역할을 한다.  -->
-	<fmt:parseNumber var="pNo_share" value="${(pNo-1)/5}" integerOnly="true" />
-
-
-	<div class="row" style="border-top: 1px solid #ccc;">
-		<nav style="text-align: center">
-		<ul class="pagination">
-			<li><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-			</a></li>
-
-			<li id="pageNavi1"><a href="eventHospitals?pNo=${pNo_share*5+1}">${pNo_share*5+1}</a></li>
-			<li id="pageNavi2"><a href="eventHospitals?pNo=${pNo_share*5+2}">${pNo_share*5+2}</a></li>
-			<li id="pageNavi3"><a href="eventHospitals?pNo=${pNo_share*5+3}">${pNo_share*5+3}</a></li>
-			<li id="pageNavi4"><a href="eventHospitals?pNo=${pNo_share*5+4}">${pNo_share*5+4}</a></li>
-			<li id="pageNavi0"><a href="eventHospitals?pNo=${pNo_share*5+5}">${pNo_share*5+5}</a></li>
-			<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-			</a></li>
-		</ul>
-		</nav>
-	</div>
-
-	<!--  페이지게이션 끝! -->
-
-	<section></section>
+		<section></section>
 
 
 
@@ -204,132 +222,327 @@
 
 
 
-	<!-- FOOTER FILE INCLUDE  -->
-	<jsp:include page="footer.jsp"></jsp:include>
+		<!-- FOOTER FILE INCLUDE  -->
+		<jsp:include page="footer.jsp"></jsp:include>
 
 
-	<!-- JAVASCRIPTS -->
-	<script src="resources/plugins/jquery/jquery.min.js"></script>
-	<script src="resources/plugins/jquery-ui/jquery-ui.min.js"></script>
-	<script src="resources/plugins/bootstrap/js/bootstrap.min.js"></script>
-	<script src="resources/plugins/smoothscroll/SmoothScroll.min.js"></script>
-	<script src="resources/plugins/waypoints/waypoints.min.js"></script>
-	<script src="resources/plugins/counter-up/jquery.counterup.min.js"></script>
-	<script src="resources/plugins/datepicker/bootstrap-datepicker.min.js"></script>
-	<script src="resources/plugins/selectbox/jquery.selectbox-0.1.3.min.js"></script>
-	<script src="resources/plugins/owl-carousel/owl.carousel.min.js"></script>
-	<script src="resources/plugins/isotope/isotope.min.js"></script>
-	<script src="resources/plugins/fancybox/jquery.fancybox.pack.js"></script>
-	<script src="resources/plugins/isotope/isotope-triger.min.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58"></script>
-	<script src="resources/plugins/map/js/rich-marker.js"></script>
-	<script src="resources/plugins/map/js/infobox_packed.js"></script>
-	<!-- 	<script src="resources/js/single-map.js"></script>
+		<!-- JAVASCRIPTS -->
+		<script src="resources/plugins/jquery/jquery.min.js"></script>
+		<script src="resources/plugins/jquery-ui/jquery-ui.min.js"></script>
+		<script src="resources/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script src="resources/plugins/smoothscroll/SmoothScroll.min.js"></script>
+		<script src="resources/plugins/waypoints/waypoints.min.js"></script>
+		<script src="resources/plugins/counter-up/jquery.counterup.min.js"></script>
+		<script src="resources/plugins/datepicker/bootstrap-datepicker.min.js"></script>
+		<script src="resources/plugins/selectbox/jquery.selectbox-0.1.3.min.js"></script>
+		<script src="resources/plugins/owl-carousel/owl.carousel.min.js"></script>
+		<script src="resources/plugins/isotope/isotope.min.js"></script>
+		<script src="resources/plugins/fancybox/jquery.fancybox.pack.js"></script>
+		<script src="resources/plugins/isotope/isotope-triger.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEDfNcQRmKQEyulDN8nGWjLYPm8s4YB58"></script>
+		<script src="resources/plugins/map/js/rich-marker.js"></script>
+		<script src="resources/plugins/map/js/infobox_packed.js"></script>
+		<!-- 	<script src="resources/js/single-map.js"></script>
 	<script src="resources/js/map.js"></script> -->
-	<script src="resources/js/custom.js"></script>
-	<!-- GOOGLE MAP CLUSTERING LIBRARY -->
-	<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+		<script src="resources/js/custom.js"></script>
+		<!-- GOOGLE MAP CLUSTERING LIBRARY -->
+		<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 
-	<script>
-		// html dom 이 다 로딩된 후 실행된다.
-		$(document).ready(function() {
-			/* PAGENAVIGATION 색칠 */
-			var activePageNum = '${pNo % 5}';
-			$("#pageNavi" + activePageNum).addClass("active");
+		<script>
+			// html dom 이 다 로딩된 후 실행된다.
+			$(document).ready(function() {
+				/* PAGENAVIGATION 색칠 */
+				var activePageNum = '${pNo % 5}';
+				$("#pageNavi" + activePageNum).addClass("active");
 
-			/* navigation menu 주소에 따라서 active 설정 시작 */
-			var urlpath = $(location).attr("pathname");
-			if (urlpath.includes("/bigyo/eventHospitals")) {
+				/* navigation menu 주소에 따라서 active 설정 시작 */
+				var urlpath = $(location).attr("pathname");
+				if (urlpath.includes("/bigyo/eventHospitals_map")) {
 
-				$("#navmenu_eventHospitals").css("color", "#39a1f4");
+					$("#navmenu_eventHospitals_map").css("color", "#39a1f4");
 
-			}
-			/* navigation menu 주소에 따라서 active 설정 끝 */
-			/*  GOOGLE MAP */
-			initMap();
-		});
+				} else if (urlpath.includes("/bigyo/eventHospitals")) {
 
-		function initMap() {
-
-			var map = new google.maps.Map(document.getElementById('map'), {
-				zoom : 12,
-				center : {
-					lat : markerLists[0].lat,
-					lng : markerLists[0].lng
+					$("#navmenu_eventHospitals").css("color", "#39a1f4");
 				}
+				/* navigation menu 주소에 따라서 active 설정 끝 */
+				/* googlemapSingleMarker() start : sidebarMAP 에 구글 초기값 설정해주는 함수 */ 
+				googlemapSingleMarker();
+
+				/* quickmap menu start : 따라다니는 메뉴 만드는 함수*/
+				quickMapMenu();
+
+				/* hover 시에 googleMapMarker change : 리스트에 마우스 올렸을 시에 MAP 전환 시켜주는 함수 */
+				hoverMapFocusChange();
+
 			});
+			//hoverMapFocusChange() started
+			function hoverMapFocusChange() {
 
-			// Create an array of alphabetical characters used to label the markers.
-			var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+				$(".listContent").hover(
+						function() {
+							/* List의 INDEX를 받아오고, INDEX를 통해서 MAP 의 LOCATION을 인자값으로 전달 */
+							var index = $(".listContent").index(this);
+							hoverRefreshMap(markerLists[index].lat,
+									markerLists[index].lng);
 
-			// Add some markers to the map.
-			// Note: The code uses the JavaScript Array.prototype.map() method to
-			// create an array of markers based on a given "locations" array.
-			// The map() method here has nothing to do with the Google Maps API.
+						}, function() {
 
-			var markers = markerLists
-					.map(function(location, i) {
-						var marker = new google.maps.Marker({
-							position : location,
-							label : labels[i % labels.length]
 						});
 
-						var contentString = '<div id="content">'
-								+ '<div id="siteNotice">'
-								+ '</div>'
-								+ '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'
-								+ '<div id="bodyContent">'
-								+ '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large '
-								+ 'sandstone rock formation in the southern part of the '
-								+ 'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '
-								+ 'south west of the nearest large town, Alice Springs; 450&#160;km '
-								+ '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '
-								+ 'features of the Uluru - Kata Tjuta National Park. Uluru is '
-								+ 'sacred to the Pitjantjatjara and Yankunytjatjara, the '
-								+ 'Aboriginal people of the area. It has many springs, waterholes, '
-								+ 'rock caves and ancient paintings. Uluru is listed as a World '
-								+ 'Heritage Site.</p>'
-								+ '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194" target="_blank">'
-								+ 'https://en.wikipedia.org/w/index.php?title=Uluru</a> '
-								+ '(last visited June 22, 2009).</p>'
-								+ '</div>' + '</div>';
+			}
 
-						google.maps.event
-								.addListener(
-										marker,
-										'click',
-										function() {
-											console.log('this is marker click');
-											var infowindow = new google.maps.InfoWindow(
-													{
-														content : contentString
-													});
-											infowindow.open(map, marker);
-										});
+			//hoverMapFocusChange() end		
+			//hoverRefreshMap() started
+			function hoverRefreshMap(paramLat, paramLng) {
+				console.log('this is eventHospitals.js hoverRefreshMap()');
+				var myLatLng = {
+					lat : paramLat,
+					lng : paramLng
+				/* 	lat : parseFloat('${hospital_BasicInfo.cxVl}'),
+					lng : parseFloat('${hospital_BasicInfo.cyVl}') */
 
-						return marker;
+				};
+				var map = new google.maps.Map(document
+						.getElementById('map-canvas_eventList'), {
+					zoom : 16,
+					center : myLatLng,
+					styles : mapStyles
+				});
+				console.log('lat:' + myLatLng.lat + ', lng:' + myLatLng.lng);
+				var image = 'resources/img/map/marker.png';
+				var contentString = '<div id="content">'
+						+ '<div id="siteNotice">'
+						+ '</div>'
+						+ '<h5 id="firstHeading" class="firstHeading">${hospital_BasicInfo.hmcNm}</h1>'
+						+ '<div id="bodyContent">'
+						+ '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194" target="_blank">'
+						+ 'https://en.wikipedia.org/w/index.php?title=Uluru</a> '
+						+ '(last visited June 22, 2009).</p>' + '</div>'
+						+ '</div>';
+				var marker = new google.maps.Marker({
+					position : myLatLng,
+					map : map,
+					icon : image,
+					animation : google.maps.Animation.BOUNCE
+				});
+				google.maps.event.addListener(marker, 'click', function() {
+					var infowindow = new google.maps.InfoWindow({
+						content : contentString
 					});
+					infowindow.open(map, marker);
+				});
 
-			// Add a marker clusterer to manage the markers.
-			var markerCluster = new MarkerClusterer(
-					map,
-					markers,
-					{
-						imagePath : 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+			}
+			//hoverRefreshMap() end
+			// quickMapMenu() started
+			function quickMapMenu() {
+				var $win = $(window);
+				var top = $(window).scrollTop(); // 현재 스크롤바의 위치값을 반환합니다.
+
+				/*사용자 설정 값 시작*/
+				var speed = 1000; // 따라다닐 속도 : "slow", "normal", or "fast" or numeric(단위:msec)
+				var easing = 'linear'; // 따라다니는 방법 기본 두가지 linear, swing
+				var $layer = $('#quickMapMenu'); // 레이어 셀렉팅
+				var layerTopOffset = 0; // 레이어 높이 상한선, 단위:px
+				$layer.css('position', 'absolute');
+				/*사용자 설정 값 끝*/
+
+				// 스크롤 바를 내린 상태에서 리프레시 했을 경우를 위해
+				if (top > 0)
+					$win.scrollTop(layerTopOffset + top);
+				else
+					$win.scrollTop(0);
+
+				//스크롤이벤트가 발생하면
+				$(window).scroll(function() {
+					// 430 이 움직이지 않은 값이다. 430 밑으로 가면 floating menu 가 동작함.
+					yPosition = $win.scrollTop() - 430;
+					if (yPosition < 0) {
+						yPosition = 0;
+					}
+					$layer.animate({
+						"top" : yPosition
+					}, {
+						duration : speed,
+						easing : easing,
+						queue : false
 					});
-		}
-	
+				});
 
-		/* 10개의 객체에서 경도와 위도 뽑아오기, el을 활용해서 javascript 변수 받아오고 marker 표시*/
-		var markerLists = new Array();
-		<c:forEach items = "${result_list}" var = "list">
-		var json = new Object();
-		json.lat = parseFloat("${list.cxVl}");
-		json.lng = parseFloat("${list.cyVl}");
-		markerLists.push(json);
-		</c:forEach>
+			}
+			// quickMapMenu() end
 
-	</script>
+			// googlemapSingleMarker() started
+			function googlemapSingleMarker() {
+				var id = document.getElementById('map-canvas_eventList');
+				if (id) {
+					console.log('this is hospitalDetails.js id()');
+					initMap();
+				}
+
+			}
+
+			function initMap() {
+				console.log('this is hospitalDetails.js initMap()');
+				var myLatLng = {
+					lat : markerLists[0].lat,
+					lng : markerLists[0].lng
+				/* 	lat : parseFloat('${hospital_BasicInfo.cxVl}'),
+					lng : parseFloat('${hospital_BasicInfo.cyVl}') */
+
+				};
+				var lat2 = 151.23300;
+				typeof lat2;
+				var map = new google.maps.Map(document
+						.getElementById('map-canvas_eventList'), {
+					zoom : 16,
+					center : myLatLng,
+					styles : mapStyles
+				});
+				console.log('lat:' + myLatLng.lat + ', lng:' + myLatLng.lng);
+				var image = 'resources/img/map/marker.png';
+				var contentString = '<div id="content">'
+						+ '<div id="siteNotice">'
+						+ '</div>'
+						+ '<h5 id="firstHeading" class="firstHeading">${hospital_BasicInfo.hmcNm}</h1>'
+						+ '<div id="bodyContent">'
+						+ '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194" target="_blank">'
+						+ 'https://en.wikipedia.org/w/index.php?title=Uluru</a> '
+						+ '(last visited June 22, 2009).</p>' + '</div>'
+						+ '</div>';
+				var marker = new google.maps.Marker({
+					position : myLatLng,
+					map : map,
+					icon : image,
+					animation : google.maps.Animation.BOUNCE
+				});
+				google.maps.event.addListener(marker, 'click', function() {
+					var infowindow = new google.maps.InfoWindow({
+						content : contentString
+					});
+					infowindow.open(map, marker);
+				});
+
+			}
+
+			var mapStyles = [ {
+				'elementType' : 'geometry',
+				'stylers' : [ {
+					'color' : '#f5f5f5'
+				} ]
+			}, {
+				'elementType' : 'labels.icon',
+				'stylers' : [ {
+					'visibility' : 'off'
+				} ]
+			}, {
+				'elementType' : 'labels.text.fill',
+				'stylers' : [ {
+					'color' : '#616161'
+				} ]
+			}, {
+				'elementType' : 'labels.text.stroke',
+				'stylers' : [ {
+					'color' : '#f5f5f5'
+				} ]
+			}, {
+				'featureType' : 'administrative.land_parcel',
+				'elementType' : 'labels.text.fill',
+				'stylers' : [ {
+					'color' : '#bdbdbd'
+				} ]
+			}, {
+				'featureType' : 'poi',
+				'elementType' : 'geometry',
+				'stylers' : [ {
+					'color' : '#eeeeee'
+				} ]
+			}, {
+				'featureType' : 'poi',
+				'elementType' : 'labels.text.fill',
+				'stylers' : [ {
+					'color' : '#757575'
+				} ]
+			}, {
+				'featureType' : 'poi.park',
+				'elementType' : 'geometry',
+				'stylers' : [ {
+					'color' : '#e5e5e5'
+				} ]
+			}, {
+				'featureType' : 'poi.park',
+				'elementType' : 'labels.text.fill',
+				'stylers' : [ {
+					'color' : '#9e9e9e'
+				} ]
+			}, {
+				'featureType' : 'road',
+				'elementType' : 'geometry',
+				'stylers' : [ {
+					'color' : '#ffffff'
+				} ]
+			}, {
+				'featureType' : 'road.arterial',
+				'elementType' : 'labels.text.fill',
+				'stylers' : [ {
+					'color' : '#757575'
+				} ]
+			}, {
+				'featureType' : 'road.highway',
+				'elementType' : 'geometry',
+				'stylers' : [ {
+					'color' : '#dadada'
+				} ]
+			}, {
+				'featureType' : 'road.highway',
+				'elementType' : 'labels.text.fill',
+				'stylers' : [ {
+					'color' : '#616161'
+				} ]
+			}, {
+				'featureType' : 'road.local',
+				'elementType' : 'labels.text.fill',
+				'stylers' : [ {
+					'color' : '#9e9e9e'
+				} ]
+			}, {
+				'featureType' : 'transit.line',
+				'elementType' : 'geometry',
+				'stylers' : [ {
+					'color' : '#e5e5e5'
+				} ]
+			}, {
+				'featureType' : 'transit.station',
+				'elementType' : 'geometry',
+				'stylers' : [ {
+					'color' : '#eeeeee'
+				} ]
+			}, {
+				'featureType' : 'water',
+				'elementType' : 'geometry',
+				'stylers' : [ {
+					'color' : '#0000e6'
+				} ]
+			}, {
+				'featureType' : 'water',
+				'elementType' : 'labels.text.fill',
+				'stylers' : [ {
+					'color' : '#9e9e9e'
+				} ]
+			} ];
+
+			// googlemapSingleMarker() ended */
+
+			/* 10개의 객체에서 경도와 위도 뽑아오기, el을 활용해서 javascript 변수 받아오고 marker 표시*/
+			var markerLists = new Array();
+			<c:forEach items = "${result_list}" var = "list">
+			var json = new Object();
+			json.lat = parseFloat("${list.cxVl}");
+			json.lng = parseFloat("${list.cyVl}");
+			markerLists.push(json);
+			</c:forEach>
+		</script>
 </body>
 
 </html>

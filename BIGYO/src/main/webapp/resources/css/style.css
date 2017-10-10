@@ -22,7 +22,7 @@
 4. FOOTER
 	4.1 FOOTER TOP
 	4.2 COPY RIGHT
-	4.3 FOOTER DASHBOARD
+	4.3 FOOTER DASHBOARD	
 	4.4 FOOTER WHITE
 5. HOME
 	5.1 BANNER SECTION
@@ -1849,8 +1849,8 @@ a.link:hover {
 
 .loginSection .form-group button.btn-primary {
 	border: 1px solid #e5e5e5;
-	background-color: transparent;
-	color: #222222;
+	background-color: #2196f3;
+	color: #ffffff;
 	width: 115px;
 	padding: 17px 0;
 }
@@ -3494,7 +3494,7 @@ footer {
 
 @media ( min-width : 768px) {
 	.banerInfo .btn-primary {
-		width: auto;
+		width: 100%;
 	}
 }
 
@@ -4192,7 +4192,7 @@ footer {
 	.bg-search .form-group {
 		width: 40%;
 		margin: 0;
-		width: 40%;
+		width: 50%;
 	}
 }
 
@@ -4234,7 +4234,7 @@ footer {
 
 @media ( min-width : 768px) {
 	.bg-search .form-inline .form-group:last-child {
-		width: 12%;
+		width: 50%;
 	}
 }
 
@@ -4459,7 +4459,6 @@ footer {
 .brandSection {
 	padding: 55px 0 45px;
 	background: #fbfbfb;
-	
 }
 
 .brandSection .partnersLogoSlider .slide {
@@ -4479,7 +4478,6 @@ footer {
 .brandSection .partnersLogoSlider .slide .partnersLogo img {
 	width: auto;
 	margin: 0 auto;
-	
 }
 
 @media ( min-width : 768px) {
@@ -7469,7 +7467,7 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after,
 
 @media ( min-width : 992px) {
 	.listSidebar {
-		width: 90%;
+		width: 100%;
 		margin-bottom: 50px;
 	}
 }
@@ -8290,3 +8288,5 @@ body.rtl .locationSelect .sbToggle {
 body.rtl .checkbox .pull-right.link {
 	float: left !important;
 }
+
+/* made by jjunest custom css */

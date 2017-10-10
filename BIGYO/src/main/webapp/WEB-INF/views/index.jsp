@@ -92,26 +92,34 @@
 			<div class="row">
 				<div class="col-xs-12 ">
 					<div class="bg-search">
-						<form class="form-inline" action="category-grid.html" method="">
-							<div class="form-group">
+						<form class="form-inline" action="category-grid.html">
+
+							<div class="form-group col-sm-6 col-xs-12">
 								<div class="searchSelectbox">
 									<select name="guiest_id2" id="guiest_id2" class="select-drop">
 										<option value="0">시/도 선택</option>
-										<option value="1">서울특별시</option>
-										<option value="2">경기도</option>
-										<option value="3">충청도</option>
+										<option value="1">전체 선택</option>
+										<option value="2">서울특별시</option>
+										<option value="3">경기도</option>
+										<option value="4">충청북도</option>
+										<option value="5">충청남도</option>
+										<option value="6">경상북도</option>
+										<option value="7">경상남도</option>
+										<option value="8">강원도</option>
+										<option value="9">전라북도</option>
+										<option value="10">전라남도</option>
+										<option value="11">제주도</option>
 									</select>
 								</div>
 							</div>
 
-							<div class="form-group">
-								<input type="text" class="form-control" name="enterLocation" placeholder="병원명 입력">
-							</div>
-							<div class="form-group">
+
+							<div class="form-group col-sm-6 col-xs-12">
 								<button type="submit" class="btn btn-primary">
 									Search <i class="fa fa-search" aria-hidden="true"></i>
 								</button>
 							</div>
+
 						</form>
 					</div>
 				</div>
@@ -129,8 +137,8 @@
 			</div>
 		</div>
 		</section>
-		
-		
+
+
 		<!-- CARS SECTION -->
 		<section class="clearfix filterProtfolio">
 		<div class="container">

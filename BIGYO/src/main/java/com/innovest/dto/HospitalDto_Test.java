@@ -2,7 +2,6 @@ package com.innovest.dto;
 
 public class HospitalDto_Test {
 
-	
 	public String hmcNm;
 	public String hmcNo;
 	public String hmcTelNo;
@@ -13,10 +12,26 @@ public class HospitalDto_Test {
 	public String exmdrFaxNo;
 	public String siDoCd;
 	public String siGunGuCd;
+	public String columnTest;
+	
+	
 
-	
-	
-	
+	public HospitalDto_Test(String hmcNm, String hmcNo, String hmcTelNo, String locAddr, String locPostNo, String cxVl,
+			String cyVl, String exmdrFaxNo, String siDoCd, String siGunGuCd, String columnTest) {
+		super();
+		this.hmcNm = hmcNm;
+		this.hmcNo = hmcNo;
+		this.hmcTelNo = hmcTelNo;
+		this.locAddr = locAddr;
+		this.locPostNo = locPostNo;
+		this.cxVl = cxVl;
+		this.cyVl = cyVl;
+		this.exmdrFaxNo = exmdrFaxNo;
+		this.siDoCd = siDoCd;
+		this.siGunGuCd = siGunGuCd;
+		this.columnTest = columnTest;
+	}
+
 	public HospitalDto_Test(String hmcNm, String hmcNo, String hmcTelNo, String locAddr, String locPostNo, String cxVl,
 			String cyVl, String exmdrFaxNo, String siDoCd, String siGunGuCd) {
 		super();
@@ -31,8 +46,6 @@ public class HospitalDto_Test {
 		this.siDoCd = siDoCd;
 		this.siGunGuCd = siGunGuCd;
 	}
-
-
 
 	public String getHmcNm() {
 		return hmcNm;

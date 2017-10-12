@@ -52,6 +52,13 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
+<style>
+.listSidebar {
+	width: 90%;
+}
+</style>
+
 </head>
 
 <body class="body-wrapper">
@@ -81,10 +88,19 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="listingTitleArea">
-						<h2>${hospital_BasicInfo.hmcNm}</h2>
+						<h2>${chk_hos_serv_dto.chk_hos_name}</h2>
 						<p>
-							${hospital_BasicInfo.locAddr} <br>${hospital_DetailInfo.cityBusStopName}
+							${chk_hos_serv_dto.chk_loc_full} <br>
 						</p>
+						<c:forEach var="listValue" items="${chk_hos_serv_dto.hosList}">
+							<p>${listValue.hos_pic_link }</p>
+						</c:forEach>
+						<c:forEach var="listValue" items="${chk_hos_serv_dto.servList}">
+							<p>${listValue.serv_price}</p>
+						</c:forEach>
+						<c:forEach var="listValue" items="${chk_hos_serv_dto.servList[0].servageList}">
+							<p>${listValue.servage_age}</p>
+						</c:forEach>
 						<div class="listingReview">
 							<ul class="list-inline rating">
 								<li><i class="fa fa-star" aria-hidden="true"></i></li>
@@ -501,8 +517,8 @@
 		function initMap() {
 			console.log('this is hospitalDetails.js initMap()');
 			var myLatLng = {
-				lat : parseFloat('${hospital_BasicInfo.cxVl}'),
-				lng : parseFloat('${hospital_BasicInfo.cyVl}')
+				lat : parseFloat('${chk_hos_serv_dto.chk_loc_lat}'),
+				lng : parseFloat('${chk_hos_serv_dto.chk_loc_lng}')
 
 			};
 			var lat2 = 151.23300;

@@ -1,7 +1,9 @@
 package com.innoest.bigyo;
 
+import java.io.Console;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.innovest.dao.MemberDao;
+import com.innovest.daos.MedicalDao;
 import com.innovest.dto.HospitalDto_Test;
 import com.innovest.dto.HospitalDto_Test_Detail;
 import com.innovest.dto.MemberDto;
+import com.innovest.dtos.CheckUp_DTO;
+import com.innovest.dtos.Chk_Hos_Serv_DTO;
 
 /**
  * Handles requests for the application home page.
@@ -27,6 +32,10 @@ import com.innovest.dto.MemberDto;
 public class HomeController {
 	@Autowired
 	MemberDao memberdao;
+	
+	@Autowired
+	MedicalDao medicaldao;
+	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	/**
@@ -114,12 +123,16 @@ public class HomeController {
 		}
 		// pageNo에 따라서 10개씩 가져오기. offset = (pNo-1) * 10
 		int offset = (Integer.parseInt(pNo) - 1) * 10;
-		List<HospitalDto_Test> result_list = memberdao.selectAllhosDTO(offset);
+		List<CheckUp_DTO> result_list = medicaldao.selectAll_chkDTO(offset);
 		model.addAttribute("result_list", result_list);
 		// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
 		model.addAttribute("pNo", pNo);
 		return "eventHospitals";
 	}
+	
+
+	
+	
 	@RequestMapping("/eventHospitals_map")
 	public String eventHospitals_map(HttpServletRequest httpServletRequest, Model model) {
 		System.out.println("this is eventHospitals_map");
@@ -153,16 +166,16 @@ public class HomeController {
 
 	@RequestMapping("/hospitalDetails")
 	public String hospitalDetails(HttpServletRequest httpServletRequest, Model model) {
-		String hmcNo = httpServletRequest.getParameter("hmcNo");
-		System.out.println("this is hospitalDetails and hmcNo :"+hmcNo);
+		String chk_rcdno = httpServletRequest.getParameter("chk_rcdno");
+		System.out.println("this is hospitalDetails and chk_rcdno :"+chk_rcdno);
 		
-		HospitalDto_Test hospital_BasicInfo = memberdao.selectBasicInfo(hmcNo);
+		Chk_Hos_Serv_DTO chk_hos_serv_dto = medicaldao.selectOne_chk_hos_serv(Integer.parseInt(chk_rcdno));
 		
-		HospitalDto_Test_Detail hospital_DetailInfo = memberdao.selectDetailHosInfo(hmcNo);
-		model.addAttribute("hospital_DetailInfo", hospital_DetailInfo);
-		model.addAttribute("hospital_BasicInfo", hospital_BasicInfo);
+		model.addAttribute("chk_hos_serv_dto", chk_hos_serv_dto);
 		return "hospitalDetails";
 	}
+	
+
 
 	@RequestMapping("dbtest")
 	public String dbtest() {

@@ -35,4 +35,10 @@
 		</property>
 	</bean>
 
+	<bean id="medicaldao" class="com.innovest.daos.MedicalDao">
+		<property name="sqlsession">
+			<ref bean="sqlSession" />
+		</property>
+	</bean>
+
 </beans>

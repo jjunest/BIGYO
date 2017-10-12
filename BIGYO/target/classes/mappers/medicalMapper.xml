@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.innovest.daos.IDao">
+
+	<!-- select LIST DATA FROM DATABASE -->
+	<select id="selectAll_chkDTO" resultType="com.innovest.dtos.CheckUp_DTO">
+		SELECT * FROM
+		checkup_info LIMIT #{offset}, 10
+	</select>
+
+	<!-- select ONEDATA 1:N TABLE FROM DATABASE -->
+	<resultMap type="com.innovest.dtos.Chk_Hos_Serv_DTO" id="Chk_Hos_Serv_resultMap">
+		<result property="chk_rcdno" column="chk_rcdno" />
+		<result property="chk_hos_name" column="chk_hos_name" />
+		<result property="chk_hos_pnum" column="chk_hos_pnum" />
+		<result property="chk_price" column="chk_price" />
+		<result property="chk_loc_sido" column="chk_loc_sido" />
+		<result property="chk_loc_full" column="chk_loc_full" />
+		<result property="chk_loc_lat" column="chk_loc_lat" />
+		<result property="chk_loc_lng" column="chk_loc_lng" />
+		<result property="chk_target_age" column="chk_target_age" />
+		<result property="chk_info_link" column="chk_info_link" />
+		<result property="chk_mid_company" column="chk_mid_company" />
+		<result property="chk_mid_company_pnum" column="chk_mid_company_pnum" />
+		<result property="chk_mid_company_link" column="chk_mid_company_link" />
+		<result property="chk_end_date" column="chk_end_date" />
+		<collection property="hosList" javaType="java.util.ArrayList"
+			column="chk_rcdno" ofType="com.innovest.dtos.Hos_DTO" select="get_hosList" />
+		<collection property="servList" javaType="java.util.ArrayList"
+			column="chk_rcdno" ofType="com.innovest.dtos.Serv_DTO" select="get_servList" />
+	</resultMap>
+	<!-- test 시작 -->
+	<resultMap type="com.innovest.dtos.Serv_DTO" id="Servage_resultMap">
+		<result property="serv_rcdno" column="serv_rcdno" />
+		<result property="serv_chk_rcdno" column="serv_chk_rcdno" />
+		<result property="serv_pic_link" column="serv_pic_link" />
+		<result property="serv_price" column="serv_price" />
+		<result property="serv_target_age" column="serv_target_age" />
+		<collection property="servageList" javaType="java.util.ArrayList"
+			column="serv_rcdno" ofType="com.innovest.dtos.ServAge_DTO" select="get_servageList" />
+	</resultMap>
+
+	<select id="get_servageList" resultType="com.innovest.dtos.ServAge_DTO">
+		SELECT * FROM
+		service_age WHERE servage_servinfo_rcdno = #{serv_rcdno}
+	</select>
+	<!-- test 끝 -->
+
+	<!-- 결과값 안에 LIST 가 필요하고 또 안에 필요한 경우 -->
+	<!-- <select id="get_servList" resultType="com.innovest.dtos.Serv_DTO"> -->
+	<select id="get_servList" resultMap="Servage_resultMap">
+		SELECT * FROM service_info
+		WHERE
+		serv_chk_rcdno =
+		#{chk_rcdno}
+	</select>
+
+	<select id="get_hosList" resultType="com.innovest.dtos.Hos_DTO">
+		SELECT * FROM hos_info WHERE
+		hos_chk_rcdno =
+		#{chk_rcdno}
+	</select>
+	<!-- 결과값 안에 LIST 가 필요한 경우 -->
+	<select id="selectOne_chk_hos_serv" resultMap="Chk_Hos_Serv_resultMap">
+		SELECT
+		*
+		FROM
+		checkup_info
+		WHERE chk_rcdno = #{chk_rcdno}
+
+	</select>
+</mapper>
+

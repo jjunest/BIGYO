@@ -146,6 +146,7 @@
 		$(function() {
 			var objDragAndDrop = $(".dragAndDropDiv");
 			$("input[type=file]").change(function() {
+				/* input tag의 아이디값으로 files를 받으면, multiplartServletRequest 파일을 받을 수 있다	*/
 				var datas = $("#imageFile")[0].files;
 				console.log('this is datas:' + datas);
 				handleFileUpload(datas, objDragAndDrop);

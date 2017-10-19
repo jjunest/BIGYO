@@ -13,5 +13,6 @@
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
 	<a href="#" onclick="document.getElementById('logout').submit();">Logout</a>
+	
 </body>
 </html>

@@ -54,6 +54,17 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
+<style>
+.pagination.hidden {
+	visibility: hidden;
+}
+
+#quickMapMenu.hidden {
+	visibility: hidden;
+}
+</style>
+
 </head>
 
 <body class="body-wrapper">
@@ -124,7 +135,7 @@
 				<div class="col-sm-8 col-xs-12">
 					<div class="resultBar barSpaceAdjust">
 						<h2>
-							We found <span>${fn:length(result_list)}</span> Results for you
+							조건 검색 결과 : <span>${fn:length(result_list)}</span> 개
 						</h2>
 
 					</div>
@@ -142,17 +153,25 @@
 									<div class="categoryDetails">
 										<ul class="list-inline rating">
 											<li><span class="label label-default">추천 연령</span></li>
-											<li><span class="label label-success">전체</span></li>
-											<li><span class="label label-info">20대</span></li>
-											<li><span class="label label-info">30대</span></li>
+											<c:forEach var="servListValue" items="${listValue.servList}" varStatus="indexNum">
+												<c:forEach var="servAgeListValue" items="${servListValue.servageList}">
+													<span class="label label-info">${servAgeListValue.servage_age}대</span>
+												</c:forEach>
+											</c:forEach>
 										</ul>
 										<h2>
 											<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}" style="color: #222222">${listValue.chk_hos_name}</a>
 										</h2>
 
 										<p style="margin: 1px">
-											<i class="fa fa-won" style="vertical-align: baseline;"></i> <span style="font-weight: bold">200,000&nbsp;</span> <span class="label label-info" style="vertical-align: 15%;">20대</span>&nbsp;&nbsp;|&nbsp;
-											<i class="fa fa-won" style="vertical-align: baseline;"></i> <span style="font-weight: bold">200,000&nbsp;</span> <span class="label label-info" style="vertical-align: 15%;">20대</span>&nbsp;&nbsp;
+											<c:forEach var="servListValue" items="${listValue.servList}" varStatus="indexNum">
+												<i class="fa fa-won" style="vertical-align: baseline;"></i>
+												<span style="font-weight: bold"><fmt:formatNumber>${servListValue.serv_price}  </fmt:formatNumber> &nbsp;</span>
+												<c:forEach var="servAgeListValue" items="${servListValue.servageList}">
+													<span class="label label-info" style="vertical-align: 15%;">${servAgeListValue.servage_age}대</span>
+
+												</c:forEach>&nbsp|
+											</c:forEach>
 
 										</p>
 
@@ -178,15 +197,15 @@
 						</div>
 					</c:forEach>
 
+
+
 					<!--  페이지게이션 시작! -->
 					<!--  pNo_shre 부분은 나눗셈의 몫을 만들어 주는 역할을 한다.  -->
 					<fmt:parseNumber var="pNo_share" value="${(pNo-1)/5}" integerOnly="true" />
-
-
 					<div class="row" style="border-top: 1px solid #ccc;">
 						<nav style="text-align: center">
 						<ul class="pagination">
-							<li><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+							<li><a href="eventHospitals?pNo=${pNo_share*5}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 							</a></li>
 
 							<li id="pageNavi1"><a href="eventHospitals?pNo=${pNo_share*5+1}">${pNo_share*5+1}</a></li>
@@ -194,13 +213,22 @@
 							<li id="pageNavi3"><a href="eventHospitals?pNo=${pNo_share*5+3}">${pNo_share*5+3}</a></li>
 							<li id="pageNavi4"><a href="eventHospitals?pNo=${pNo_share*5+4}">${pNo_share*5+4}</a></li>
 							<li id="pageNavi0"><a href="eventHospitals?pNo=${pNo_share*5+5}">${pNo_share*5+5}</a></li>
-							<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+							<li><a href="eventHospitals?pNo=${pNo_share*5+6}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 							</a></li>
 						</ul>
 						</nav>
 					</div>
-
 					<!--  페이지게이션 끝! -->
+					<!-- 만약에 병원 목록 리스트가 1개보다 적다면, section을 추가해 주자 SECTION ADD START -->
+					<c:set var="eventHosList_len" value="${fn:length(result_list)}" />
+					<c:if test="${eventHosList_len le 1}">
+						<c:forEach var="item" begin="${eventHosList_len}" end="1" step="1">
+							<section></section>
+							<section></section>
+						</c:forEach>
+
+					</c:if>
+					<!-- 만약에 병원 목록 리스트가 1개보다 적다면, section을 추가해 주자 SECTION ADD END-->
 				</div>
 				<!-- 오른쪽의 따라다니는 메뉴들 시작 -->
 				<div class="col-sm-4 col-xs-12">
@@ -213,15 +241,13 @@
 							<h4>${result_list[0].chk_hos_name}</h4>
 							<div class="contactInfo">
 								<ul class="list-unstyled list-address">
-									<li><i class="fa fa-map-marker" aria-hidden="true"></i> 16/14 Babor Road, Mohammad pur <br> Dhaka, Bangladesh</li>
-									<li><i class="fa fa-phone" aria-hidden="true"></i> +55 654 545 122 <br> +55 654 545 123</li>
-									<li><i class="fa fa-envelope" aria-hidden="true"></i> <a href="#">info @example.com</a> <a href="#">info@startravelbangladesh.com</a></li>
+									<li ><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <span id="quickMenu_chk_loc_full">${result_list[0].chk_loc_full}</span></li>
+									<li ><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> <span id="quickMenu_chk_hos_pnum"> ${result_list[0].chk_hos_pnum}</span></li>
 								</ul>
 							</div>
 						</div>
 					</div>
 				</div>
-
 				<!-- 오른쪽의 따라다니는 메뉴들 끝 -->
 			</div>
 		</div>
@@ -264,24 +290,20 @@
 	<script>
 		// html dom 이 다 로딩된 후 실행된다.
 		$(document).ready(function() {
-			/* PAGENAVIGATION 색칠 */
-			var activePageNum = '${pNo % 5}';
-			$("#pageNavi" + activePageNum).addClass("active");
+			/* PAGENAVIGATION 색칠 및 설정 */
+			pageNavigationInit();
 
-			/* navigation menu 주소에 따라서 active 설정 시작 */
-			var urlpath = $(location).attr("pathname");
-			if (urlpath.includes("/bigyo/eventHospitals_map")) {
+			/* navigation menu 주소에 따라서 active 설정 시작/ 색깔 칠하기 */
+			navigationMenuColored();
 
-				$("#navmenu_eventHospitals_map").css("color", "#39a1f4");
-
-			} else if (urlpath.includes("/bigyo/eventHospitals")) {
-
-				$("#navmenu_eventHospitals").css("color", "#39a1f4");
-			}
-			/* navigation menu 주소에 따라서 active 설정 끝 */
 			/* googlemapSingleMarker() start : sidebarMAP 에 구글 초기값 설정해주는 함수 */
-			googlemapSingleMarker();
-
+			/* 만약에 병원 리스트에 한 개라도 존재하면 구글맵 start 시작, 그러나 0개라면 시작하지 않는다.*/
+			if ('${fn:length(result_list)}' > 0) {
+				googlemapSingleMarker();
+			} else {
+				/* 병원 목록 LIST 개수가 0개 일때, 사이드메뉴와 pagenavigation을 hidden 시켜 준다. WHEN LISTING NUMBER IS 0, THERE ARE THINGS TO DO.  */
+				noResultData();
+			}
 			/* quickmap menu start : 따라다니는 메뉴 만드는 함수*/
 			quickMapMenu();
 
@@ -289,6 +311,37 @@
 			hoverMapFocusChange();
 
 		});
+		//pageNavigationInit() started
+		function pageNavigationInit() {
+			var activePageNum = '${pNo % 5}';
+			$("#pageNavi" + activePageNum).addClass("active");
+
+		}
+
+		//navigationMenuColored() started
+		function navigationMenuColored() {
+			var urlpath = $(location).attr("pathname");
+			if (urlpath.includes("/bigyo/eventHospitals_map")) {
+				$("#navmenu_eventHospitals_map").css("color", "#39a1f4");
+			} else if (urlpath.includes("/bigyo/eventHospitals")) {
+				$("#navmenu_eventHospitals").css("color", "#39a1f4");
+			}
+
+		}
+		//navigationMenuColored() end
+		//noResultData() started
+		function noResultData() {
+			console.log('this is jstl data :');
+			console.log('this is jstl data :' + '${fn:length(result_list)}');
+			if ('${fn:length(result_list)}' < 1) {
+				/* 	$(".pagination").addClass("hidden"); */
+				$("#quickMapMenu").addClass("hidden");
+			}
+
+		}
+
+		//listTooLow() end
+
 		//hoverMapFocusChange() started
 		function hoverMapFocusChange() {
 
@@ -301,9 +354,12 @@
 						/* quck menu textbox 이름 변경*/
 						console.log('this is index :' + index);
 						/* 단순 접근은 되지만 index 변수를 활용한 접근은 불가능하다. */
-						/* 		var index_string = "${result_list[3].hmcNm}"; */
+						/* 	$("#quickMenu_Textbox h4").text(
+									markerLists[index].chk_hos_name); */
 						$("#quickMenu_Textbox h4").text(
 								markerLists[index].chk_hos_name);
+						$("#quickMenu_chk_loc_full").text(markerLists[index].chk_loc_full);
+						$("#quickMenu_chk_hos_pnum").text(markerLists[index].chk_hos_pnum);
 					}, function() {
 
 					});
@@ -356,7 +412,6 @@
 			var $win = $(window);
 			/* footerTop은 quickMenu가 맨 밑까지 따라오지 못하게 설정 */
 			var footerTop = $(".copyRight").offset().top;
-			console.log('this is footerInfo height :' + footerTop.top);
 			var top = $win.scrollTop(); // 현재 스크롤바의 위치값을 반환합니다.
 
 			/*사용자 설정 값 시작*/
@@ -377,12 +432,12 @@
 			$(window).scroll(function() {
 				// 430 이 움직이지 않은 값이다. 430 밑으로 가면 floating menu 가 동작함.
 				yPosition = $win.scrollTop() - 430;
-				console.log('this is yPosition:' + yPosition);
-				console.log('this is footerInfo height :' + footerTop);
+				/* 		console.log('this is yPosition:' + yPosition);
+						console.log('this is footerInfo height :' + footerTop); */
 				if (yPosition < 0) {
 					yPosition = 0;
-				} else if (yPosition > footerTop - 1600) {
-					yPosition = footerTop - 1600;
+				} else if (yPosition > footerTop - 1400) {
+					yPosition = footerTop - 1400;
 
 				}
 				$layer.animate({
@@ -564,6 +619,8 @@
 		json.chk_loc_lat = parseFloat("${list.chk_loc_lat}");
 		json.chk_loc_lng = parseFloat("${list.chk_loc_lng}");
 		json.chk_hos_name = "${list.chk_hos_name}";
+		json.chk_loc_full = "${list.chk_loc_full}";
+		json.chk_hos_pnum = "${list.chk_hos_pnum}";
 		markerLists.push(json);
 		</c:forEach>
 	</script>

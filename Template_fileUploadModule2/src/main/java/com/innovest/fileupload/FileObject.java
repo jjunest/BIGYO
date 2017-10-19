@@ -5,7 +5,7 @@ public class FileObject {
 	 * 업로드한 이미지 파일이 저장될 경로
 	 */
 	public static final String IMAGE_DIR = "/example/resources/";
-	// 저장해야 할 것들 :
+	// 파일일때 저장해야 할 것들 :
 	/*
 	 * IDX NUMBER, BOARD_IDX NUMBER NOT NULL, ORIGINAL_FILE_NAME VARCHAR2(260 BYTE)
 	 * NOT NULL, STORED_FILE_NAME VARCHAR2(36 BYTE) NOT NULL, FILE_SIZE NUMBER,

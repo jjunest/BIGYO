@@ -53,6 +53,7 @@
 
 
 				<li class=""><a href="<%=cp%>/questions" id="navmenu_questions">문의 사항 </a></li>
+				<!-- 페이지를 검색해보고, SECURITY LOGIN이 되어 있으면 로그아웃을 보여주고, 아니면 로그인 메뉴를 보여준다  -->
 				<c:set var="user" value="${pageContext.request.userPrincipal.name}" />
 				<c:choose>
 					<c:when test="${empty user}">
@@ -70,7 +71,7 @@
 
 
 				</c:choose>
-
+				<li class=""><a href="<%=cp%>/insert_eventhos" id="navmenu_insert_eventhos">정보 입력 </a></li>
 
 			</ul>
 		</div>

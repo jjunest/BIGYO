@@ -9,6 +9,10 @@
 <%
 	String cp = request.getContextPath();
 %>
+
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="ko">
@@ -57,6 +61,40 @@
 .listSidebar {
 	width: 90%;
 }
+
+.map-sidebar {
+	width: 90%;
+}
+
+.modal-lg {
+	width: 80%;
+}
+
+.modal-dialog {
+	margin: 10px auto;
+}
+
+#servicePic_modalPart {
+	cursor: zoom-in;
+}
+
+.close {
+	font-size: 30px;
+}
+
+.table {
+	margin-top: 20px;
+	text-align: center;
+	table-layout: fixed;
+}
+
+.listingReview span {
+	margin: 5px;
+}
+
+.brandSection .partnersLogoSlider .slide .partnersLogo img {
+	width: 100%;
+}
 </style>
 
 </head>
@@ -83,38 +121,89 @@
 		</section>
 
 		<!-- LISTINGS DETAILS TITLE SECTION -->
+
 		<section class="clearfix paddingAdjustBottom">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="listingTitleArea">
 						<h2>${chk_hos_serv_dto.chk_hos_name}</h2>
-						<p>
-							${chk_hos_serv_dto.chk_loc_full} <br>
-						</p>
-						<c:forEach var="listValue" items="${chk_hos_serv_dto.hosList}">
-							<p>${listValue.hos_pic_link }</p>
-						</c:forEach>
-						<c:forEach var="listValue" items="${chk_hos_serv_dto.servList}">
-							<p>${listValue.serv_price}</p>
-						</c:forEach>
-						<c:forEach var="listValue" items="${chk_hos_serv_dto.servList[0].servageList}">
-							<p>${listValue.servage_age}</p>
-						</c:forEach>
+
 						<div class="listingReview">
-							<ul class="list-inline rating">
-								<li><i class="fa fa-star" aria-hidden="true"></i></li>
-								<li><i class="fa fa-star" aria-hidden="true"></i></li>
-								<li><i class="fa fa-star" aria-hidden="true"></i></li>
-								<li><i class="fa fa-star" aria-hidden="true"></i></li>
-								<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-							</ul>
-							<span>( 5 Reviews )</span>
-							<ul class="list-inline captionItem">
-								<li><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</li>
-							</ul>
-							<a href="#" class="btn btn-primary">Write a review</a>
+							<div class="row">
+								<div class="col-md-10 col-xs-12">
+									<p style="font-weight: 800">
+										<span class="glyphicon glyphicon-map-marker" style="margin-right: 3px"></span>${chk_hos_serv_dto.chk_loc_full}</p>
+									<p style="margin: 1px">
+										* 검진모아는 본 건강 검진 상품 및 서비스에 직접 관여하지 않으며, 예약, 결제, 검진, 환불의 의무는 각 주관업체에 있습니다. <br> * 검진모아가 수집한 정보와 해당 검진 상품을 주관하는 업체에서 제공하는 정보가 일치하지 않을 수 있습니다. <br> * 해당 주관업체에서 정확한 정보를 반드시 확인하여 주시기
+										바랍니다.
+									</p>
+								</div>
+								<div class="col-md-2 col-xs-12">
+									<a href="#" class="btn btn-primary" style="width: 100%; margin: 5px;"> 바로 가기</a>
+								</div>
+
+
+							</div>
+
+
+
 						</div>
+						<div class="listingReview table-responsive">
+
+							<table class="table table-hover table-bordered">
+								<tbody>
+									<tr>
+										<td class="active " colspan="6">주관 업체</td>
+										<td class="active " colspan="6">예약 번호</td>
+
+									</tr>
+									<tr>
+										<td class="" colspan="6">${chk_hos_serv_dto.chk_mid_company}</td>
+										<td class="" colspan="6">
+											<a href="tel: ${chk_hos_serv_dto.chk_mid_company_pnum}">${chk_hos_serv_dto.chk_mid_company_pnum}</a>
+										</td>
+									</tr>
+									<tr>
+										<td class="active" colspan="2">번호</td>
+										<td class="active" colspan="5">검진 상품 가격</td>
+										<td class="active" colspan="5">추천 연령</td>
+
+									</tr>
+									<tr>
+										<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}" varStatus="indexNum">
+											<tr>
+
+												<td class="" colspan="2">${indexNum.index}</td>
+												<td class="" colspan="5">
+													<i class="fa fa-won"></i>&nbsp
+													<fmt:formatNumber>${servListValue.serv_price}  </fmt:formatNumber>
+												</td>
+
+
+												<td class="" colspan="5">
+													<c:forEach var="servAgeListValue" items="${servListValue.servageList}">
+														<span class="label label-info">${servAgeListValue.servage_age}대</span>
+
+													</c:forEach>
+												</td>
+
+
+
+
+
+
+
+											</tr>
+										</c:forEach>
+								</tbody>
+							</table>
+
+						</div>
+
+
+
+
 					</div>
 				</div>
 			</div>
@@ -125,69 +214,45 @@
 
 
 		<!-- MODAL IMAGE GALLERY FRONT SECTION -->
+		<!--  병원 사진 IMAGE GALLERY SECTION -->
 		<section class="brandSection clearfix">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="owl-carousel partnersLogoSlider">
+						<c:forEach var="hosListValue" items="${chk_hos_serv_dto.hosList}" varStatus="indexNum">
+							<div class="slide">
+								<div class="partnersLogo clearfix">
+									<!-- Trigger the modal with a button -->
+									<a title="${chk_hos_serv_dto.chk_hos_name} 사진" class="btn btn-info btn-lg" href="#"> <!-- 병원 이미지 pixel : 480 X 350 --> <img class="thumbnail img-responsive"
+										src="${hosListValue.hos_pic_link}" onclick="lightbox(${indexNum.index})"
+									/>
+									</a>
+								</div>
+							</div>
+							<!--슬라이더 사진 사이즈를 위한 주석 처리. 나중에 사진 사이즈 변경시 확인 필요함. 지우지 말아야 한다. 							
 						<div class="slide">
 							<div class="partnersLogo clearfix">
-								<!-- Trigger the modal with a button -->
+								Trigger the modal with a button
 								<a title="lightbox0" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-1.jpg" onclick="lightbox(0)" />
 								</a>
+							</div>
+						</div> -->
+						</c:forEach>
+						<!-- 이미지가 4개 이하일 시에는 루프를 돌려서 이미지를 추가해 준다.  -->
+						<c:set var="hospic_len" value="${fn:length(chk_hos_serv_dto.hosList)}" />
+						<c:if test="${hospic_len le 3}">
+							<c:forEach var="item" begin="${hospic_len}" end="3" step="1">
+								<div class="slide">
+									<div class="partnersLogo clearfix">
+										<!-- Trigger the modal with a button -->
+										<a title="병원 사진" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/noimagefound-iloveimg-resized.jpg" onclick="lightbox(${indexNum.index})" />
+										</a>
+									</div>
+								</div>
+							</c:forEach>
 
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<!-- Trigger the modal with a button -->
-								<a title="lightbox1" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-2.jpg" onclick="lightbox(1)" />
-								</a>
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<!-- Trigger the modal with a button -->
-								<a title="lightbox2" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-3.jpg" onclick="lightbox(2)" />
-								</a>
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<!-- Trigger the modal with a button -->
-								<a title="lightbox3" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-4.jpg" onclick="lightbox(3)" />
-								</a>
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<!-- Trigger the modal with a button -->
-								<a title="lightbox4" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-1.jpg" onclick="lightbox(4)" />
-								</a>
-
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<!-- Trigger the modal with a button -->
-								<a title="lightbox5" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-2.jpg" onclick="lightbox(5)" />
-								</a>
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<!-- Trigger the modal with a button -->
-								<a title="Image 1" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-3.jpg" onclick="lightbox(2)" />
-								</a>
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<!-- Trigger the modal with a button -->
-								<a title="Image 1" class="btn btn-info btn-lg" href="#"> <img class="thumbnail img-responsive" src="resources/img/listing/listing-details-4.jpg" onclick="lightbox(3)" />
-								</a>
-							</div>
-						</div>
+						</c:if>
 					</div>
 				</div>
 			</div>
@@ -195,24 +260,41 @@
 		</section>
 
 
-		<!-- LISTINGS DETAILS INFO SECTION -->
+		<!-- HOSPITAL DETAILS INFO SECTION -->
+		<!-- 병원 상세정보 SECTION  -->
 		<section class="clearfix paddingAdjustTop">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-8 col-xs-12">
 					<div class="listDetailsInfo">
+						<!-- 건강검진 서비스 설명 DETAIL PICTURE IMAGE 사진 부분 시작 -->
 						<div class="detailsInfoBox">
-							<h3>About This Hotel</h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-								nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-								sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-							<p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-								consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.</p>
-							<p>Qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.eaque ipsa quae
-								ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
-								dolores eos qui</p>
-						</div>
+							<!-- serv_pic_link가 같은 사진일 수도 있음. 따라서 같은 사진일 경우에는 jsp에서 중복을 없애준 후, 다시 jstl로 보내준다. 첫 번째 루프는 중복 없앤 후에 list에 넣어주는 역할 -->
+							<%
+								List<String> serv_pic_links_injsp = new ArrayList<String>();
+							%>
+							<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}">
+								<c:set var="serv_pic_link" value="${servListValue.serv_pic_link}" />
+								<%
+									String serv_pic_link_before_check = (String) pageContext.getAttribute("serv_pic_link");
+										if (serv_pic_links_injsp.contains(serv_pic_link_before_check)) {
+										} else {
+											serv_pic_links_injsp.add(serv_pic_link_before_check);
+										}
+								%>
 
+							</c:forEach>
+							<!-- 두 번째 루프는 jstl 에 변수를 다시 던져주어서, 출력하는 역할 -->
+							<%
+								pageContext.setAttribute("serv_pic_links_injsp", serv_pic_links_injsp);
+							%>
+							<c:forEach var="servListValue" items="${serv_pic_links_injsp}">
+								<a data-toggle="modal" data-target="#myModal" id="servicePic_modalPart" tagforjquery="${servListValue}" title=""><img style="width: 100%;" src="${servListValue}"> </a>
+							</c:forEach>
+
+
+						</div>
+						<!-- 건강검진 서비스 설명 DETAIL PICTURE IMAGE 사진 부분 끝 -->
 						<div class="detailsInfoBox">
 							<h3>About This Hotel</h3>
 							<ul class="nav nav-tabs">
@@ -286,87 +368,14 @@
 							<ul class="list-inline featuresItems">
 								<li><i class="fa fa-check-circle-o" aria-hidden="true"></i> Wi-Fi</li>
 								<li><i class="fa fa-check-circle-o" aria-hidden="true"></i> Street Parking</li>
-								<li><i class="fa fa-check-circle-o" aria-hidden="true"></i> Alcohol</li>
+								<li><i class="fa fa-medkit" aria-hidden="true"></i> Alcohol</li>
 								<li><i class="fa fa-check-circle-o" aria-hidden="true"></i> Vegetarian</li>
 								<li><i class="fa fa-check-circle-o" aria-hidden="true"></i> Reservations</li>
 								<li><i class="fa fa-check-circle-o" aria-hidden="true"></i> Pets Friendly</li>
 								<li><i class="fa fa-check-circle-o" aria-hidden="true"></i> Accept Credit Card</li>
 							</ul>
 						</div>
-						<div class="detailsInfoBox">
-							<h3>Reviews (3)</h3>
-							<div class="media media-comment">
-								<div class="media-left">
-									<img src="resources/img/listing/list-user-1.jpg" class="media-object img-circle" alt="Image User">
-								</div>
-								<div class="media-body">
-									<h4 class="media-heading">Jessica Brown</h4>
-									<ul class="list-inline rating">
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-									</ul>
-									<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan totam rem ape riam,</p>
-								</div>
-							</div>
-							<div class="media media-comment">
-								<div class="media-left">
-									<img src="resources/img/listing/list-user-2.jpg" class="media-object img-circle" alt="Image User">
-								</div>
-								<div class="media-body">
-									<h4 class="media-heading">Jessica Brown</h4>
-									<ul class="list-inline rating">
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-									</ul>
-									<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan totam rem ape riam,</p>
-								</div>
-							</div>
-							<div class="media media-comment">
-								<div class="media-left">
-									<img src="resources/img/listing/list-user-3.jpg" class="media-object img-circle" alt="Image User">
-								</div>
-								<div class="media-body">
-									<h4 class="media-heading">Jessica Brown</h4>
-									<ul class="list-inline rating">
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-										<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-									</ul>
-									<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan totam rem ape riam,</p>
-								</div>
-							</div>
-						</div>
-						<div class="detailsInfoBox">
-							<h3>Write A Review</h3>
-							<div class="listingReview">
-								<span>( 5 Reviews )</span>
-								<ul class="list-inline rating rating-review">
-									<li><i class="fa fa-star" aria-hidden="true"></i></li>
-									<li><i class="fa fa-star" aria-hidden="true"></i></li>
-									<li><i class="fa fa-star" aria-hidden="true"></i></li>
-									<li><i class="fa fa-star" aria-hidden="true"></i></li>
-									<li><i class="fa fa-star" aria-hidden="true"></i></li>
-								</ul>
-							</div>
-							<form action="#">
-								<div class="formSection formSpace">
-									<div class="form-group">
-										<textarea class="form-control" rows="3" placeholder="Comment"></textarea>
-									</div>
-									<div class="form-group mb0">
-										<button type="submit" class="btn btn-primary">Send Review</button>
-									</div>
-								</div>
-							</form>
-						</div>
+
 					</div>
 				</div>
 				<div class="col-sm-4 col-xs-12">
@@ -374,27 +383,18 @@
 						<div id="map-canvas" style="position: relative; margin: 0; padding: 0; height: 538px; max-width: none;"></div>
 					</div>
 					<div class="listSidebar">
-						<h3>Location</h3>
+						<h3>${chk_hos_serv_dto.chk_hos_name}</h3>
 						<div class="contactInfo">
 							<ul class="list-unstyled list-address">
-								<li><i class="fa fa-map-marker" aria-hidden="true"></i> 16/14 Babor Road, Mohammad pur <br> Dhaka, Bangladesh</li>
-								<li><i class="fa fa-phone" aria-hidden="true"></i> +55 654 545 122 <br> +55 654 545 123</li>
-								<li><i class="fa fa-envelope" aria-hidden="true"></i> <a href="#">info @example.com</a> <a href="#">info@startravelbangladesh.com</a></li>
+								<li><span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span> 주관 업체: ${chk_hos_serv_dto.chk_mid_company}</li>
+								<li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> 예약 전화: ${chk_hos_serv_dto.chk_mid_company_pnum}</li>
+
+								<li><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 병원 상세 주소 <br> ${chk_hos_serv_dto.chk_loc_full}</li>
+								<li><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> 병원 전화: ${chk_hos_serv_dto.chk_hos_pnum}</li>
 							</ul>
 						</div>
 					</div>
-					<div class="listSidebar">
-						<h3>Opening Hours</h3>
-						<ul class="list-unstyled sidebarList">
-							<li><span class="pull-left">Monday</span> <span class="pull-right">08.00am - 05.00pm</span></li>
-							<li><span class="pull-left">Tuesday</span> <span class="pull-right">08.00am - 05.00pm</span></li>
-							<li><span class="pull-left">Wednesday</span> <span class="pull-right">08.00am - 05.00pm</span></li>
-							<li><span class="pull-left">Thrusday</span> <span class="pull-right">08.00am - 05.00pm</span></li>
-							<li><span class="pull-left">Friday</span> <span class="pull-right">08.00am - 05.00pm</span></li>
-							<li><span class="pull-left">Saturday</span> <span class="pull-right"><a href="#">Closed</a></span></li>
-							<li><span class="pull-left">Sunday</span> <span class="pull-right"><a href="#">Clo>ed</a></span></li>
-						</ul>
-					</div>
+
 				</div>
 			</div>
 		</div>
@@ -412,52 +412,50 @@
 
 
 	</div>
-
-
-	<!--start-->
-	<!-- hidden slider image part -->
-
+	<!-- Hidden PART Start-->
+	<!-- hidden slider image part : WHEN HOSPITAL PICTURES SLIDER CLICK, IT IS TRIGGERED-->
+	<!-- 병원 사진 눌렀을 때 불러지는 부분 HIDDEN PICTURE SLIDER 부분 -->
 	<div style="display: none;">
 		<div id="ninja-slider">
 			<div class="slider-inner">
 				<ul>
-					<li><a class="ns-img" href="resources/img/listing/listing-details-1.jpg"></a>
-						<div class="caption">
-							<h3>Dummy Caption 11</h3>
-							<p>picture11 ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan purus.</p>
-						</div></li>
-					<li><a class="ns-img" href="resources/img/listing/listing-details-2.jpg"></a>
-						<div class="caption">
-							<h3>Dummy Caption 22</h3>
-							<p>picture22 porro quisquam est, qui dolorem ipsum quia dolor sit amet</p>
-						</div></li>
-					<li><span class="ns-img" style="background-image: url(resources/img/listing/listing-details-3.jpg);"></span>
-						<div class="caption">
-							<h3>Dummy Caption 33</h3>
-							<p>picture33 fringilla arcu convallis urna commodo, et tempus velit posuere.</p>
-						</div></li>
-					<li><a class="ns-img" href="resources/img/listing/listing-details-4.jpg"></a>
-						<div class="caption">
-							<h3>Dummy Caption 44</h3>
-							<p>picture44 semper dolor sed neque consequat scelerisque at sed ex. Nam gravida massa.</p>
-						</div></li>
-					<li><a class="ns-img" href="resources/img/listing/listing-details-1.jpg"></a>
-						<div class="caption">
-							<h3>Dummy Caption 55</h3>
-							<p>picture55 non dui at metus suscipit bibendum.</p>
-						</div></li>
-					<li><a class="ns-img" href="resources/img/listing/listing-details-1.jpg"></a>
-						<div class="caption">
-							<h3>Dummy Caption 66</h3>
-							<p>picture66 non dui at metus suscipit bibendum.</p>
-						</div></li>
+					<c:forEach var="hosListValue" items="${chk_hos_serv_dto.hosList}" varStatus="indexNum">
+						<li><a class="ns-img" href="${hosListValue.hos_pic_link}"></a>
+							<div class="caption">
+								<h3></h3>
+								<p>${chk_hos_serv_dto.chk_hos_name }사진${indexNum.index+1}</p>
+							</div></li>
+
+					</c:forEach>
+
 				</ul>
 				<div id="fsBtn" class="fs-icon" title="Expand/Close"></div>
 			</div>
 		</div>
 	</div>
 
+	<!-- HIDDEN PART : Modal : WHEN SERVICE PICTURE CLICKED -->
+	<!-- 건강검진 서비스 사진 눌럿을 시 보여지는 MODAL IMAGE 부분, HIDDEN 부분 -->
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
 
+				</div>
+				<div class="modal-body">
+					<!-- 건강검진 서비스 설명 DETAIL PICTURE IMAGE 사진 부분  -->
+					<%-- 	<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}"> --%>
+					<img style="width: 100%;" id="hidden_servicePic_imgTag" src="">
+					<%-- 			</c:forEach> --%>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- JAVASCRIPTS -->
 	<script src="resources/plugins/jquery/jquery.min.js"></script>
@@ -483,9 +481,26 @@
 		// html dom 이 다 로딩된 후 실행된다.
 		$(document).ready(function() {
 			console.log("javascript in hospitalDetails.jsp");
+			/* side bar에 있는 GOOGLE MAP 초기 실행 함수 */
 			googlemapSingleMarker();
-
+			
+			/* SERVICE PICTURE 클릭 시 (건강검진 항목 사진) DYNAMICALLY하게 변하는 MODAL 실행 */
+			serviceImageModalChange();
 		});
+		/* 건강검진 서비스 이미지 동적으로 처리, SERVICE PICTURE MODAL 클릭 시에 동적으로 처리 */
+		function serviceImageModalChange(){
+	
+			/* 클릭하는 MODAL PART A 태그 부분에 이미지 경로를 TITLE 속성으로 담고, 해당 TITLE 속성을 HIDDEN MODAL PART IMG SRC에 삽입해준다. */
+			$('#servicePic_modalPart').click(function(event){
+			    event.preventDefault();
+			    var modal_aTag = $(this);
+			    var service_img_src = modal_aTag.attr('tagforjquery');
+			    $('#hidden_servicePic_imgTag').attr('src',service_img_src);
+			});
+			
+		}
+		
+		
 		//닌자 슬라이드 시작 - 클릭시 MODAL GALLERY SHOW
 		function lightbox(idx) {
 			//show the slider's wrapper: this is required when the transitionType has been set to "slide" in the ninja-slider.js
@@ -661,6 +676,10 @@
 		} ];
 
 		// googlemapSingleMarker() ended */
+		
+
+		
+		
 	</script>
 
 </body>

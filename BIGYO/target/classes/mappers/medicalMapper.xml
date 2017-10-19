@@ -8,7 +8,7 @@
 		checkup_info LIMIT #{offset}, 10
 	</select>
 
-	<!-- select ONEDATA 1:N TABLE FROM DATABASE -->
+	<!-- 상세정보 페이지를 위한 쿼리문 : select ONE DATA 1:N TABLE FROM DATABASE START -->
 	<resultMap type="com.innovest.dtos.Chk_Hos_Serv_DTO" id="Chk_Hos_Serv_resultMap">
 		<result property="chk_rcdno" column="chk_rcdno" />
 		<result property="chk_hos_name" column="chk_hos_name" />
@@ -38,14 +38,20 @@
 		<result property="serv_target_age" column="serv_target_age" />
 		<collection property="servageList" javaType="java.util.ArrayList"
 			column="serv_rcdno" ofType="com.innovest.dtos.ServAge_DTO" select="get_servageList" />
+		<collection property="servpriceList" javaType="java.util.ArrayList"
+			column="serv_rcdno" ofType="com.innovest.dtos.ServPrice_DTO" select="get_servpriceList" />
 	</resultMap>
+	<select id="get_servpriceList" resultType="com.innovest.dtos.ServAge_DTO">
+		SELECT * FROM
+		service_price WHERE servprice_servinfo_rcdno = #{serv_rcdno}
+	</select>
+
 
 	<select id="get_servageList" resultType="com.innovest.dtos.ServAge_DTO">
 		SELECT * FROM
 		service_age WHERE servage_servinfo_rcdno = #{serv_rcdno}
 	</select>
 	<!-- test 끝 -->
-
 	<!-- 결과값 안에 LIST 가 필요하고 또 안에 필요한 경우 -->
 	<!-- <select id="get_servList" resultType="com.innovest.dtos.Serv_DTO"> -->
 	<select id="get_servList" resultMap="Servage_resultMap">
@@ -54,7 +60,6 @@
 		serv_chk_rcdno =
 		#{chk_rcdno}
 	</select>
-
 	<select id="get_hosList" resultType="com.innovest.dtos.Hos_DTO">
 		SELECT * FROM hos_info WHERE
 		hos_chk_rcdno =
@@ -67,7 +72,69 @@
 		FROM
 		checkup_info
 		WHERE chk_rcdno = #{chk_rcdno}
-
 	</select>
+	<!-- select ONE DATA 1:N TABLE FROM DATABASE END -->
+
+	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE START -->
+	<select id="selectAll_chk_hos_serv" resultMap="Chk_Hos_Serv_resultMap">
+		SELECT
+		*
+		FROM
+		checkup_info LIMIT #{offset}, 10
+	</select>
+	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE START -->
+
+
+	<!-- insert checkup_info Database -->
+	<!-- chk_rcdno, chk_hos_name, chk_hos_pnum, chk_price, chk_loc_sido, chk_loc_full, 
+		chk_loc_lat, chk_loc_lng, chk_target_age, chk_info_link, chk_mid_company, 
+		chk_mid_company_pnum, chk_mid_company_link, chk_end_date -->
+	<insert id="insert_chk_hos_serv_DTO_ByObj">
+		INSERT INTO checkup_info
+		(chk_hos_name,
+		chk_hos_pnum,
+		chk_price, chk_loc_sido, chk_loc_full, chk_loc_lat,
+		chk_loc_lng,
+		chk_target_age, chk_info_link, chk_mid_company,
+		chk_mid_company_pnum,
+		chk_mid_company_link, chk_end_date)
+		VALUES
+		(#{chk_hos_name},#{chk_hos_pnum},#{chk_price},#{chk_loc_sido},#{chk_loc_full},
+		#{chk_loc_lat},#{chk_loc_lng},#{chk_target_age},#{chk_info_link},#{chk_mid_company},#{chk_mid_company_pnum},
+		#{chk_mid_company_link},#{chk_end_date})
+	</insert>
+	<!-- checkupinfo 테이블에서 rcdno 찾아오기 -->
+	<select id="select_rcdno_chkTable" resultType="Integer">
+		SELECT
+		Max(chk_rcdno)
+		FROM
+		checkup_info
+	</select>
+
+	<!-- insert hos_info Database -->
+	<insert id="insert_hos_DTO_ByObj">
+		INSERT INTO hos_info
+		(hos_rcdno, hos_chk_rcdno,
+		hos_pic_link, hos_originalpic_name, hos_storedpic_name, hos_picsize,
+		hos_picStoreId, hos_ifdeleted)
+		VALUES
+		(#{hos_rcdno},#{hos_chk_rcdno},#{hos_pic_link},#{hos_originalpic_name},#{hos_storedpic_name},
+		#{hos_picsize},#{hos_picStoreId},#{hos_ifdeleted})
+	</insert>
+
+	<!-- insert serv_info Database -->
+	<insert id="insert_serv_DTO_ByObj">
+		INSERT INTO service_info
+		(serv_chk_rcdno,
+		serv_pic_link,
+		serv_originalpic_name, serv_storedpic_name,
+		serv_picsize, serv_price,
+		serv_target_age, serv_picStoreId,
+		serv_ifdeleted, serv_create_date)
+		VALUES
+		(#{serv_chk_rcdno},#{serv_pic_link},#{serv_originalpic_name},#{serv_storedpic_name},#{serv_picsize},
+		#{serv_price},#{serv_target_age},#{serv_picStoreId},#{serv_ifdeleted},#{serv_create_date})
+	</insert>
+
 </mapper>
 

@@ -55,7 +55,18 @@
 		<!-- HEADER FILE INCLUDE  -->
 		<jsp:include page="header.jsp"></jsp:include>
 
-
+		<!-- PAGE TITLE SECTION -->
+		<section class="clearfix pageTitleSection bg-image" style="background-image: url(resources/img/background/bg-page-title.jpg);">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="pageTitle">
+						<h2>PAGETITLESECTION</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
 
 		<section></section>
 

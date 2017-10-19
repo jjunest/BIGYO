@@ -1898,7 +1898,7 @@ a.link:hover {
 /*=== 2.14 LIST ===*/
 .list-address li {
 	position: relative;
-	padding-left: 33px;
+	padding-left: 4px;
 	margin: 17px 0;
 	color: #848484;
 	font-size: 14px;

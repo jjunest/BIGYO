@@ -189,9 +189,6 @@
 										<label for="listingTitle">위도(chk_loc_lng)</label> <input type="text" class="form-control" name="chk_loc_lng" placeholder="위도(chk_loc_lng)">
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">나이대(chk_target_age)</label> <input type="text" class="form-control" name="chk_target_age" placeholder="나이대(chk_target_age)">
-									</div>
-									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">정보 제공 링크(chk_info_link)</label> <input type="text" class="form-control" name="chk_info_link" placeholder="정보 제공 링크(chk_info_link)">
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
@@ -204,7 +201,7 @@
 										<label for="listingTitle">주관 업체 링크(chk_mid_company_link)</label> <input type="text" class="form-control" name="chk_mid_company_link" placeholder="주관 업체 링크(chk_mid_company_link)">
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">마감 날짜(chk_end_date)</label> <input type="text" class="form-control" name="chk_end_date" placeholder="마감 날짜(chk_end_date)">
+										<label for="listingTitle">서비스 마감 날짜(chk_end_date)</label> <input type="date" class="form-control" id="chk_end_date" name="chk_end_date" placeholder="마감 날짜(chk_end_date)">
 									</div>
 
 								</div>
@@ -269,11 +266,11 @@
 												<p>
 													<label for="listingTitle">&nbsp 추천 연령대(serv_target_age)</label>
 												</p>
-												<label class="checkbox-inline"> <input type="checkbox" name = "serv_age1" value="0"> 전체 연령
-												</label> <label class="checkbox-inline"> <input type="checkbox" name = serv_age1 value="20">20대
-												</label> <label class="checkbox-inline"> <input type="checkbox" name = "serv_age1" value="30">30대
-												</label><label class="checkbox-inline"> <input type="checkbox" name = "serv_age1" value="40">40대
-												</label><label class="checkbox-inline"> <input type="checkbox" name = "serv_age1" value="50">50대
+												<label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="0"> 전체 연령
+												</label> <label class="checkbox-inline"> <input type="checkbox" name=serv_age1 value="20">20대
+												</label> <label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="30">30대
+												</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="40">40대
+												</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="50">50대
 												</label>
 											</div>
 										</div>
@@ -361,8 +358,15 @@
 
 			// service 상품의 개수를 선택하면, 해당 갯수 만큼 가격 및 연령대 입력란을 만들어주는 함수
 			servicepriceTotalNumChange();
-		});
 
+			// DatePicker 한글화로 만들고, input TAG DATE 부분의 DatePicker 달력을 자동으로 Open시키는 함수.
+			datePickerSetting();
+
+		});
+		function datePickerSetting() {
+			
+			
+		}
 		function servicepriceTotalNumChange() {
 			$("#service_priceTotalNum").change(
 					function() {

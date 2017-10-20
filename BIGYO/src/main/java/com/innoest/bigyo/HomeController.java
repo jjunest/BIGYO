@@ -33,6 +33,8 @@ import com.innovest.dto.MemberDto;
 import com.innovest.dtos.CheckUp_DTO;
 import com.innovest.dtos.Chk_Hos_Serv_DTO;
 import com.innovest.dtos.Hos_DTO;
+import com.innovest.dtos.ServAge_DTO;
+import com.innovest.dtos.ServPrice_DTO;
 import com.innovest.dtos.Serv_DTO;
 
 /**
@@ -269,14 +271,14 @@ public class HomeController {
 		String chk_loc_full = httpServletRequest.getParameter("chk_loc_full");
 		String chk_loc_lat = httpServletRequest.getParameter("chk_loc_lat");
 		String chk_loc_lng = httpServletRequest.getParameter("chk_loc_lng");
-		String chk_target_age = httpServletRequest.getParameter("chk_target_age");
+		
 		String chk_info_link = httpServletRequest.getParameter("chk_info_link");
 		String chk_mid_company = httpServletRequest.getParameter("chk_mid_company");
 		String chk_mid_company_pnum = httpServletRequest.getParameter("chk_mid_company_pnum");
 		String chk_mid_company_link = httpServletRequest.getParameter("chk_mid_company_link");
 		String chk_end_date = httpServletRequest.getParameter("chk_end_date");
 		CheckUp_DTO insert_chkDTO = new CheckUp_DTO(chk_hos_name, chk_hos_pnum, chk_price, chk_loc_sido, chk_loc_full,
-				chk_loc_lat, chk_loc_lng, chk_target_age, chk_info_link, chk_mid_company, chk_mid_company_pnum,
+				chk_loc_lat, chk_loc_lng, "chk_target_age: not used", chk_info_link, chk_mid_company, chk_mid_company_pnum,
 				chk_mid_company_link, chk_end_date);
 		int insert_result_chk_hos_serv_table = medicaldao.insert_chk_hos_serv_DTO_ByObj(insert_chkDTO);
 		// checkupinfo TABLE INSERT 끝
@@ -347,10 +349,6 @@ public class HomeController {
 				// Serv_DTO 객체를 service_info DataBase에 INSERT 해준다.
 				int insert_result_serv_table = medicaldao.insert_serv_DTO_ByObj(serv_dto);
 
-			
-
-			
-
 			} catch (Exception e) {
 				System.out.println("postTempFile_ERROR===s===>" + uploadFullPath);
 				e.printStackTrace();
@@ -358,35 +356,33 @@ public class HomeController {
 		}
 
 		// serv_info TABLE INSERT 끝
-		
 		// service_price TABLE 에 ServPrice_DTO 를 INSERT 시작
-		// select Box에서 몇개의 건강검진 상품이 존재하는지 검색한 후에 시작하자. 
+		// select Box에서 몇개의 건강검진 상품이 존재하는지 검색한 후에 시작하자.
+		int servinfo_rcdno = medicaldao.select_rcdno_servTable();
 		String service_priceTotalNum = httpServletRequest.getParameter("service_priceTotalNum");
-		for(int i =1; i<Integer.parseInt(service_priceTotalNum)+1;i++) {
-			String[] serv_age_list = httpServletRequest.getParameterValues("serv_age"+String.valueOf(i));
+		for (int j = 1; j < Integer.parseInt(service_priceTotalNum) + 1; j++) {
+			String serv_price = httpServletRequest.getParameter("serv_price" + String.valueOf(j));
+			ServPrice_DTO servPrice_DTO = new ServPrice_DTO(servinfo_rcdno, Integer.parseInt(serv_price));
+			// ServPrice_DTO 객체를 service_price TABLE에 INSERT 해준다.
+			int insert_result_servprice_table = medicaldao.insert_servPrice_DTO_ByObj(servPrice_DTO);
+
+			// service_age TABLE 에 ServAge_DTO 를 INSERT 시작
+			int servprice_rcdno = medicaldao.select_rcdno_servPriceTable();
+
+			String[] serv_age_list = httpServletRequest.getParameterValues("serv_age" + String.valueOf(j));
 			if (serv_age_list != null) {
-				for (int j = 0; j < serv_age_list.length; j++) {
-					System.out.println("this is age list value"+serv_age_list[j]);
+				for (int k = 0; k < serv_age_list.length; k++) {
+					System.out.println("this is age list value" + serv_age_list[k]);
+					ServAge_DTO servage_dto = new ServAge_DTO(servprice_rcdno, serv_age_list[k]);
+					int insert_result_servage_table = medicaldao.insert_servAge_DTO_ByObj(servage_dto);
 				}
-			}	
+			}
+			// service_age TABLE 에 ServAge_DTO 를 INSERT 끝
 		}
 		// service_price TABLE 에 ServPrice_DTO 를 INSERT 끝
-		// service_age TABLE 에 ServAge_DTO 를 INSERT 시작
-		for(int i =1; i<Integer.parseInt(service_priceTotalNum)+1;i++) {
-			String[] serv_age_list = httpServletRequest.getParameterValues("serv_age"+String.valueOf(i));
-			if (serv_age_list != null) {
-				for (int j = 0; j < serv_age_list.length; j++) {
-					System.out.println("this is age list value"+serv_age_list[j]);
-				}
-			}	
-		}
-		
-		// service_age TABLE 에 ServAge_DTO 를 INSERT 끝
-		
-		
-		
-		/* return "redirect:hospitalDetails?chk_rcdno=" + chk_rcdno; */
-		return "redirect:index";
+
+
+		return "redirect:hospitalDetails?chk_rcdno=" + chk_rcdno;
 	}
 
 	/**

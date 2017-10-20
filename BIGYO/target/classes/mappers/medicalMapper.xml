@@ -30,36 +30,51 @@
 			column="chk_rcdno" ofType="com.innovest.dtos.Serv_DTO" select="get_servList" />
 	</resultMap>
 	<!-- test 시작 -->
-	<resultMap type="com.innovest.dtos.Serv_DTO" id="Servage_resultMap">
+	<resultMap type="com.innovest.dtos.Serv_DTO" id="Serv_resultMap">
 		<result property="serv_rcdno" column="serv_rcdno" />
 		<result property="serv_chk_rcdno" column="serv_chk_rcdno" />
 		<result property="serv_pic_link" column="serv_pic_link" />
+		<result property="serv_originalpic_name" column="serv_originalpic_name" />
+		<result property="serv_storedpic_name" column="serv_storedpic_name" />
+		<result property="serv_picsize" column="serv_picsize" />
 		<result property="serv_price" column="serv_price" />
 		<result property="serv_target_age" column="serv_target_age" />
-		<collection property="servageList" javaType="java.util.ArrayList"
-			column="serv_rcdno" ofType="com.innovest.dtos.ServAge_DTO" select="get_servageList" />
+		<result property="serv_picStoreId" column="serv_picStoreId" />
+		<result property="serv_ifdeleted" column="serv_ifdeleted" />
+		<result property="serv_create_date" column="serv_create_date" />
 		<collection property="servpriceList" javaType="java.util.ArrayList"
 			column="serv_rcdno" ofType="com.innovest.dtos.ServPrice_DTO" select="get_servpriceList" />
 	</resultMap>
-	<select id="get_servpriceList" resultType="com.innovest.dtos.ServAge_DTO">
+
+	<resultMap type="com.innovest.dtos.ServPrice_DTO" id="Serv_priceMap">
+		<result property="servprice_rcdno" column="servprice_rcdno" />
+		<result property="servprice_servinfo_rcdno" column="servprice_servinfo_rcdno" />
+		<result property="servprice_price" column="servprice_price" />
+		<collection property="servageList" javaType="java.util.ArrayList"
+			column="servprice_rcdno" ofType="com.innovest.dtos.ServAge_DTO" select="get_servageList" />
+	</resultMap>
+
+	<select id="get_servpriceList" resultMap="Serv_priceMap">
 		SELECT * FROM
 		service_price WHERE servprice_servinfo_rcdno = #{serv_rcdno}
 	</select>
-
+	<!-- <collection property="servageList" javaType="java.util.ArrayList" column="serv_rcdno" 
+		ofType="com.innovest.dtos.ServAge_DTO" select="get_servageList" /> -->
 
 	<select id="get_servageList" resultType="com.innovest.dtos.ServAge_DTO">
 		SELECT * FROM
-		service_age WHERE servage_servinfo_rcdno = #{serv_rcdno}
+		service_age WHERE servage_servprice_rcdno = #{servprice_rcdno}
 	</select>
 	<!-- test 끝 -->
 	<!-- 결과값 안에 LIST 가 필요하고 또 안에 필요한 경우 -->
 	<!-- <select id="get_servList" resultType="com.innovest.dtos.Serv_DTO"> -->
-	<select id="get_servList" resultMap="Servage_resultMap">
+	<select id="get_servList" resultMap="Serv_resultMap">
 		SELECT * FROM service_info
 		WHERE
 		serv_chk_rcdno =
 		#{chk_rcdno}
 	</select>
+
 	<select id="get_hosList" resultType="com.innovest.dtos.Hos_DTO">
 		SELECT * FROM hos_info WHERE
 		hos_chk_rcdno =
@@ -77,10 +92,8 @@
 
 	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE START -->
 	<select id="selectAll_chk_hos_serv" resultMap="Chk_Hos_Serv_resultMap">
-		SELECT
-		*
-		FROM
-		checkup_info LIMIT #{offset}, 10
+		SELECT * FROM checkup_info LIMIT #{offset}, 10
+		<!-- SELECT * FROM checkup_info LIMIT #{offset}, 10 -->
 	</select>
 	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE START -->
 
@@ -103,7 +116,7 @@
 		#{chk_loc_lat},#{chk_loc_lng},#{chk_target_age},#{chk_info_link},#{chk_mid_company},#{chk_mid_company_pnum},
 		#{chk_mid_company_link},#{chk_end_date})
 	</insert>
-	<!-- checkupinfo 테이블에서 rcdno 찾아오기 -->
+	<!-- checkupinfo 테이블에서 Max rcdno 찾아오기 -->
 	<select id="select_rcdno_chkTable" resultType="Integer">
 		SELECT
 		Max(chk_rcdno)
@@ -136,5 +149,38 @@
 		#{serv_price},#{serv_target_age},#{serv_picStoreId},#{serv_ifdeleted},#{serv_create_date})
 	</insert>
 
+	<!-- serviceinfo 테이블에서 Max rcdno 찾아오기 -->
+	<select id="select_rcdno_servTable" resultType="Integer">
+		SELECT
+		Max(serv_rcdno)
+		FROM
+		service_info
+	</select>
+
+	<!-- insert serv_price TABLE -->
+	<insert id="insert_servPrice_DTO_ByObj">
+		INSERT INTO service_price
+		(servprice_servinfo_rcdno,
+		servprice_price)
+		VALUES
+		(#{servprice_servinfo_rcdno},#{servprice_price})
+	</insert>
+
+
+	<!-- service_price 테이블에서 Max rcdno 찾아오기 -->
+	<select id="select_rcdno_servPriceTable" resultType="Integer">
+		SELECT
+		Max(servprice_rcdno)
+		FROM
+		service_price
+	</select>
+	<!-- insert serv_age TABLE -->
+	<insert id="insert_servAge_DTO_ByObj">
+		INSERT INTO service_age
+		(servage_servprice_rcdno,
+		servage_age)
+		VALUES
+		(#{servage_servprice_rcdno},#{servage_age})
+	</insert>
 </mapper>
 

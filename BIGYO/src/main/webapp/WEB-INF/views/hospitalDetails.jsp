@@ -74,7 +74,7 @@
 	margin: 10px auto;
 }
 
-#servicePic_modalPart {
+.servicePic_modalPart {
 	cursor: zoom-in;
 }
 
@@ -171,30 +171,22 @@
 
 									</tr>
 									<tr>
-										<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}" varStatus="indexNum">
-											<tr>
 
-												<td class="" colspan="2">${indexNum.index}</td>
-												<td class="" colspan="5">
-													<i class="fa fa-won"></i>&nbsp
-													<fmt:formatNumber>${servListValue.serv_price}  </fmt:formatNumber>
-												</td>
-
-
-												<td class="" colspan="5">
-													<c:forEach var="servAgeListValue" items="${servListValue.servageList}">
-														<span class="label label-info">${servAgeListValue.servage_age}대</span>
-
-													</c:forEach>
-												</td>
-
-
-
-
-
-
-
-											</tr>
+										<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}">
+											<c:forEach var="servPriceListValue" items="${servListValue.servpriceList}" varStatus="indexNum">
+												<tr>
+													<td class="" colspan="2">${indexNum.index+1}</td>
+													<td class="" colspan="5">
+														<i class="fa fa-won"></i>&nbsp
+														<fmt:formatNumber>${servPriceListValue.servprice_price}  </fmt:formatNumber>
+													</td>
+													<td class="" colspan="5">
+														<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
+															<span class="label label-info" style="vertical-align: 15%;">${servAgeListValue.servage_age}대</span>
+														</c:forEach>
+													</td>
+												</tr>
+											</c:forEach>
 										</c:forEach>
 								</tbody>
 							</table>
@@ -269,7 +261,7 @@
 					<div class="listDetailsInfo">
 						<!-- 건강검진 서비스 설명 DETAIL PICTURE IMAGE 사진 부분 시작 -->
 						<div class="detailsInfoBox">
-							<!-- serv_pic_link가 같은 사진일 수도 있음. 따라서 같은 사진일 경우에는 jsp에서 중복을 없애준 후, 다시 jstl로 보내준다. 첫 번째 루프는 중복 없앤 후에 list에 넣어주는 역할 -->
+							<%-- 	<!-- serv_pic_link가 같은 사진일 수도 있음. 따라서 같은 사진일 경우에는 jsp에서 중복을 없애준 후, 다시 jstl로 보내준다. 첫 번째 루프는 중복 없앤 후에 list에 넣어주는 역할 -->
 							<%
 								List<String> serv_pic_links_injsp = new ArrayList<String>();
 							%>
@@ -290,6 +282,11 @@
 							%>
 							<c:forEach var="servListValue" items="${serv_pic_links_injsp}">
 								<a data-toggle="modal" data-target="#myModal" id="servicePic_modalPart" tagforjquery="${servListValue}" title=""><img style="width: 100%;" src="${servListValue}"> </a>
+							</c:forEach> --%>
+
+							<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}" varStatus="indexNum">
+								<a data-toggle="modal" data-target="#myModal" class = "servicePic_modalPart" id="servicePic_modalPart${indexNum.index }" tagforjquery="${servListValue.serv_pic_link}" title=""><img style="width: 100%;" src="${servListValue.serv_pic_link}"> </a>
+
 							</c:forEach>
 
 
@@ -446,9 +443,7 @@
 				</div>
 				<div class="modal-body">
 					<!-- 건강검진 서비스 설명 DETAIL PICTURE IMAGE 사진 부분  -->
-					<%-- 	<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}"> --%>
 					<img style="width: 100%;" id="hidden_servicePic_imgTag" src="">
-					<%-- 			</c:forEach> --%>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -491,10 +486,11 @@
 		function serviceImageModalChange(){
 	
 			/* 클릭하는 MODAL PART A 태그 부분에 이미지 경로를 TITLE 속성으로 담고, 해당 TITLE 속성을 HIDDEN MODAL PART IMG SRC에 삽입해준다. */
-			$('#servicePic_modalPart').click(function(event){
+			$('.servicePic_modalPart').click(function(event){
 			    event.preventDefault();
 			    var modal_aTag = $(this);
 			    var service_img_src = modal_aTag.attr('tagforjquery');
+			    console.log("this is modalPartClicked and img_src_tag:"+service_img_src);
 			    $('#hidden_servicePic_imgTag').attr('src',service_img_src);
 			});
 			

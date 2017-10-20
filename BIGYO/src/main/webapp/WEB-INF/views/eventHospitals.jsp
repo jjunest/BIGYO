@@ -9,6 +9,9 @@
 <%
 	String cp = request.getContextPath();
 %>
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="ko">
@@ -153,9 +156,31 @@
 									<div class="categoryDetails">
 										<ul class="list-inline rating">
 											<li><span class="label label-default">추천 연령</span></li>
+											<!-- 연령대를 중복체크해서 중복되는 연령대는 삭제 -->
+											<%
+												List<String> ageDupCheckList = new ArrayList<String>();
+											%>
+
 											<c:forEach var="servListValue" items="${listValue.servList}" varStatus="indexNum">
-												<c:forEach var="servAgeListValue" items="${servListValue.servageList}">
-													<span class="label label-info">${servAgeListValue.servage_age}대</span>
+												<c:forEach var="servPriceListValue" items="${servListValue.servpriceList}">
+													<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
+														<!-- jsp 에서 jstl 변수를 사용하기 위해, jstl 변수를 설정 -->
+														<c:set var="ageCheckValue" value="${servAgeListValue.servage_age }" />
+														<%
+															String ageCheckValue = (String) pageContext.getAttribute("ageCheckValue");
+																			if (!ageDupCheckList.contains(ageCheckValue)) {
+																				ageDupCheckList.add(ageCheckValue);
+														%>
+														<!-- 만약에 리스트에 age가 없으면 출력해주고, 아니면 넘어간다.  -->
+														<span class="label label-info">${servAgeListValue.servage_age}대</span>
+
+														<%
+															} else {
+
+																			}
+														%>
+
+													</c:forEach>
 												</c:forEach>
 											</c:forEach>
 										</ul>
@@ -164,15 +189,20 @@
 										</h2>
 
 										<p style="margin: 1px">
+
+
+
 											<c:forEach var="servListValue" items="${listValue.servList}" varStatus="indexNum">
-												<i class="fa fa-won" style="vertical-align: baseline;"></i>
-												<span style="font-weight: bold"><fmt:formatNumber>${servListValue.serv_price}  </fmt:formatNumber> &nbsp;</span>
-												<c:forEach var="servAgeListValue" items="${servListValue.servageList}">
-													<span class="label label-info" style="vertical-align: 15%;">${servAgeListValue.servage_age}대</span>
+												<c:forEach var="servPriceListValue" items="${servListValue.servpriceList}">
+													<i class="fa fa-won" style="vertical-align: baseline;"></i>
+													<span style="font-weight: bold"><fmt:formatNumber>${servPriceListValue.servprice_price}  </fmt:formatNumber> &nbsp;</span>
+													<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
+														<span class="label label-info" style="vertical-align: 15%;">${servAgeListValue.servage_age}대</span>
 
-												</c:forEach>&nbsp|
+													</c:forEach>
+													<br>	
+												</c:forEach>
 											</c:forEach>
-
 										</p>
 
 										<p style="margin: 1px">
@@ -241,8 +271,8 @@
 							<h4>${result_list[0].chk_hos_name}</h4>
 							<div class="contactInfo">
 								<ul class="list-unstyled list-address">
-									<li ><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <span id="quickMenu_chk_loc_full">${result_list[0].chk_loc_full}</span></li>
-									<li ><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> <span id="quickMenu_chk_hos_pnum"> ${result_list[0].chk_hos_pnum}</span></li>
+									<li><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <span id="quickMenu_chk_loc_full">${result_list[0].chk_loc_full}</span></li>
+									<li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> <span id="quickMenu_chk_hos_pnum"> ${result_list[0].chk_hos_pnum}</span></li>
 								</ul>
 							</div>
 						</div>
@@ -358,8 +388,10 @@
 									markerLists[index].chk_hos_name); */
 						$("#quickMenu_Textbox h4").text(
 								markerLists[index].chk_hos_name);
-						$("#quickMenu_chk_loc_full").text(markerLists[index].chk_loc_full);
-						$("#quickMenu_chk_hos_pnum").text(markerLists[index].chk_hos_pnum);
+						$("#quickMenu_chk_loc_full").text(
+								markerLists[index].chk_loc_full);
+						$("#quickMenu_chk_hos_pnum").text(
+								markerLists[index].chk_hos_pnum);
 					}, function() {
 
 					});

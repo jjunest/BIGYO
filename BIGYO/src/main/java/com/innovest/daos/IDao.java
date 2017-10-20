@@ -8,6 +8,8 @@ import com.innovest.dto.MemberDto;
 import com.innovest.dtos.CheckUp_DTO;
 import com.innovest.dtos.Chk_Hos_Serv_DTO;
 import com.innovest.dtos.Hos_DTO;
+import com.innovest.dtos.ServAge_DTO;
+import com.innovest.dtos.ServPrice_DTO;
 import com.innovest.dtos.Serv_DTO;
 
 
@@ -29,4 +31,11 @@ public interface IDao {
 	
 	public int insert_serv_DTO_ByObj(Serv_DTO insertObj);
 	
+	public int select_rcdno_servTable();
+	
+	public int insert_servPrice_DTO_ByObj(ServPrice_DTO insertObj);
+	
+	public int select_rcdno_servPriceTable();
+	
+	public int insert_servAge_DTO_ByObj(ServAge_DTO insertObj);
 }

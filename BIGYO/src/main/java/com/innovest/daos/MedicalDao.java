@@ -10,6 +10,8 @@ import com.innovest.daos.IDao;
 import com.innovest.dtos.CheckUp_DTO;
 import com.innovest.dtos.Chk_Hos_Serv_DTO;
 import com.innovest.dtos.Hos_DTO;
+import com.innovest.dtos.ServAge_DTO;
+import com.innovest.dtos.ServPrice_DTO;
 import com.innovest.dtos.Serv_DTO;
 
 public class MedicalDao {
@@ -51,22 +53,48 @@ public class MedicalDao {
 
 	public int select_rcdno_chkTable() {
 		IDao dao = sqlsession.getMapper(IDao.class);
-		int chkrcdno = dao.select_rcdno_chkTable();
-		return chkrcdno;
+		int maxRcdno = dao.select_rcdno_chkTable();
+		return maxRcdno;
 	}
 
 	public int insert_hos_DTO_ByObj(Hos_DTO targetObj) {
-		System.out.println("this is insert_chk_hos_serv_DTO_ByObj() Started");
+		System.out.println("this is insert_hos_DTO_ByObj() Started");
 		IDao dao = sqlsession.getMapper(IDao.class);
 		int insertByObj_result = dao.insert_hos_DTO_ByObj(targetObj);
 		return insertByObj_result;
 	}
 
 	public int insert_serv_DTO_ByObj(Serv_DTO targetObj) {
-		System.out.println("this is insert_chk_hos_serv_DTO_ByObj() Started");
+		System.out.println("this is insert_serv_DTO_ByObj() Started");
 		IDao dao = sqlsession.getMapper(IDao.class);
 		int insertByObj_result = dao.insert_serv_DTO_ByObj(targetObj);
 		return insertByObj_result;
 	}
+	
+	
+	public int select_rcdno_servTable() {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int maxRcdno = dao.select_rcdno_servTable();
+		return maxRcdno;
+	}
 
+	public int insert_servPrice_DTO_ByObj(ServPrice_DTO targetObj) {
+		System.out.println("this is insert_servPrice_DTO_ByObj() Started");
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int insertByObj_result = dao.insert_servPrice_DTO_ByObj(targetObj);
+		return insertByObj_result;
+	}
+	
+	public int select_rcdno_servPriceTable() {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int maxRcdno = dao.select_rcdno_servPriceTable();
+		return maxRcdno;
+	}
+	
+	public int insert_servAge_DTO_ByObj(ServAge_DTO targetObj) {
+		System.out.println("this is insert_servAge_DTO_ByObj() Started");
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int insertByObj_result = dao.insert_servAge_DTO_ByObj(targetObj);
+		return insertByObj_result;
+	}
 }

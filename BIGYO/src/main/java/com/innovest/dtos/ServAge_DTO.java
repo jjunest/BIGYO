@@ -2,13 +2,20 @@ package com.innovest.dtos;
 
 public class ServAge_DTO {
 	Integer servage_rcdno;
-	Integer servage_servinfo_rcdno;
+	Integer servage_servprice_rcdno;
 	String servage_age;
+	
 
-	public ServAge_DTO(Integer servage_rcdno, Integer servage_servinfo_rcdno, String servage_age) {
+	public ServAge_DTO(Integer servage_servprice_rcdno, String servage_age) {
+		super();
+		this.servage_servprice_rcdno = servage_servprice_rcdno;
+		this.servage_age = servage_age;
+	}
+
+	public ServAge_DTO(Integer servage_rcdno, Integer servage_servprice_rcdno, String servage_age) {
 		super();
 		this.servage_rcdno = servage_rcdno;
-		this.servage_servinfo_rcdno = servage_servinfo_rcdno;
+		this.servage_servprice_rcdno = servage_servprice_rcdno;
 		this.servage_age = servage_age;
 	}
 
@@ -20,12 +27,12 @@ public class ServAge_DTO {
 		this.servage_rcdno = servage_rcdno;
 	}
 
-	public Integer getServage_servinfo_rcdno() {
-		return servage_servinfo_rcdno;
+	public Integer getservage_servprice_rcdno() {
+		return servage_servprice_rcdno;
 	}
 
-	public void setServage_servinfo_rcdno(Integer servage_servinfo_rcdno) {
-		this.servage_servinfo_rcdno = servage_servinfo_rcdno;
+	public void setservage_servprice_rcdno(Integer servage_servprice_rcdno) {
+		this.servage_servprice_rcdno = servage_servprice_rcdno;
 	}
 
 	public String getServage_age() {

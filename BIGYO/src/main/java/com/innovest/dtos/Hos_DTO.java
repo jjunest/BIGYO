@@ -1,5 +1,7 @@
 package com.innovest.dtos;
 
+import java.sql.Timestamp;
+
 public class Hos_DTO {
 	// 파일일때 저장해야 할 것들 :
 	/*
@@ -18,21 +20,11 @@ public class Hos_DTO {
 	Integer hos_picsize;
 	String hos_picStoreId;
 	String hos_ifdeleted;
-
-	public Hos_DTO(Integer hos_chk_rcdno, String hos_pic_link, String hos_originalpic_name, String hos_storedpic_name,
-			Integer hos_picsize, String hos_picStoreId, String hos_ifdeleted) {
-		super();
-		this.hos_chk_rcdno = hos_chk_rcdno;
-		this.hos_pic_link = hos_pic_link;
-		this.hos_originalpic_name = hos_originalpic_name;
-		this.hos_storedpic_name = hos_storedpic_name;
-		this.hos_picsize = hos_picsize;
-		this.hos_picStoreId = hos_picStoreId;
-		this.hos_ifdeleted = hos_ifdeleted;
-	}
+	Timestamp hos_create_datetime;
 
 	public Hos_DTO(Integer hos_rcdno, Integer hos_chk_rcdno, String hos_pic_link, String hos_originalpic_name,
-			String hos_storedpic_name, Integer hos_picsize, String hos_picStoreId, String hos_ifdeleted) {
+			String hos_storedpic_name, Integer hos_picsize, String hos_picStoreId, String hos_ifdeleted,
+			Timestamp hos_create_datetime) {
 		super();
 		this.hos_rcdno = hos_rcdno;
 		this.hos_chk_rcdno = hos_chk_rcdno;
@@ -42,6 +34,20 @@ public class Hos_DTO {
 		this.hos_picsize = hos_picsize;
 		this.hos_picStoreId = hos_picStoreId;
 		this.hos_ifdeleted = hos_ifdeleted;
+		this.hos_create_datetime = hos_create_datetime;
+	}
+
+	public Hos_DTO(Integer hos_chk_rcdno, String hos_pic_link, String hos_originalpic_name, String hos_storedpic_name,
+			Integer hos_picsize, String hos_picStoreId, String hos_ifdeleted, Timestamp hos_create_datetime) {
+		super();
+		this.hos_chk_rcdno = hos_chk_rcdno;
+		this.hos_pic_link = hos_pic_link;
+		this.hos_originalpic_name = hos_originalpic_name;
+		this.hos_storedpic_name = hos_storedpic_name;
+		this.hos_picsize = hos_picsize;
+		this.hos_picStoreId = hos_picStoreId;
+		this.hos_ifdeleted = hos_ifdeleted;
+		this.hos_create_datetime = hos_create_datetime;
 	}
 
 	public Integer getHos_rcdno() {
@@ -106,6 +112,14 @@ public class Hos_DTO {
 
 	public void setHos_ifdeleted(String hos_ifdeleted) {
 		this.hos_ifdeleted = hos_ifdeleted;
+	}
+
+	public Timestamp getHos_create_datetime() {
+		return hos_create_datetime;
+	}
+
+	public void setHos_create_datetime(Timestamp hos_create_datetime) {
+		this.hos_create_datetime = hos_create_datetime;
 	}
 
 }

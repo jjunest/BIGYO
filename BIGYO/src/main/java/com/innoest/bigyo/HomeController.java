@@ -3,8 +3,12 @@ package com.innoest.bigyo;
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -266,20 +270,43 @@ public class HomeController {
 		System.out.println("this is insert_eventhos_process");
 		String chk_hos_name = httpServletRequest.getParameter("chk_hos_name");
 		String chk_hos_pnum = httpServletRequest.getParameter("chk_hos_pnum");
-		String chk_price = httpServletRequest.getParameter("chk_price");
+		/* String chk_price = httpServletRequest.getParameter("chk_price"); */
 		String chk_loc_sido = httpServletRequest.getParameter("chk_loc_sido");
 		String chk_loc_full = httpServletRequest.getParameter("chk_loc_full");
 		String chk_loc_lat = httpServletRequest.getParameter("chk_loc_lat");
 		String chk_loc_lng = httpServletRequest.getParameter("chk_loc_lng");
-		
+
 		String chk_info_link = httpServletRequest.getParameter("chk_info_link");
 		String chk_mid_company = httpServletRequest.getParameter("chk_mid_company");
 		String chk_mid_company_pnum = httpServletRequest.getParameter("chk_mid_company_pnum");
 		String chk_mid_company_link = httpServletRequest.getParameter("chk_mid_company_link");
-		String chk_end_date = httpServletRequest.getParameter("chk_end_date");
-		CheckUp_DTO insert_chkDTO = new CheckUp_DTO(chk_hos_name, chk_hos_pnum, chk_price, chk_loc_sido, chk_loc_full,
-				chk_loc_lat, chk_loc_lng, "chk_target_age: not used", chk_info_link, chk_mid_company, chk_mid_company_pnum,
-				chk_mid_company_link, chk_end_date);
+		String chk_end_date_string = httpServletRequest.getParameter("chk_end_date");
+		// 게시물 마감 시간을 위한 endDate 설정
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		// default 로 2018-12-10으로 마감 기간 지정.
+		if (chk_end_date_string == null) {
+			chk_end_date_string = "2018-12-30";
+		}
+		Date chk_end_date = null;
+		try {
+			chk_end_date = (Date) simpleDateFormat.parse(chk_end_date_string);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// 게시글이 만들어진 현재 시각 저장 current Time stamp 
+		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String currentTimeStamp = null;
+		currentTimeStamp = formatter.format(cal.getTime());
+		Timestamp created_date = Timestamp.valueOf(currentTimeStamp);
+		
+		
+		
+		CheckUp_DTO insert_chkDTO = new CheckUp_DTO(chk_hos_name, chk_hos_pnum, "chk_price: field: not used",
+				chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, "chk_target_age field: not used", chk_info_link,
+				chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date, created_date);
 		int insert_result_chk_hos_serv_table = medicaldao.insert_chk_hos_serv_DTO_ByObj(insert_chkDTO);
 		// checkupinfo TABLE INSERT 끝
 
@@ -292,7 +319,6 @@ public class HomeController {
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
 		System.out.println("this is multipartHttpServletRequest: " + multipartHttpServletRequest);
 		List<MultipartFile> imageMultiFile_List = multipartHttpServletRequest.getFiles("imageFile");
-		String filePath = "C:/"; // 설정파일로 뺀다.
 		for (int i = 0; i < imageMultiFile_List.size(); i++) {
 			// 파일 이름 유일하게 만들기 및 저장 전에 필요한 정보들 얻어오기
 			String randId = UUID.randomUUID().toString();
@@ -305,9 +331,11 @@ public class HomeController {
 			String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
 			String imageUrl = "resources/img/hostable_pic/" + storedFileName;
 			try {
+				
+				
 				// HOS_DTO 객체 만들기
 				Hos_DTO hos_dto = new Hos_DTO(chk_rcdno, imageUrl, originalFilename, storedFileName, originalFileBytes,
-						"ho_picStoredId", "N");
+						"ho_picStoredId", "N",created_date);
 
 				// 파일 서버에 저장
 				multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
@@ -341,7 +369,7 @@ public class HomeController {
 
 				// Serv_DTO 객체 만들기
 				Serv_DTO serv_dto = new Serv_DTO(chk_rcdno, imageUrl, originalFilename, storedFileName,
-						originalFileBytes, new Integer(999999), "20", "storedid", "N", "20171011");
+						originalFileBytes, new Integer(999999), "serv_target_age column : not used anymore", "storedid", "N", created_date);
 
 				// 파일 서버에 저장
 				multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
@@ -380,7 +408,6 @@ public class HomeController {
 			// service_age TABLE 에 ServAge_DTO 를 INSERT 끝
 		}
 		// service_price TABLE 에 ServPrice_DTO 를 INSERT 끝
-
 
 		return "redirect:hospitalDetails?chk_rcdno=" + chk_rcdno;
 	}

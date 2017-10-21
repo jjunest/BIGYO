@@ -112,6 +112,9 @@
 	cursor: pointer;
 	vertical-align: top
 }
+.service_price_age_inputArea{
+margin: 10px;
+}
 </style>
 
 </head>
@@ -173,14 +176,14 @@
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">병원 전화(chk_hos_pnum)</label> <input type="text" class="form-control" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)">
 									</div>
-									<div class="form-group col-sm-6 col-xs-12">
+									<!-- 	<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">검진 가격(chk_price)</label> <input type="text" class="form-control" name="chk_price" placeholder="검진 가격(chk_price)">
+									</div> -->
+									<div class="form-group col-sm-6 col-xs-12">
+										<label for="listingTitle">전체 주소(chk_loc_full)</label> <input type="text" class="form-control" name="chk_loc_full" placeholder="전체 주소(chk_loc_full)">
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">시/도(chk_loc_sido)</label> <input type="text" class="form-control" name="chk_loc_sido" placeholder="시/도(chk_loc_sido)">
-									</div>
-									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">전체 주소(chk_loc_full)</label> <input type="text" class="form-control" name="chk_loc_full" placeholder="전체 주소(chk_loc_full)">
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">경도(chk_loc_lat)</label> <input type="text" class="form-control" name="chk_loc_lat" placeholder="경도(chk_loc_lat)">
@@ -188,9 +191,8 @@
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">위도(chk_loc_lng)</label> <input type="text" class="form-control" name="chk_loc_lng" placeholder="위도(chk_loc_lng)">
 									</div>
-									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">정보 제공 링크(chk_info_link)</label> <input type="text" class="form-control" name="chk_info_link" placeholder="정보 제공 링크(chk_info_link)">
-									</div>
+									<div class="form-group col-sm-12 col-xs-12"></div>
+
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">주관 업체(chk_mid_company)</label> <input type="text" class="form-control" name="chk_mid_company" placeholder="주관 업체(chk_mid_company)">
 									</div>
@@ -200,6 +202,13 @@
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">주관 업체 링크(chk_mid_company_link)</label> <input type="text" class="form-control" name="chk_mid_company_link" placeholder="주관 업체 링크(chk_mid_company_link)">
 									</div>
+
+									<div class="form-group col-sm-12 col-xs-12"></div>
+									<div class="form-group col-sm-6 col-xs-12">
+										<label for="listingTitle">정보 제공 링크(chk_info_link)</label> <input type="text" class="form-control" name="chk_info_link" placeholder="정보 제공 링크(chk_info_link)">
+									</div>
+
+
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">서비스 마감 날짜(chk_end_date)</label> <input type="date" class="form-control" id="chk_end_date" name="chk_end_date" placeholder="마감 날짜(chk_end_date)">
 									</div>
@@ -253,50 +262,52 @@
 											<option value="5">5개</option>
 										</select>
 									</div>
-									<div class="row service_price_age_inputArea">
-										<!-- 첫 번쨰  inputTags 부분은 항상 보여지는 부분 -->
-										<div class="row service_price_age_inputTags" id="service_price_age_inputTags1">
-											<div class="form-group col-sm-6 col-xs-12">
-												<p>
-													<label for="listingTitle">&nbsp 서비스 가격</label>
-												</p>
-												<input type="text" class="form-control" id="serv_price1" name="serv_price1" placeholder="서비스 가격 (serv_price)">
-											</div>
-											<div class="form-group col-sm-6 col-xs-12">
-												<p>
-													<label for="listingTitle">&nbsp 추천 연령대(serv_target_age)</label>
-												</p>
-												<label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="0"> 전체 연령
-												</label> <label class="checkbox-inline"> <input type="checkbox" name=serv_age1 value="20">20대
-												</label> <label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="30">30대
-												</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="40">40대
-												</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="50">50대
-												</label>
-											</div>
-										</div>
-										<!-- 두번째부터 다섯번째 inputTags 부분은 hiddenPart -->
-										<c:forEach var="i" begin="2" end="5" step="1" varStatus="indexNum">
-											<div class="row service_price_age_inputTags hidden" id="service_price_age_inputTags${indexNum.index}">
+									
+										<div class="row service_price_age_inputArea">
+											<!-- 첫 번쨰  inputTags 부분은 항상 보여지는 부분 -->
+											<div class="row service_price_age_inputTags" id="service_price_age_inputTags1">
 												<div class="form-group col-sm-6 col-xs-12">
 													<p>
 														<label for="listingTitle">&nbsp 서비스 가격</label>
 													</p>
-													<input type="text" class="form-control" id="serv_price${indexNum.index}" name="serv_price${indexNum.index}" placeholder="서비스 가격 (serv_price)">
+													<input type="text" class="form-control" id="serv_price1" name="serv_price1" placeholder="서비스 가격 (serv_price)">
 												</div>
 												<div class="form-group col-sm-6 col-xs-12">
 													<p>
 														<label for="listingTitle">&nbsp 추천 연령대(serv_target_age)</label>
 													</p>
-													<label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="0"> 전체 연령
-													</label> <label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="20">20대
-													</label> <label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="30">30대
-													</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="40">40대
-													</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="50">50대
+													<label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="0"> 전체 연령
+													</label> <label class="checkbox-inline"> <input type="checkbox" name=serv_age1 value="20">20대
+													</label> <label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="30">30대
+													</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="40">40대
+													</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age1" value="50">50대
 													</label>
 												</div>
 											</div>
-										</c:forEach>
-									</div>
+											<!-- 두번째부터 다섯번째 inputTags 부분은 hiddenPart -->
+											<c:forEach var="i" begin="2" end="5" step="1" varStatus="indexNum">
+												<div class="row service_price_age_inputTags hidden" id="service_price_age_inputTags${indexNum.index}">
+													<div class="form-group col-sm-6 col-xs-12">
+														<p>
+															<label for="listingTitle">&nbsp 서비스 가격</label>
+														</p>
+														<input type="text" class="form-control" id="serv_price${indexNum.index}" name="serv_price${indexNum.index}" placeholder="서비스 가격 (serv_price)">
+													</div>
+													<div class="form-group col-sm-6 col-xs-12">
+														<p>
+															<label for="listingTitle">&nbsp 추천 연령대(serv_target_age)</label>
+														</p>
+														<label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="0"> 전체 연령
+														</label> <label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="20">20대
+														</label> <label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="30">30대
+														</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="40">40대
+														</label><label class="checkbox-inline"> <input type="checkbox" name="serv_age${indexNum.index}" value="50">50대
+														</label>
+													</div>
+												</div>
+											</c:forEach>
+										</div>
+									
 								</div>
 							</div>
 						</div>
@@ -364,8 +375,7 @@
 
 		});
 		function datePickerSetting() {
-			
-			
+
 		}
 		function servicepriceTotalNumChange() {
 			$("#service_priceTotalNum").change(

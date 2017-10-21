@@ -1,5 +1,8 @@
 package com.innovest.dtos;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 public class CheckUp_DTO {
 
 	Integer chk_rcdno;
@@ -15,14 +18,16 @@ public class CheckUp_DTO {
 	String chk_mid_company;
 	String chk_mid_company_pnum;
 	String chk_mid_company_link;
-	String chk_end_date;
+	Date chk_end_date;
+	Timestamp chk_created_date;
 	
 	
 	
 	
 	public CheckUp_DTO(String chk_hos_name, String chk_hos_pnum, String chk_price, String chk_loc_sido,
 			String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age, String chk_info_link,
-			String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link, String chk_end_date) {
+			String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link, Date chk_end_date,
+			Timestamp chk_created_date) {
 		super();
 		this.chk_hos_name = chk_hos_name;
 		this.chk_hos_pnum = chk_hos_pnum;
@@ -37,11 +42,12 @@ public class CheckUp_DTO {
 		this.chk_mid_company_pnum = chk_mid_company_pnum;
 		this.chk_mid_company_link = chk_mid_company_link;
 		this.chk_end_date = chk_end_date;
+		this.chk_created_date = chk_created_date;
 	}
 	public CheckUp_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_price,
 			String chk_loc_sido, String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age,
 			String chk_info_link, String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link,
-			String chk_end_date) {
+			Date chk_end_date, Timestamp chk_created_date) {
 		super();
 		this.chk_rcdno = chk_rcdno;
 		this.chk_hos_name = chk_hos_name;
@@ -57,6 +63,7 @@ public class CheckUp_DTO {
 		this.chk_mid_company_pnum = chk_mid_company_pnum;
 		this.chk_mid_company_link = chk_mid_company_link;
 		this.chk_end_date = chk_end_date;
+		this.chk_created_date = chk_created_date;
 	}
 	public Integer getChk_rcdno() {
 		return chk_rcdno;
@@ -136,14 +143,26 @@ public class CheckUp_DTO {
 	public void setChk_mid_company_link(String chk_mid_company_link) {
 		this.chk_mid_company_link = chk_mid_company_link;
 	}
-	public String getChk_end_date() {
+	public Date getChk_end_date() {
 		return chk_end_date;
 	}
-	public void setChk_end_date(String chk_end_date) {
+	public void setChk_end_date(Date chk_end_date) {
 		this.chk_end_date = chk_end_date;
+	}
+	public Timestamp getChk_created_date() {
+		return chk_created_date;
+	}
+	public void setChk_created_date(Timestamp chk_created_date) {
+		this.chk_created_date = chk_created_date;
 	}
 	
 	
+	
+	
+	
+	
+	
+
 	
 	
 }

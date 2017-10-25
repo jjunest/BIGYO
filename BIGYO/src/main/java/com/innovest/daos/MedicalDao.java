@@ -58,14 +58,12 @@ public class MedicalDao {
 	}
 
 	public int insert_hos_DTO_ByObj(Hos_DTO targetObj) {
-		System.out.println("this is insert_hos_DTO_ByObj() Started");
 		IDao dao = sqlsession.getMapper(IDao.class);
 		int insertByObj_result = dao.insert_hos_DTO_ByObj(targetObj);
 		return insertByObj_result;
 	}
 
 	public int insert_serv_DTO_ByObj(Serv_DTO targetObj) {
-		System.out.println("this is insert_serv_DTO_ByObj() Started");
 		IDao dao = sqlsession.getMapper(IDao.class);
 		int insertByObj_result = dao.insert_serv_DTO_ByObj(targetObj);
 		return insertByObj_result;
@@ -79,7 +77,6 @@ public class MedicalDao {
 	}
 
 	public int insert_servPrice_DTO_ByObj(ServPrice_DTO targetObj) {
-		System.out.println("this is insert_servPrice_DTO_ByObj() Started");
 		IDao dao = sqlsession.getMapper(IDao.class);
 		int insertByObj_result = dao.insert_servPrice_DTO_ByObj(targetObj);
 		return insertByObj_result;
@@ -92,9 +89,25 @@ public class MedicalDao {
 	}
 	
 	public int insert_servAge_DTO_ByObj(ServAge_DTO targetObj) {
-		System.out.println("this is insert_servAge_DTO_ByObj() Started");
 		IDao dao = sqlsession.getMapper(IDao.class);
 		int insertByObj_result = dao.insert_servAge_DTO_ByObj(targetObj);
 		return insertByObj_result;
+	}
+	
+	public int update_chk_DTO_ByObj(CheckUp_DTO targetObj) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int updateByObj_result = dao.update_chk_DTO_ByObj(targetObj);
+		return updateByObj_result;
+	}
+	
+	public int deleteByUpdate_hos_DTO(int hos_rcdno) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int updateByObj_result = dao.deleteByUpdate_hos_DTO(hos_rcdno);
+		return updateByObj_result;
+	}
+	public int deleteByUpdate_serv_DTO(int serv_rcdno) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int updateByObj_result = dao.deleteByUpdate_serv_DTO(serv_rcdno);
+		return updateByObj_result;
 	}
 }

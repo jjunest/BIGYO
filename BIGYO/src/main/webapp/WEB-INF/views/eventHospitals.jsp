@@ -147,7 +147,7 @@
 							<div class="row">
 								<div class="col-sm-5 col-xs-12">
 									<div class="categoryImage">
-										<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}"><img src="resources/img/things/things-1.jpg" alt="Image category" class="img-responsive img-rounded"> <span
+										<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}"><img src="${listValue.hosList[0].hos_pic_link}" alt="Image category" class="img-responsive img-rounded"> <span
 											class="label label-primary"
 										>Verified</span> </a>
 									</div>

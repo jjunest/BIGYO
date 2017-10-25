@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- 나누기의 몫을 정수값으로 구하기 위한 jstl 태그 라이브러리 설정 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<!-- Listsize를 위한 jstl태그라이브러리 설정 -->
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="ko">
@@ -116,12 +121,29 @@
 .service_price_age_inputArea {
 	margin: 10px;
 }
+
+.pic_removeBT {
+	color: blue;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+
+.pic_removeBT:hover {
+	color: red;
+}
+
+.ImgsPreviewDiv {
+	display: inline-block;
+	position: relative;
+}
+
+.ImgsTag {
+	display: inline-block;
+}
 </style>
 
 </head>
-
-
-
 <body class="body-wrapper">
 	<div class="page-loader" style="background: url(resources/img/preloader.gif) center no-repeat #fff;"></div>
 
@@ -134,7 +156,7 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="pageTitle">
-						<h2>병원 정보 입력 페이지</h2>
+						<h2>병원 정보 수정 페이지</h2>
 					</div>
 				</div>
 			</div>
@@ -146,9 +168,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
-					<form action="insert_eventhos_process" method="post" class="listing__form" enctype="multipart/form-data">
+					<form id="modifyHospitalDetailForm" action="modify_eventhos_process" method="post" class="listing__form" enctype="multipart/form-data">
 						<div class="dashboardPageTitle text-center">
-							<h2>건강검진 정보 입력</h2>
+							<h2>건강검진 정보 수정</h2>
 						</div>
 						<div class="dashboardBoxBg mb30">
 							<div class="profileIntro paraMargin">
@@ -172,49 +194,69 @@
 									<!-- hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<!--  hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">병원 이름(chk_hos_name)</label> <input type="text" class="form-control" name="chk_hos_name" placeholder="병원 이름( chk_hos_name )">
+										<label for="listingTitle">병원 이름(chk_hos_name)</label> <input type="text" class="form-control" name="chk_hos_name" value="${chk_hos_serv_dto.chk_hos_name}">
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">병원 전화(chk_hos_pnum)</label> <input type="text" class="form-control" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)">
+										<label for="listingTitle">병원 전화(chk_hos_pnum)</label> <input type="text" class="form-control" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)" value="${chk_hos_serv_dto.chk_hos_pnum}">
 									</div>
 									<!-- 	<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">검진 가격(chk_price)</label> <input type="text" class="form-control" name="chk_price" placeholder="검진 가격(chk_price)">
 									</div> -->
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">전체 구 주소(chk_loc_full)</label> <input type="text" class="form-control" id="chk_loc_full" name="chk_loc_full" placeholder="주소 입력을 하시려면 클릭하세요" readonly>
+										<label for="listingTitle">전체 구 주소(chk_loc_full)</label> <input type="text" class="form-control" id="chk_loc_full" name="chk_loc_full" placeholder="주소 입력을 하시려면 클릭하세요"
+											value="${chk_hos_serv_dto.chk_loc_full}" readonly
+										>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">전체 도로명 주소(chk_loc_full_road)</label> <input type="text" class="form-control" id="chk_loc_full_road" name="chk_loc_full_road" placeholder="도로명주소" readonly>
+										<label for="listingTitle">전체 도로명 주소(chk_loc_full_road)</label> <input type="text" class="form-control" id="chk_loc_full_road" name="chk_loc_full_road" placeholder="도로명주소"
+											value="${chk_hos_serv_dto.chk_loc_full}" readonly
+										>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">시/도(chk_loc_sido)</label> <input type="text" class="form-control" id="chk_loc_sido" name="chk_loc_sido" placeholder="시/도(chk_loc_sido)" readonly>
+										<label for="listingTitle">시/도(chk_loc_sido)</label> <input type="text" class="form-control" id="chk_loc_sido" name="chk_loc_sido" placeholder="시/도(chk_loc_sido)"
+											value="${chk_hos_serv_dto.chk_loc_sido}" readonly
+										>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">위도(chk_loc_lat)- 세로</label> <input type="text" class="form-control" id="chk_loc_lat" name="chk_loc_lat" placeholder="경도(chk_loc_lat)" readonly>
+										<label for="listingTitle">위도(chk_loc_lat)- 세로</label> <input type="text" class="form-control" id="chk_loc_lat" name="chk_loc_lat" placeholder="경도(chk_loc_lat)"
+											value="${chk_hos_serv_dto.chk_loc_lat}" readonly
+										>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">경도(chk_loc_lng)- 가로</label> <input type="text" class="form-control" id="chk_loc_lng" name="chk_loc_lng" placeholder="위도(chk_loc_lng)" readonly>
+										<label for="listingTitle">경도(chk_loc_lng)- 가로</label> <input type="text" class="form-control" id="chk_loc_lng" name="chk_loc_lng" placeholder="위도(chk_loc_lng)"
+											value="${chk_hos_serv_dto.chk_loc_lng}" readonly
+										>
 									</div>
 									<div class="form-group col-sm-12 col-xs-12"></div>
 
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">주관 업체(chk_mid_company)</label> <input type="text" class="form-control" name="chk_mid_company" placeholder="주관 업체(chk_mid_company)">
+										<label for="listingTitle">주관 업체(chk_mid_company)</label> <input type="text" class="form-control" name="chk_mid_company" value="${chk_hos_serv_dto.chk_mid_company}"
+											placeholder="주관 업체(chk_mid_company)"
+										>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">주관 업체 전화(chk_mid_company_pnum)</label> <input type="text" class="form-control" name="chk_mid_company_pnum" placeholder="주관 업체 전화(chk_mid_company_pnum)">
+										<label for="listingTitle">주관 업체 전화(chk_mid_company_pnum)</label> <input type="text" class="form-control" name="chk_mid_company_pnum" value="${chk_hos_serv_dto.chk_mid_company_pnum}"
+											placeholder="주관 업체 전화(chk_mid_company_pnum)"
+										>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">주관 업체 링크(chk_mid_company_link)</label> <input type="text" class="form-control" name="chk_mid_company_link" placeholder="주관 업체 링크(chk_mid_company_link)">
+										<label for="listingTitle">주관 업체 링크(chk_mid_company_link)</label> <input type="text" class="form-control" name="chk_mid_company_link" value="${chk_hos_serv_dto.chk_mid_company_link}"
+											placeholder="주관 업체 링크(chk_mid_company_link)"
+										>
 									</div>
 
 									<div class="form-group col-sm-12 col-xs-12"></div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">정보 제공 링크(chk_info_link)</label> <input type="text" class="form-control" name="chk_info_link" placeholder="정보 제공 링크(chk_info_link)">
+										<label for="listingTitle">정보 제공 링크(chk_info_link)</label> <input type="text" class="form-control" name="chk_info_link" value="${chk_hos_serv_dto.chk_info_link}"
+											placeholder="정보 제공 링크(chk_info_link)"
+										>
 									</div>
 
 
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">서비스 마감 날짜(chk_end_date)</label> <input type="date" class="form-control" id="chk_end_date" name="chk_end_date" placeholder="마감 날짜(chk_end_date)">
+										<label for="listingTitle">서비스 마감 날짜(chk_end_date)</label> <input type="date" class="form-control" id="chk_end_date" name="chk_end_date" value="${chk_hos_serv_dto.chk_end_date}"
+											placeholder="마감 날짜(chk_end_date)"
+										>
 									</div>
 
 								</div>
@@ -223,7 +265,7 @@
 
 						<div class="dashboardBoxBg mb30">
 							<div class="profileIntro paraMargin">
-								<h3>hos_info TABLE 정보 삽입 (병원 사진을 넣어주세요)</h3>
+								<h3>hos_info TABLE 정보 삽입 (추가할 병원 사진을 넣어주세요)</h3>
 								<div class="row">
 									<div class="form-group col-xs-12">
 										<div class="imageUploader text-center">
@@ -236,12 +278,24 @@
 										</div>
 									</div>
 								</div>
+
+
+								<c:forEach var="hosListValue" items="${chk_hos_serv_dto.hosList}" varStatus="indexNum">
+									<div class="ImgsPreviewDiv hosPicPreviewDiv">
+										<!-- Trigger the modal with a button -->
+										<a href="${hosListValue.hos_pic_link }" target="_blank" hos_rcdno="${hosListValue.hos_rcdno}"> <img src="${hosListValue.hos_pic_link }" class="img-rounded ImgsTag" height="200"
+											width="200" alt="${hosListValue.hos_originalpic_name}"
+										> <span class="glyphicon glyphicon-remove pic_removeBT" aria-hidden="true"></span></a>
+									</div>
+
+								</c:forEach>
+
 							</div>
 						</div>
 
 						<div class="dashboardBoxBg mb30">
 							<div class="profileIntro paraMargin">
-								<h3>service_info TABLE 정보 삽입 (건강검진 정보 사진을 넣어주세요)</h3>
+								<h3>service_info TABLE 정보 삽입 (추가할 건강검진 정보 사진을 넣어주세요)</h3>
 								<div class="row">
 									<div class="form-group col-xs-12">
 										<div class="imageUploader text-center">
@@ -253,6 +307,17 @@
 											</div>
 										</div>
 									</div>
+									<div>
+										<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}" varStatus="indexNum">
+											<div class="ImgsPreviewDiv servPicPreviewDiv">
+												<!-- Trigger the modal with a button -->
+												<a href="${servListValue.serv_pic_link }" target="_blank" serv_rcdno="${servListValue.serv_rcdno}"> <img src="${servListValue.serv_pic_link }" class="img-rounded ImgsTag" height="200"
+													width="200" alt="${servListValue.serv_originalpic_name}"
+												> <span class="glyphicon glyphicon-remove pic_removeBT" id="pic_removeBT" aria-hidden="true"></span></a>
+											</div>
+										</c:forEach>
+									</div>
+
 									<div class="form-group col-sm-12 col-xs-12">
 										<label for="listingTitle"> service_price & service_age TABLE 정보 삽입</label>
 									</div>
@@ -320,7 +385,7 @@
 
 
 						<div class="form-footer text-center">
-							<button id="submitbutton" type="submit" class="btn-submit">Submit</button>
+							<button id="submitbutton" type="submit" class="btn-submit">수정하기</button>
 						</div>
 					</form>
 				</div>
@@ -364,16 +429,14 @@
 		// html dom 이 다 로딩된 후 실행된다. 
 		$(document).ready(function() {
 
-			console.log("javascript in insert_eventhos.jsp");
+			console.log("javascript in modifyHospitalDetail.jsp");
+			
 			// drag & drop 시에 Jquery 로 css 변화 효과 주기
 			dragAndDropJqueryCss();
 
-			// Input multiple files 변화 시에, inputfiles 정리해주고, status div 알맞게 추가하기.
+			// Input multiple files 변화 시에, 기존의 inputfiles들에 추가해서 저장해주자. 
 			inputFilesChange();
-			displayFilesInDiv_inDatabase();
-			
-			
-			
+
 			// service 상품의 개수를 선택하면, 해당 갯수 만큼 가격 및 연령대 입력란을 만들어주는 함수
 			servicepriceTotalNumChange();
 
@@ -385,18 +448,131 @@
 
 			// 주소 검색을 위한 chk_loc_full input tag 설정 시작
 			inputTag_chk_loc_full_Setting();
-		});
-		
-		function displayFilesInDiv_inDatabase(){
 			
+			
+			//건강검진 상품 가격 및 추천연령대 input tags에 데이터베이스에 있는 값 넣기
+			servicePriceAndAgeFromDatabase();
+			
+			//병원사진 x표시 눌렀을 시에 사진이 없어지고, hidden inputbox로, deleteFile name & original name을 전달하자.
+			clickXButtonOnPicture();
+			
+			//modify Form SUBMIT 시에, 1.chkrcdno를 넘겨주고, 2.삭제하고싶은 hos_rcdno 와, serv_rcdno를 숨겨진 inputTag에 담아서 보낸다.
+			modifyFormSubMit();
+			
+			
+			
+		});
+		function modifyFormSubMit(){
+		
+			
+			
+			$("#modifyHospitalDetailForm").submit( function(e) {
+				
+				//1-1. checkup_info  TABLE 수정을 위해서  chk_rcdno를 받아서 넘겨준다. 
+				 $('<input />').attr('type', 'hidden')
+		          .attr("name", "chk_rcdno")
+		          .attr('value', "${chk_hos_serv_dto.chk_rcdno}")
+		          .appendTo('#modifyHospitalDetailForm');
+				
+				
+				
+				
+				//2. deleteHos 와 Serv 사진의 rcdno를 inputtag에 저장해서 넘겨준다.
+			      $('<input />').attr('type', 'hidden')
+		          .attr("name", "deletedHosPic_hos_rcdno")
+		          .attr('value', deletedHosPic_hos_rcdno)
+		          .appendTo('#modifyHospitalDetailForm');
+			      
+			      $('<input />').attr('type', 'hidden')
+		          .attr("name", "deletedServPic_serv_rcdno")
+		          .attr('value', deletedServPic_serv_rcdno)
+		          .appendTo('#modifyHospitalDetailForm');
+			      
+		      return true;
+		  });
 			
 		}
 		
+		var deletedHosPic_hos_rcdno = new Array();
+		var deletedServPic_serv_rcdno = new Array();
+		function clickXButtonOnPicture(){
+			//병원 사진에 있는 x버튼 클릭 시..
+			$(".hosPicPreviewDiv .pic_removeBT").click(function(e){
+				e.preventDefault();
+				var confirmAnwer = confirm("해당 병원 사진을 정말로 삭제하겠습니까?")
+				if(confirmAnwer ==true){
+					
+					//yes 라고 누를 시에, 삭제할 hos_rcdno를 배열에 담아둔다. 
+					var hos_rcdno = $(this).parent("a").attr('hos_rcdno');
+					console.log('this is hos_rcdno:'+hos_rcdno);
+					deletedHosPic_hos_rcdno.push(hos_rcdno);
+					$(this).parent().remove();
+					//
+					
+				}else{
+					//아니오라고 눌렀을 시에, 아무 이벤트도 발생하지 않는다.
+				}
+				
+			});
+			//서비스 사진에 있는 x버튼 클릭 시..
+			$(".servPicPreviewDiv .pic_removeBT").click(function(e){
+				e.preventDefault();
+				var confirmAnwer = confirm("해당 건강검진 사진을 정말로 삭제하겠습니까?")
+				if(confirmAnwer ==true){
+					console.log('this is yes');
+					var serv_rcdno = $(this).parent("a").attr('serv_rcdno');
+					deletedServPic_serv_rcdno.push(serv_rcdno);
+					
+				}else{
+					//아니오라고 눌렀을 시에, 아무 이벤트도 발생하지 않는다.
+				}
+				
+			});
+			
+		}
 		
+		function servicePriceAndAgeFromDatabase(){
+			// DATA BASE에 존재하는 Price와 Age 정보 JSON 객체에 담아 넣기. 
+			var servPriceAndAgeList = new Array();
+			<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}">
+			 <c:forEach var="servPriceListValue" items="${servListValue.servpriceList}" varStatus="indexNum">
+				var json = new Object();
+				json.servprice_price = "${servPriceListValue.servprice_price}";
+				json.servageList = [];
+			  <c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}"  varStatus="indexNum">
+				 json.servageList.push({
+					 age: "${servAgeListValue.servage_age}"
+				 });
+			  </c:forEach>
+			  servPriceAndAgeList.push(json);
+			 </c:forEach>
+			</c:forEach>
+			// 받은 JSON 객체를 이용하여, PRICE와 AGE 가격 표시해주기. 
+			//console.log("this is jsonStringfy:"+JSON.stringify(servPriceAndAgeList));
+			var priceTotalOptionIndex = servPriceAndAgeList.length-1;
+			$("#service_priceTotalNum option:eq("+priceTotalOptionIndex+")").attr("selected","true");
+			$("#service_priceTotalNum").trigger("change");
+			
+			for(var i = 0; i<servPriceAndAgeList.length ;i++){
+				//console.log('this is loop servPrice: '+servPriceAndAgeList[i].servprice_price);
+				$("#serv_price"+(i+1)).val(servPriceAndAgeList[i].servprice_price);
+				$("#serv_price"+(i+1)).trigger("keyup");
+				var servageListVariable = servPriceAndAgeList[i].servageList;
+			 	for(var j = 0; j<servageListVariable.length ;j++){
+			 		//console.log('this is age:'+servageListVariable[j].age +", and j :"+j);
+			 	 	//$("#service_price_age_inputTags"+(i+1)+" input:checkbox[value="+servageListVariable[j].age+"]").attr('checked',true); 
+			 		$("#service_price_age_inputTags"+(i+1)+" input:checkbox[value="+servageListVariable[j].age+"]").trigger("click");
+				} 
+				
+			}
+			
+			
+		}
+
 		
 		function inputTag_chk_loc_full_Setting(){
 			$("#chk_loc_full").click(function(e){
-				event.preventDefault();
+				e.preventDefault();
 				goPopup();
 			});
 			
@@ -482,19 +658,17 @@
 		function servicepriceTotalNumChange() {
 			$("#service_priceTotalNum").change(
 					function() {
-						
+					 console.log('this is priceTotalNumChange');
 						//service_price_age_inputTags 클래스들은 모두 hidden 클래스를 넣어서 안 보이게 한다. 
 						hide_service_price_inputArea();
 						$("#service_price_age_inputTags1")
 								.removeClass("hidden");
 						for (i = 2; i < parseInt(this.value) + 1; i++) {
-							console.log('this is loop3');
 							$("#service_price_age_inputTags" + i)
 									.removeClass("hidden");
 							// 해당부분을 hidden후에는 값도 초기화 시켜줘야 한다. 
-							$("#service_price_age_inputTags"+i+" input").val("");
-							$("#service_price_age_inputTags"+i+" input:checkbox").removeAttr('checked');
-							
+							 $("#service_price_age_inputTags"+i+" input:text").val("");
+							 $("#service_price_age_inputTags"+i+" input:checkbox").attr('checked',false); 
 						}
 
 					});
@@ -506,27 +680,28 @@
 
 		}
 
-
-	  	function inputFilesChange() {
-			 //hos_info TABLE 의 input tag가 바뀌었다면.... 
+	
+		
+		function inputFilesChange() {
+			/* hos_info TABLE 의 input tag가 바뀌었다면.... */
 			$("#imageFile").change(
 					function() {
-						console.log('this is #imagefile change started');
-						 //input tag의 아이디값으로 files를 받으면, multiplartServletRequest 파일을 받을 수 있다	
+				 		console.log('this is #imagefile change started');
+						// input tag의 아이디값으로 files를 받으면, multiplartServletRequest 파일을 받을 수 있다	
 						var mulRequestDatas = $("#imageFile")[0].files;
-						 //inputtag에 넣어저 있는 multipart request datas 를 div 에 표시해준다. 
+						// inputtag에 넣어저 있는 multipart request datas 를 div 에 표시해준다. 
 						// 1. change 시에 기존 statusbar를 지우고, div class에 선택된 파일들을 표시해준다.
 						deleteStatusbar(upLoadAreaDiv_hosTable_string);
 						displayFilesInDiv(mulRequestDatas,
 								upLoadAreaDiv_hosTable_selector);
-						console.log('this is imagefile change end');
+						console.log('this is imagefile change end'); 
 					});
 
-			// serv_info TABLE 의 input tag가 바뀌었다면.... 
+			/* serv_info TABLE 의 input tag가 바뀌었다면.... */
 			$("#serviceFile").change(
 					function() {
 						console.log('this is #serviceFile change started');
-						// input tag의 아이디값으로 files를 받으면, multiplartServletRequest 파일을 받을 수 있다	
+						/* input tag의 아이디값으로 files를 받으면, multiplartServletRequest 파일을 받을 수 있다	*/
 						var mulRequestDatas = $("#serviceFile")[0].files;
 						// inputtag에 넣어저 있는 multipart request datas 를 div 에 표시해준다. 
 						// 1. change 시에 기존 statusbar를 지우고, div class에 선택된 파일들을 표시해준다.
@@ -535,9 +710,7 @@
 								upLoadAreaDiv_servTable_selector);
 						console.log('this is imagefile change end');
 					});
-		}  
-	
-		
+		}
 		// StatusBar 생성하기
 		function createStatusbar(upLoadAreaDiv) {
 			console.log('this is createStatusBar()');
@@ -590,7 +763,8 @@
 		}
 		// 모든 statusbar 삭제
 		function deleteStatusbar(upLoadAreaDiv_hosTable_string) {
-			console.log('this is deleteStatusbar() and upLoadAreaDiv_hosTable_string:'
+			console
+					.log('this is deleteStatusbar() and upLoadAreaDiv_hosTable_string:'
 							+ upLoadAreaDiv_hosTable_string);
 			//upLoadAreaDiv_hosTable 에 있는 .statusbar 삭제     
 			$(upLoadAreaDiv_hosTable_string).siblings(".statusbar").remove();

@@ -13,17 +13,17 @@
 <title>프리미엄 건강검진 비교 검색 서비스 BIGYO</title>
 
 <!-- PLUGINS CSS STYLE -->
-<link href="resources/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-<link href="resources/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="resources/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<link href="resources/plugins/listtyicons/style.css" rel="stylesheet">
-<link href="resources/plugins/bootstrapthumbnail/bootstrap-thumbnail.css" rel="stylesheet">
-<link href="resources/plugins/datepicker/datepicker.min.css" rel="stylesheet">
-<link href="resources/plugins/selectbox/select_option1.css" rel="stylesheet">
-<link href="resources/plugins/owl-carousel/owl.carousel.min.css" rel="stylesheet">
-<link href="resources/plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
-<link href="resources/plugins/isotope/isotope.min.css" rel="stylesheet">
-<link href="resources/plugins/map/css/map.css" rel="stylesheet">
+<link href="../resources/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<link href="../resources/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="../resources/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="../resources/plugins/listtyicons/style.css" rel="stylesheet">
+<link href="../resources/plugins/bootstrapthumbnail/bootstrap-thumbnail.css" rel="stylesheet">
+<link href="../resources/plugins/datepicker/datepicker.min.css" rel="stylesheet">
+<link href="../resources/plugins/selectbox/select_option1.css" rel="stylesheet">
+<link href="../resources/plugins/owl-carousel/owl.carousel.min.css" rel="stylesheet">
+<link href="../resources/plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
+<link href="../resources/plugins/isotope/isotope.min.css" rel="stylesheet">
+<link href="../resources/plugins/map/css/map.css" rel="stylesheet">
 
 <!-- GOOGLE FONT -->
 <link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700,800,900" rel="stylesheet">
@@ -32,10 +32,10 @@
 <link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">
 
 <!-- CUSTOM CSS -->
-<link href="resources/css/style.css" rel="stylesheet">
+<link href="../resources/css/style.css" rel="stylesheet">
 
 <!-- FAVICON -->
-<link href="resources/img/favicon.png" rel="shortcut icon">
+<link href="../resources/img/favicon.png" rel="shortcut icon">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -123,13 +123,13 @@
 
 
 <body class="body-wrapper">
-	<div class="page-loader" style="background: url(resources/img/preloader.gif) center no-repeat #fff;"></div>
+	<div class="page-loader" style="background: url(../resources/img/preloader.gif) center no-repeat #fff;"></div>
 
 	<div class="main-wrapper">
 		<!-- HEADER FILE INCLUDE  -->
-		<jsp:include page="header.jsp"></jsp:include>
+		<jsp:include page="admin_header.jsp"></jsp:include>
 		<!-- PAGE TITLE SECTION -->
-		<section class="clearfix pageTitleSection bg-image" style="background-image: url(resources/img/background/bg-page-title.jpg);">
+		<section class="clearfix pageTitleSection bg-image" style="background-image: url(../resources/img/background/bg-page-title.jpg);">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
@@ -331,7 +331,7 @@
 
 
 		<!-- FOOTER FILE INCLUDE  -->
-		<jsp:include page="footer.jsp"></jsp:include>
+		<jsp:include page="../footer.jsp"></jsp:include>
 	</div>
 
 	<!-- JAVASCRIPTS -->
@@ -370,10 +370,7 @@
 
 			// Input multiple files 변화 시에, inputfiles 정리해주고, status div 알맞게 추가하기.
 			inputFilesChange();
-			displayFilesInDiv_inDatabase();
-			
-			
-			
+
 			// service 상품의 개수를 선택하면, 해당 갯수 만큼 가격 및 연령대 입력란을 만들어주는 함수
 			servicepriceTotalNumChange();
 
@@ -386,14 +383,6 @@
 			// 주소 검색을 위한 chk_loc_full input tag 설정 시작
 			inputTag_chk_loc_full_Setting();
 		});
-		
-		function displayFilesInDiv_inDatabase(){
-			
-			
-		}
-		
-		
-		
 		function inputTag_chk_loc_full_Setting(){
 			$("#chk_loc_full").click(function(e){
 				event.preventDefault();
@@ -482,19 +471,15 @@
 		function servicepriceTotalNumChange() {
 			$("#service_priceTotalNum").change(
 					function() {
-						
+
 						//service_price_age_inputTags 클래스들은 모두 hidden 클래스를 넣어서 안 보이게 한다. 
 						hide_service_price_inputArea();
 						$("#service_price_age_inputTags1")
 								.removeClass("hidden");
 						for (i = 2; i < parseInt(this.value) + 1; i++) {
 							console.log('this is loop3');
-							$("#service_price_age_inputTags" + i)
+							$("#service_price_age_inputTags" + i.toString())
 									.removeClass("hidden");
-							// 해당부분을 hidden후에는 값도 초기화 시켜줘야 한다. 
-							$("#service_price_age_inputTags"+i+" input").val("");
-							$("#service_price_age_inputTags"+i+" input:checkbox").removeAttr('checked');
-							
 						}
 
 					});
@@ -506,15 +491,15 @@
 
 		}
 
-
-	  	function inputFilesChange() {
-			 //hos_info TABLE 의 input tag가 바뀌었다면.... 
+		//file Input Tag 의 파일 값이 바뀌면 발생되는 callback 함수. 
+		function inputFilesChange() {
+			/* hos_info TABLE 의 input tag가 바뀌었다면.... */
 			$("#imageFile").change(
 					function() {
 						console.log('this is #imagefile change started');
-						 //input tag의 아이디값으로 files를 받으면, multiplartServletRequest 파일을 받을 수 있다	
+						/* input tag의 아이디값으로 files를 받으면, multiplartServletRequest 파일을 받을 수 있다	*/
 						var mulRequestDatas = $("#imageFile")[0].files;
-						 //inputtag에 넣어저 있는 multipart request datas 를 div 에 표시해준다. 
+						// inputtag에 넣어저 있는 multipart request datas 를 div 에 표시해준다. 
 						// 1. change 시에 기존 statusbar를 지우고, div class에 선택된 파일들을 표시해준다.
 						deleteStatusbar(upLoadAreaDiv_hosTable_string);
 						displayFilesInDiv(mulRequestDatas,
@@ -522,11 +507,11 @@
 						console.log('this is imagefile change end');
 					});
 
-			// serv_info TABLE 의 input tag가 바뀌었다면.... 
+			/* serv_info TABLE 의 input tag가 바뀌었다면.... */
 			$("#serviceFile").change(
 					function() {
 						console.log('this is #serviceFile change started');
-						// input tag의 아이디값으로 files를 받으면, multiplartServletRequest 파일을 받을 수 있다	
+						/* input tag의 아이디값으로 files를 받으면, multiplartServletRequest 파일을 받을 수 있다	*/
 						var mulRequestDatas = $("#serviceFile")[0].files;
 						// inputtag에 넣어저 있는 multipart request datas 를 div 에 표시해준다. 
 						// 1. change 시에 기존 statusbar를 지우고, div class에 선택된 파일들을 표시해준다.
@@ -535,9 +520,7 @@
 								upLoadAreaDiv_servTable_selector);
 						console.log('this is imagefile change end');
 					});
-		}  
-	
-		
+		}
 		// StatusBar 생성하기
 		function createStatusbar(upLoadAreaDiv) {
 			console.log('this is createStatusBar()');
@@ -590,7 +573,8 @@
 		}
 		// 모든 statusbar 삭제
 		function deleteStatusbar(upLoadAreaDiv_hosTable_string) {
-			console.log('this is deleteStatusbar() and upLoadAreaDiv_hosTable_string:'
+			console
+					.log('this is deleteStatusbar() and upLoadAreaDiv_hosTable_string:'
 							+ upLoadAreaDiv_hosTable_string);
 			//upLoadAreaDiv_hosTable 에 있는 .statusbar 삭제     
 			$(upLoadAreaDiv_hosTable_string).siblings(".statusbar").remove();

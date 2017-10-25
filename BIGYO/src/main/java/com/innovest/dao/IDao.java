@@ -31,5 +31,7 @@ public interface IDao {
 	public HospitalDto_Test_Detail selectDetailHosInfo(String hmcNo);
 	
 	public HospitalDto_Test selectBasicInfo(String hmcNo);
+	
+
 
 }

@@ -40,6 +40,8 @@ import com.innovest.dtos.Hos_DTO;
 import com.innovest.dtos.ServAge_DTO;
 import com.innovest.dtos.ServPrice_DTO;
 import com.innovest.dtos.Serv_DTO;
+import com.innovest.utils.GeoPoint;
+import com.innovest.utils.GeoTrans;
 
 /**
  * Handles requests for the application home page.
@@ -276,37 +278,41 @@ public class HomeController {
 		String chk_loc_lat = httpServletRequest.getParameter("chk_loc_lat");
 		String chk_loc_lng = httpServletRequest.getParameter("chk_loc_lng");
 
+		/*
+		 * GEO TRANSFER 부분 GeoPoint grs80 = new
+		 * GeoPoint(Double.parseDouble(chk_loc_lng),Double.parseDouble(chk_loc_lat));
+		 * System.out.println("grs80 : x=" + grs80.getX() + ", y=" + grs80.getY());
+		 * GeoPoint GEO = GeoTrans.convert(GeoTrans.GRS80, GeoTrans.GEO, grs80);
+		 * System.out.println("GEO : x=" + GEO.getX() + ", y=" + GEO.getY());
+		 * chk_loc_lng = String.valueOf(GEO.getY()); chk_loc_lat =
+		 * String.valueOf(GEO.getX());
+		 */
+
 		String chk_info_link = httpServletRequest.getParameter("chk_info_link");
 		String chk_mid_company = httpServletRequest.getParameter("chk_mid_company");
 		String chk_mid_company_pnum = httpServletRequest.getParameter("chk_mid_company_pnum");
 		String chk_mid_company_link = httpServletRequest.getParameter("chk_mid_company_link");
 		String chk_end_date_string = httpServletRequest.getParameter("chk_end_date");
+		System.out.println("this is enddatestring :" + chk_end_date_string);
 		// 게시물 마감 시간을 위한 endDate 설정
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		// default 로 2018-12-10으로 마감 기간 지정.
-		if (chk_end_date_string == null) {
+		if (chk_end_date_string == null || chk_end_date_string.equals("")) {
+			System.out.println("chk_end_date_string is null");
 			chk_end_date_string = "2018-12-30";
 		}
-		Date chk_end_date = null;
-		try {
-			chk_end_date = (Date) simpleDateFormat.parse(chk_end_date_string);
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		Date chk_end_date = java.sql.Date.valueOf(chk_end_date_string);
 
-		// 게시글이 만들어진 현재 시각 저장 current Time stamp 
-		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+		// 게시글이 만들어진 현재 시각 저장 current Time stamp
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String currentTimeStamp = null;
 		currentTimeStamp = formatter.format(cal.getTime());
 		Timestamp created_date = Timestamp.valueOf(currentTimeStamp);
-		
-		
-		
+
 		CheckUp_DTO insert_chkDTO = new CheckUp_DTO(chk_hos_name, chk_hos_pnum, "chk_price: field: not used",
 				chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, "chk_target_age field: not used", chk_info_link,
-				chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date, created_date);
+				chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date, created_date, "N");
 		int insert_result_chk_hos_serv_table = medicaldao.insert_chk_hos_serv_DTO_ByObj(insert_chkDTO);
 		// checkupinfo TABLE INSERT 끝
 
@@ -324,29 +330,35 @@ public class HomeController {
 			String randId = UUID.randomUUID().toString();
 			MultipartFile multipartFile = imageMultiFile_List.get(i);
 			String originalFilename = multipartFile.getOriginalFilename(); // 파일명
-			Integer originalFileBytes = new Integer((int) multipartFile.getSize());
 
-			String storedFileName = randId + "." + getExtension(originalFilename);
-			String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/hostable_pic/");
-			String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
-			String imageUrl = "resources/img/hostable_pic/" + storedFileName;
-			try {
-				
-				
-				// HOS_DTO 객체 만들기
-				Hos_DTO hos_dto = new Hos_DTO(chk_rcdno, imageUrl, originalFilename, storedFileName, originalFileBytes,
-						"ho_picStoredId", "N",created_date);
+			// 만약 파일명이 없으면, Hos_infoTABLE에 넣지 않아도 된다.
+			if (originalFilename.equals("")) {
 
-				// 파일 서버에 저장
-				multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
-				System.out.println("originalFilename => " + originalFilename);
-				System.out.println("fileFullPath => " + uploadFullPath);
+			} else {
+				System.out.println("this is originalFileName is empty");
+				Integer originalFileBytes = new Integer((int) multipartFile.getSize());
 
-				// HOS_DTO 객체를 DataBase에 INSERT 해준다.
-				int insert_result_hos_table = medicaldao.insert_hos_DTO_ByObj(hos_dto);
-			} catch (Exception e) {
-				System.out.println("postTempFile_ERROR===s===>" + uploadFullPath);
-				e.printStackTrace();
+				String storedFileName = randId + "." + getExtension(originalFilename);
+				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/hostable_pic/");
+				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				String imageUrl = "resources/img/hostable_pic/" + storedFileName;
+				try {
+
+					// HOS_DTO 객체 만들기
+					Hos_DTO hos_dto = new Hos_DTO(chk_rcdno, imageUrl, originalFilename, storedFileName,
+							originalFileBytes, "ho_picStoredId", "N", created_date);
+
+					// 파일 서버에 저장
+					multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
+					System.out.println("originalFilename => " + originalFilename);
+					System.out.println("fileFullPath => " + uploadFullPath);
+
+					// HOS_DTO 객체를 DataBase에 INSERT 해준다.
+					int insert_result_hos_table = medicaldao.insert_hos_DTO_ByObj(hos_dto);
+				} catch (Exception e) {
+					System.out.println("postTempFile_ERROR===s===>" + uploadFullPath);
+					e.printStackTrace();
+				}
 			}
 		}
 		// hos_info TABLE INSERT 끝
@@ -359,6 +371,7 @@ public class HomeController {
 			String randId = UUID.randomUUID().toString();
 			MultipartFile multipartFile = serviceMultiFile_List.get(i);
 			String originalFilename = multipartFile.getOriginalFilename(); // 파일명
+			// 건강검진 상품 사진은 반드시 존재해야한다. 캡쳐 사진이라도 넣어라
 			System.out.println("this is originalfile name:" + originalFilename);
 			Integer originalFileBytes = new Integer((int) multipartFile.getSize());
 			String storedFileName = randId + "." + getExtension(originalFilename);
@@ -369,7 +382,8 @@ public class HomeController {
 
 				// Serv_DTO 객체 만들기
 				Serv_DTO serv_dto = new Serv_DTO(chk_rcdno, imageUrl, originalFilename, storedFileName,
-						originalFileBytes, new Integer(999999), "serv_target_age column : not used anymore", "storedid", "N", created_date);
+						originalFileBytes, new Integer(999999), "serv_target_age column : not used anymore", "storedid",
+						"N", created_date);
 
 				// 파일 서버에 저장
 				multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
@@ -381,6 +395,7 @@ public class HomeController {
 				System.out.println("postTempFile_ERROR===s===>" + uploadFullPath);
 				e.printStackTrace();
 			}
+
 		}
 
 		// serv_info TABLE INSERT 끝
@@ -390,6 +405,12 @@ public class HomeController {
 		String service_priceTotalNum = httpServletRequest.getParameter("service_priceTotalNum");
 		for (int j = 1; j < Integer.parseInt(service_priceTotalNum) + 1; j++) {
 			String serv_price = httpServletRequest.getParameter("serv_price" + String.valueOf(j));
+			if (serv_price == null || serv_price.equals("")) {
+				// serv_price가 아무것도 없으면 9999999으로 넣어준다.
+				serv_price = "9999999";
+			}
+
+			serv_price = serv_price.replace(",", "");
 			ServPrice_DTO servPrice_DTO = new ServPrice_DTO(servinfo_rcdno, Integer.parseInt(serv_price));
 			// ServPrice_DTO 객체를 service_price TABLE에 INSERT 해준다.
 			int insert_result_servprice_table = medicaldao.insert_servPrice_DTO_ByObj(servPrice_DTO);
@@ -412,6 +433,12 @@ public class HomeController {
 		return "redirect:hospitalDetails?chk_rcdno=" + chk_rcdno;
 	}
 
+	@RequestMapping("/jusoPopup")
+	public String jusoPopup(Locale locale, Model model) {
+
+		return "jusoPopup";
+	}
+
 	/**
 	 * 파일이름으로부터 확장자를 반환하는 메서드 파일이름에 확장자 구분을 위한 . 문자가 없거나. 가장 끝에 있는 경우는 빈문자열 ""을 리턴
 	 */
@@ -423,4 +450,188 @@ public class HomeController {
 			return "";
 		}
 	}
+
+	@RequestMapping("/security/admin")
+	public String security_admin(Locale locale, Model model) {
+
+		return "security/admin";
+	}
+
+	@RequestMapping("/modifyHospitalDetail")
+	public String modifyHospitalDetail(HttpServletRequest httpServletRequest, Locale locale, Model model) {
+		String chk_rcdno = httpServletRequest.getParameter("chk_rcdno");
+		Chk_Hos_Serv_DTO chk_hos_serv_dto = medicaldao.selectOne_chk_hos_serv(Integer.parseInt(chk_rcdno));
+
+		model.addAttribute("chk_hos_serv_dto", chk_hos_serv_dto);
+		return "modifyHospitalDetail";
+	}
+
+	@RequestMapping("/deleteHospitalDetail")
+	public String deleteHospitalDetail(Locale locale, Model model) {
+
+		return "eventHospitals";
+	}
+
+	@RequestMapping("/modify_eventhos_process")
+	public String modify_eventhos_process(HttpServletRequest httpServletRequest, Locale locale, Model model,
+			HttpSession session) {
+		// checkupinfo TABLE UPDATE 시작
+		System.out.println("this is modify_eventhos_process");
+		String chk_rcdno = httpServletRequest.getParameter("chk_rcdno");
+		String chk_hos_name = httpServletRequest.getParameter("chk_hos_name");
+		String chk_hos_pnum = httpServletRequest.getParameter("chk_hos_pnum");
+		/* String chk_price = httpServletRequest.getParameter("chk_price"); */
+		String chk_loc_sido = httpServletRequest.getParameter("chk_loc_sido");
+		String chk_loc_full = httpServletRequest.getParameter("chk_loc_full");
+		String chk_loc_lat = httpServletRequest.getParameter("chk_loc_lat");
+		String chk_loc_lng = httpServletRequest.getParameter("chk_loc_lng");
+
+		/*
+		 * GEO TRANSFER 부분 GeoPoint grs80 = new
+		 * GeoPoint(Double.parseDouble(chk_loc_lng),Double.parseDouble(chk_loc_lat));
+		 * System.out.println("grs80 : x=" + grs80.getX() + ", y=" + grs80.getY());
+		 * GeoPoint GEO = GeoTrans.convert(GeoTrans.GRS80, GeoTrans.GEO, grs80);
+		 * System.out.println("GEO : x=" + GEO.getX() + ", y=" + GEO.getY());
+		 * chk_loc_lng = String.valueOf(GEO.getY()); chk_loc_lat =
+		 * String.valueOf(GEO.getX());
+		 */
+
+		String chk_info_link = httpServletRequest.getParameter("chk_info_link");
+		String chk_mid_company = httpServletRequest.getParameter("chk_mid_company");
+		String chk_mid_company_pnum = httpServletRequest.getParameter("chk_mid_company_pnum");
+		String chk_mid_company_link = httpServletRequest.getParameter("chk_mid_company_link");
+		String chk_end_date_string = httpServletRequest.getParameter("chk_end_date");
+		String deletedHosPic_hos_rcdno = httpServletRequest.getParameter("deletedHosPic_hos_rcdno");
+		String deletedServPic_serv_rcdno = httpServletRequest.getParameter("deletedServPic_serv_rcdno");
+		System.out.println("this is updateRcdno :" + chk_rcdno);
+		System.out.println("this is enddatestring :" + chk_end_date_string);
+
+		// 게시물 마감 시간을 위한 endDate 설정
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		// default 로 2018-12-10으로 마감 기간 지정.
+		if (chk_end_date_string == null || chk_end_date_string.equals("")) {
+			System.out.println("chk_end_date_string is null");
+			chk_end_date_string = "2018-12-30";
+		}
+		Date chk_end_date = java.sql.Date.valueOf(chk_end_date_string);
+
+		// 게시글이 만들어진 현재 시각 저장 current Time stamp
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String currentTimeStamp = null;
+		currentTimeStamp = formatter.format(cal.getTime());
+		Timestamp created_date = Timestamp.valueOf(currentTimeStamp);
+
+		CheckUp_DTO update_chkDTO = new CheckUp_DTO(Integer.parseInt(chk_rcdno), chk_hos_name, chk_hos_pnum,
+				"chk_price: field: not used", chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng,
+				"chk_target_age field: not used", chk_info_link, chk_mid_company, chk_mid_company_pnum,
+				chk_mid_company_link, chk_end_date, created_date, "N");
+		int result_chk_table = medicaldao.update_chk_DTO_ByObj(update_chkDTO);
+		// checkupinfo TABLE UPDATE 끝
+
+		// hos TABLE UPDATE 시작
+		// 삭제할 병원사진& 건강검진상품사진의 rcd를 받아서, 배열로 묶은 후에, 해당 rcdno값을 지닌 테이블에 'Y'값으로 설정
+		System.out.println("this is deletedHosPic_hos_rcdno :" + deletedHosPic_hos_rcdno);
+		if (deletedHosPic_hos_rcdno.equals("")) {
+
+		} else {
+			String[] delete_hos_rcdno_array = deletedHosPic_hos_rcdno.split(",");
+			for (int i = 0; i < delete_hos_rcdno_array.length; i++) {
+				int result_hos_table = medicaldao.deleteByUpdate_hos_DTO(Integer.parseInt(delete_hos_rcdno_array[i]));
+			}
+		}
+		if (deletedServPic_serv_rcdno.equals("")) {
+
+		} else {
+			String[] delete_serv_rcdno_array = deletedServPic_serv_rcdno.split(",");
+			for (int i = 0; i < delete_serv_rcdno_array.length; i++) {
+				int result_hos_table = medicaldao.deleteByUpdate_serv_DTO(Integer.parseInt(delete_serv_rcdno_array[i]));
+
+			}
+		}
+		// 새로 추가된 사진은 chk_rcdno를 사용해서 hos TABLE의 hos_chk_rcdno필드에 INSERT 해준다.
+		// 새로 추가된 병원 사진 서버에 전송 시작
+		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) httpServletRequest;
+		System.out.println("this is multipartHttpServletRequest: " + multipartHttpServletRequest);
+		List<MultipartFile> imageMultiFile_List = multipartHttpServletRequest.getFiles("imageFile");
+		for (int i = 0; i < imageMultiFile_List.size(); i++) {
+			// 파일 이름 유일하게 만들기 및 저장 전에 필요한 정보들 얻어오기
+			String randId = UUID.randomUUID().toString();
+			MultipartFile multipartFile = imageMultiFile_List.get(i);
+			String originalFilename = multipartFile.getOriginalFilename(); // 파일명
+
+			// 만약 파일명이 없으면, Hos_infoTABLE에 넣지 않아도 된다.
+			if (originalFilename.equals("")) {
+
+			} else {
+				System.out.println("this is originalFileName is empty");
+				Integer originalFileBytes = new Integer((int) multipartFile.getSize());
+
+				String storedFileName = randId + "." + getExtension(originalFilename);
+				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/hostable_pic/");
+				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				String imageUrl = "resources/img/hostable_pic/" + storedFileName;
+				try {
+
+					// HOS_DTO 객체 만들기
+					Hos_DTO hos_dto = new Hos_DTO(Integer.parseInt(chk_rcdno), imageUrl, originalFilename,
+							storedFileName, originalFileBytes, "ho_picStoredId", "N", created_date);
+
+					// 파일 서버에 저장
+					multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
+					System.out.println("originalFilename => " + originalFilename);
+					System.out.println("fileFullPath => " + uploadFullPath);
+
+					// HOS_DTO 객체를 DataBase에 INSERT 해준다.
+					int insert_result_hos_table = medicaldao.insert_hos_DTO_ByObj(hos_dto);
+				} catch (Exception e) {
+					System.out.println("postTempFile_ERROR===s===>" + uploadFullPath);
+					e.printStackTrace();
+				}
+			}
+		}
+		// hos TABLE UPDATE 끝
+		// 건강검진 서비스 사진 서버에 전송 시작
+		List<MultipartFile> serviceMultiFile_List = multipartHttpServletRequest.getFiles("serviceFile");
+		for (int i = 0; i < serviceMultiFile_List.size(); i++) {
+			// 파일 이름 유일하게 만들기 및 저장 전에 필요한 정보들 얻어오기
+			String randId = UUID.randomUUID().toString();
+			MultipartFile multipartFile = serviceMultiFile_List.get(i);
+			String originalFilename = multipartFile.getOriginalFilename(); // 파일명
+			// 건강검진 상품 사진은 반드시 존재해야한다. 캡쳐 사진이라도 넣어라
+			System.out.println("this is originalfile name:" + originalFilename);
+			Integer originalFileBytes = new Integer((int) multipartFile.getSize());
+			// 만약 파일명이 없으면, serv_infoTABLE에 넣지 않아도 된다.
+			if (originalFilename.equals("")) {
+			} else {
+
+				String storedFileName = randId + "." + getExtension(originalFilename);
+				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/servtable_pic/");
+				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				String imageUrl = "resources/img/servtable_pic/" + storedFileName;
+				try {
+
+					// Serv_DTO 객체 만들기
+					Serv_DTO serv_dto = new Serv_DTO(Integer.parseInt(chk_rcdno), imageUrl, originalFilename,
+							storedFileName, originalFileBytes, new Integer(999999),
+							"serv_target_age column : not used anymore", "storedid", "N", created_date);
+
+					// 파일 서버에 저장
+					multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
+
+					// Serv_DTO 객체를 service_info DataBase에 INSERT 해준다.
+					int insert_result_serv_table = medicaldao.insert_serv_DTO_ByObj(serv_dto);
+
+				} catch (Exception e) {
+					System.out.println("postTempFile_ERROR===s===>" + uploadFullPath);
+					e.printStackTrace();
+				}
+			}
+		}
+
+		// price와 age는 데이터베잉스에서 삭제 후에, 다시 입력해주자.
+
+		return "redirect:eventHospitals";
+	}
+
 }

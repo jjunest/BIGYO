@@ -93,7 +93,8 @@
 }
 
 .brandSection .partnersLogoSlider .slide .partnersLogo img {
-	width: 100%;
+	width: 250px;
+    height: 200px;
 }
 </style>
 
@@ -285,7 +286,9 @@
 							</c:forEach> --%>
 
 							<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}" varStatus="indexNum">
-								<a data-toggle="modal" data-target="#myModal" class = "servicePic_modalPart" id="servicePic_modalPart${indexNum.index }" tagforjquery="${servListValue.serv_pic_link}" title=""><img style="width: 100%;" src="${servListValue.serv_pic_link}"> </a>
+								<a data-toggle="modal" data-target="#myModal" class="servicePic_modalPart" id="servicePic_modalPart${indexNum.index }" tagforjquery="${servListValue.serv_pic_link}" title=""><img
+									style="width: 100%;" src="${servListValue.serv_pic_link}"
+								> </a>
 
 							</c:forEach>
 
@@ -372,7 +375,11 @@
 								<li><i class="fa fa-check-circle-o" aria-hidden="true"></i> Accept Credit Card</li>
 							</ul>
 						</div>
-
+						<div class="detailsInfoBox">
+							<h3>관리자 공간</h3>
+							<button type="button" class="btn btn-primary btn-block" id="modifyHospitalDetailBT">수정 버튼</button>
+							<button type="button" class="btn btn-primary btn-block" id="deleteHospitalDetailBT">삭제 버튼</button>
+						</div>
 					</div>
 				</div>
 				<div class="col-sm-4 col-xs-12">
@@ -481,7 +488,19 @@
 			
 			/* SERVICE PICTURE 클릭 시 (건강검진 항목 사진) DYNAMICALLY하게 변하는 MODAL 실행 */
 			serviceImageModalChange();
+			
+			/* 관리자용 버튼: 수정 버튼, 삭제 버튼 */
+			modifyHospitalDetail();
 		});
+		
+		function modifyHospitalDetail(){
+			$("#modifyHospitalDetailBT").click(function(){
+				console.log('this is modifyBT click:');
+				location.href='/bigyo/modifyHospitalDetail?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+	
+			});
+		}
+		
 		/* 건강검진 서비스 이미지 동적으로 처리, SERVICE PICTURE MODAL 클릭 시에 동적으로 처리 */
 		function serviceImageModalChange(){
 	
@@ -495,7 +514,6 @@
 			});
 			
 		}
-		
 		
 		//닌자 슬라이드 시작 - 클릭시 MODAL GALLERY SHOW
 		function lightbox(idx) {

@@ -20,6 +20,7 @@ public class CheckUp_DTO {
 	String chk_mid_company_link;
 	Date chk_end_date;
 	Timestamp chk_created_date;
+	String chk_ifdeleted;
 	
 	
 	
@@ -27,7 +28,7 @@ public class CheckUp_DTO {
 	public CheckUp_DTO(String chk_hos_name, String chk_hos_pnum, String chk_price, String chk_loc_sido,
 			String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age, String chk_info_link,
 			String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link, Date chk_end_date,
-			Timestamp chk_created_date) {
+			Timestamp chk_created_date, String chk_ifdeleted) {
 		super();
 		this.chk_hos_name = chk_hos_name;
 		this.chk_hos_pnum = chk_hos_pnum;
@@ -43,11 +44,12 @@ public class CheckUp_DTO {
 		this.chk_mid_company_link = chk_mid_company_link;
 		this.chk_end_date = chk_end_date;
 		this.chk_created_date = chk_created_date;
+		this.chk_ifdeleted = chk_ifdeleted;
 	}
 	public CheckUp_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_price,
 			String chk_loc_sido, String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age,
 			String chk_info_link, String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link,
-			Date chk_end_date, Timestamp chk_created_date) {
+			Date chk_end_date, Timestamp chk_created_date, String chk_ifdeleted) {
 		super();
 		this.chk_rcdno = chk_rcdno;
 		this.chk_hos_name = chk_hos_name;
@@ -64,6 +66,7 @@ public class CheckUp_DTO {
 		this.chk_mid_company_link = chk_mid_company_link;
 		this.chk_end_date = chk_end_date;
 		this.chk_created_date = chk_created_date;
+		this.chk_ifdeleted = chk_ifdeleted;
 	}
 	public Integer getChk_rcdno() {
 		return chk_rcdno;
@@ -155,13 +158,17 @@ public class CheckUp_DTO {
 	public void setChk_created_date(Timestamp chk_created_date) {
 		this.chk_created_date = chk_created_date;
 	}
+	public String getChk_ifdeleted() {
+		return chk_ifdeleted;
+	}
+	public void setChk_ifdeleted(String chk_ifdeleted) {
+		this.chk_ifdeleted = chk_ifdeleted;
+	}
 	
 	
 	
 	
-	
-	
-	
+
 
 	
 	

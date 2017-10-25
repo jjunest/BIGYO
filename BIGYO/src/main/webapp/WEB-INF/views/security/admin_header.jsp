@@ -46,33 +46,31 @@
 
 
 
-				<li class=""><a href="<%=cp%>/serviceIntro" id="navmenu_serviceIntro">서비스 소개 </a></li>
-				<li class=""><a href="<%=cp%>/companyIntro" id="navmenu_companyIntro">회사 소개 </a></li>
-				<li class=""><a href="<%=cp%>/eventHospitals" id="navmenu_eventHospitals">할인 검진 병원 </a></li>
-				<li class=""><a href="<%=cp%>/eventHospitals_map" id="navmenu_eventHospitals_map">지도 검색 </a></li>
+		
+				<li class=""><a href="<%=cp%>/security/eventHospitals" id="navmenu_eventHospitals">할인 검진 병원 </a></li>
+				<li class=""><a href="<%=cp%>/security/eventHospitals_map" id="navmenu_eventHospitals_map">지도 검색 </a></li>
 
 
-
+		
 				<!-- 페이지를 검색해보고, SECURITY LOGIN이 되어 있으면 로그아웃을 보여주고, 아니면 로그인 메뉴를 보여준다  -->
-				<c:set var="user" value="${pageContext.request.userPrincipal.name}" />
+				<%-- 				<c:set var="user" value="${pageContext.request.userPrincipal.name}" />
 				<c:choose>
 					<c:when test="${empty user}">
-
+						<li class=""><a href="<%=cp%>/loginform_custom" id="navmenu_loginform">로그인/회원가입 </a></li>
 					</c:when>
 					<c:otherwise>
-					
-						<li class=""><a href="<%=cp%>/insert_eventhos" id="navmenu_insert_eventhos">정보 입력 </a></li>
-						<li class=""><a href="<%=cp%>/questions" id="navmenu_questions">문의 사항 </a></li>
-						<li class=""><a href="<c:url value="/j_spring_security_logout" />">
-						 <sec:authorize access="hasRole('ROLE_ADMIN')">관리자</sec:authorize> 로그아웃
+
+						<li class=""><a href="<c:url value="/j_spring_security_logout" />"> <sec:authorize access="hasRole('ROLE_ADMIN')">
+관리자
+								</sec:authorize> 로그아웃
 						</a></li>
 
 					</c:otherwise>
 
 
 
-				</c:choose>
-
+				</c:choose> --%>
+				<li class=""><a href="<%=cp%>/security/insert_eventhos" id="navmenu_insert_eventhos">정보 입력 </a></li>
 
 			</ul>
 		</div>

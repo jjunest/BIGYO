@@ -133,7 +133,6 @@ public class HomeController {
 	public String eventHospitals(HttpServletRequest httpServletRequest, Model model) {
 
 		String pNo = httpServletRequest.getParameter("pNo");
-		System.out.println("this is eventHospitals_map and pNo:" + pNo);
 		if (httpServletRequest.getParameter("pNo") == null) {
 			pNo = "1";
 		} else if (Integer.parseInt(httpServletRequest.getParameter("pNo")) < 1) {
@@ -144,10 +143,25 @@ public class HomeController {
 		}
 		// pageNo에 따라서 10개씩 가져오기. offset = (pNo-1) * 10
 		int offset = (Integer.parseInt(pNo) - 1) * 10;
-		List<Chk_Hos_Serv_DTO> result_list = medicaldao.selectAll_chk_hos_serv(offset);
-		model.addAttribute("result_list", result_list);
-		// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
-		model.addAttribute("pNo", pNo);
+
+		// Sido 선택
+		String siDoSelect = (String) httpServletRequest.getParameter("siDoSelect");
+		System.out.println("this is sidoSelect:" + siDoSelect);
+		if (siDoSelect == null || siDoSelect.equals("") || siDoSelect.equals("전체")) {
+			List<Chk_Hos_Serv_DTO> result_list = medicaldao.selectAll_chk_hos_serv(offset);
+			model.addAttribute("result_list", result_list);
+			// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
+			model.addAttribute("pNo", pNo);
+		} else {
+			// HashMap 에 담에서 sql에 전달하자
+			HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
+			sqlParameterHashMap.put("offset", offset);
+			sqlParameterHashMap.put("chk_loc_sido", siDoSelect);
+			List<Chk_Hos_Serv_DTO> result_list = medicaldao.selectAll_chk_hos_serv_filter(sqlParameterHashMap);
+			model.addAttribute("result_list", result_list);
+			// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
+			model.addAttribute("pNo", pNo);
+		}
 		return "eventHospitals";
 	}
 
@@ -371,54 +385,57 @@ public class HomeController {
 			String randId = UUID.randomUUID().toString();
 			MultipartFile multipartFile = serviceMultiFile_List.get(i);
 			String originalFilename = multipartFile.getOriginalFilename(); // 파일명
-			// 건강검진 상품 사진은 반드시 존재해야한다. 캡쳐 사진이라도 넣어라
-			System.out.println("this is originalfile name:" + originalFilename);
-			Integer originalFileBytes = new Integer((int) multipartFile.getSize());
-			String storedFileName = randId + "." + getExtension(originalFilename);
-			String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/servtable_pic/");
-			String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
-			String imageUrl = "resources/img/servtable_pic/" + storedFileName;
-			try {
+			// 만약 파일이 없으면, DB에 넣지 않아도 된다.
+			if (originalFilename.equals("")) {
 
-				// Serv_DTO 객체 만들기
-				Serv_DTO serv_dto = new Serv_DTO(chk_rcdno, imageUrl, originalFilename, storedFileName,
-						originalFileBytes, new Integer(999999), "serv_target_age column : not used anymore", "storedid",
-						"N", created_date);
+			} else {
+				System.out.println("this is originalfile name:" + originalFilename);
+				Integer originalFileBytes = new Integer((int) multipartFile.getSize());
+				String storedFileName = randId + "." + getExtension(originalFilename);
+				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/servtable_pic/");
+				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				String imageUrl = "resources/img/servtable_pic/" + storedFileName;
+				try {
 
-				// 파일 서버에 저장
-				multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
+					// Serv_DTO 객체 만들기
+					Serv_DTO serv_dto = new Serv_DTO(chk_rcdno, imageUrl, originalFilename, storedFileName,
+							originalFileBytes, new Integer(999999), "serv_target_age column : not used anymore",
+							"storedid", "N", created_date);
 
-				// Serv_DTO 객체를 service_info DataBase에 INSERT 해준다.
-				int insert_result_serv_table = medicaldao.insert_serv_DTO_ByObj(serv_dto);
+					// 파일 서버에 저장
+					multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
 
-			} catch (Exception e) {
-				System.out.println("postTempFile_ERROR===s===>" + uploadFullPath);
-				e.printStackTrace();
+					// Serv_DTO 객체를 service_info DataBase에 INSERT 해준다.
+					int insert_result_serv_table = medicaldao.insert_serv_DTO_ByObj(serv_dto);
+
+				} catch (Exception e) {
+					System.out.println("postTempFile_ERROR===s===>" + uploadFullPath);
+					e.printStackTrace();
+				}
 			}
-
 		}
 
 		// serv_info TABLE INSERT 끝
-		// service_price TABLE 에 ServPrice_DTO 를 INSERT 시작
+		// service_price TABLE and service_age TABLE 에 ServPrice_DTO 를 INSERT 시작
 		// select Box에서 몇개의 건강검진 상품이 존재하는지 검색한 후에 시작하자.
-		int servinfo_rcdno = medicaldao.select_rcdno_servTable();
 		String service_priceTotalNum = httpServletRequest.getParameter("service_priceTotalNum");
 		for (int j = 1; j < Integer.parseInt(service_priceTotalNum) + 1; j++) {
 			String serv_price = httpServletRequest.getParameter("serv_price" + String.valueOf(j));
 			if (serv_price == null || serv_price.equals("")) {
-				// serv_price가 아무것도 없으면 9999999으로 넣어준다.
+				// serv_price가 아무것도 없으면 9999999으로 UPDATE.
 				serv_price = "9999999";
 			}
 
 			serv_price = serv_price.replace(",", "");
-			ServPrice_DTO servPrice_DTO = new ServPrice_DTO(servinfo_rcdno, Integer.parseInt(serv_price));
-			// ServPrice_DTO 객체를 service_price TABLE에 INSERT 해준다.
+			ServPrice_DTO servPrice_DTO = new ServPrice_DTO(chk_rcdno, Integer.parseInt(serv_price));
+			// ServPrice_DTO 객체를 service_price TABLE에 UPDATE 해준다.
 			int insert_result_servprice_table = medicaldao.insert_servPrice_DTO_ByObj(servPrice_DTO);
 
-			// service_age TABLE 에 ServAge_DTO 를 INSERT 시작
+			// service_age TABLE 에 ServAge_DTO 를 UPDATE 시작
 			int servprice_rcdno = medicaldao.select_rcdno_servPriceTable();
 
 			String[] serv_age_list = httpServletRequest.getParameterValues("serv_age" + String.valueOf(j));
+			System.out.println("this is serv_age_list in modify:" + serv_age_list);
 			if (serv_age_list != null) {
 				for (int k = 0; k < serv_age_list.length; k++) {
 					System.out.println("this is age list value" + serv_age_list[k]);
@@ -428,8 +445,6 @@ public class HomeController {
 			}
 			// service_age TABLE 에 ServAge_DTO 를 INSERT 끝
 		}
-		// service_price TABLE 에 ServPrice_DTO 를 INSERT 끝
-
 		return "redirect:hospitalDetails?chk_rcdno=" + chk_rcdno;
 	}
 
@@ -629,9 +644,55 @@ public class HomeController {
 			}
 		}
 
-		// price와 age는 데이터베잉스에서 삭제 후에, 다시 입력해주자.
+		// price와 age는 데이터베이스에서 삭제 후에, 다시 입력해주자. DB가 CASCADE 삭제방식이라, price를 지우면 자연스럽게
+		// AGE도 삭제 된다.
+		int delete_servPrice_result = medicaldao.delete_servPrice_chkrcdno(Integer.parseInt(chk_rcdno));
+
+		String service_priceTotalNum = httpServletRequest.getParameter("service_priceTotalNum");
+		for (int j = 1; j < Integer.parseInt(service_priceTotalNum) + 1; j++) {
+			String serv_price = httpServletRequest.getParameter("serv_price" + String.valueOf(j));
+			if (serv_price == null || serv_price.equals("")) {
+				// serv_price가 아무것도 없으면 9999999으로 UPDATE.
+				serv_price = "9999999";
+			}
+
+			serv_price = serv_price.replace(",", "");
+			ServPrice_DTO servPrice_DTO = new ServPrice_DTO(Integer.parseInt(chk_rcdno), Integer.parseInt(serv_price));
+			// ServPrice_DTO 객체를 service_price TABLE에 UPDATE 해준다.
+			int insert_result_servprice_table = medicaldao.insert_servPrice_DTO_ByObj(servPrice_DTO);
+
+			// service_age TABLE 에 ServAge_DTO 를 UPDATE 시작
+			int servprice_rcdno = medicaldao.select_rcdno_servPriceTable();
+
+			String[] serv_age_list = httpServletRequest.getParameterValues("serv_age" + String.valueOf(j));
+			System.out.println("this is serv_age_list in modify:" + serv_age_list);
+			if (serv_age_list != null) {
+				for (int k = 0; k < serv_age_list.length; k++) {
+					System.out.println("this is age list value" + serv_age_list[k]);
+					ServAge_DTO servage_dto = new ServAge_DTO(servprice_rcdno, serv_age_list[k]);
+					int insert_result_servage_table = medicaldao.insert_servAge_DTO_ByObj(servage_dto);
+				}
+			}
+			// service_age TABLE 에 ServAge_DTO 를 UPDATE 끝
+		}
+
+		return "redirect:hospitalDetails?chk_rcdno=" + chk_rcdno;
+	}
+
+	@RequestMapping("/deleteHospitalDetailFromDatabaseBT")
+	public String deleteHospitalDetailFromDatabaseBT(Locale locale, Model model,
+			HttpServletRequest httpServletRequest) {
+		String chk_rcdno = httpServletRequest.getParameter("chk_rcdno");
+		int dbresult = medicaldao.delete_chkTable_chkrcdno(Integer.parseInt(chk_rcdno));
 
 		return "redirect:eventHospitals";
 	}
 
+	@RequestMapping("/deleteByUpdate_chk_DTO")
+	public String deleteByUpdate_chk_DTO(Locale locale, Model model, HttpServletRequest httpServletRequest) {
+		String chk_rcdno = httpServletRequest.getParameter("chk_rcdno");
+		int dbresult = medicaldao.deleteByUpdate_chk_DTO(Integer.parseInt(chk_rcdno));
+
+		return "redirect:eventHospitals";
+	}
 }

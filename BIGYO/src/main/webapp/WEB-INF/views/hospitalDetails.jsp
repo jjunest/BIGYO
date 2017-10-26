@@ -94,7 +94,7 @@
 
 .brandSection .partnersLogoSlider .slide .partnersLogo img {
 	width: 250px;
-    height: 200px;
+	height: 200px;
 }
 </style>
 
@@ -173,21 +173,19 @@
 									</tr>
 									<tr>
 
-										<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}">
-											<c:forEach var="servPriceListValue" items="${servListValue.servpriceList}" varStatus="indexNum">
-												<tr>
-													<td class="" colspan="2">${indexNum.index+1}</td>
-													<td class="" colspan="5">
-														<i class="fa fa-won"></i>&nbsp
-														<fmt:formatNumber>${servPriceListValue.servprice_price}  </fmt:formatNumber>
-													</td>
-													<td class="" colspan="5">
-														<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
-															<span class="label label-info" style="vertical-align: 15%;">${servAgeListValue.servage_age}대</span>
-														</c:forEach>
-													</td>
-												</tr>
-											</c:forEach>
+										<c:forEach var="servPriceListValue" items="${chk_hos_serv_dto.servpriceList}" varStatus="indexNum">
+											<tr>
+												<td class="" colspan="2">${indexNum.index+1}</td>
+												<td class="" colspan="5">
+													<i class="fa fa-won"></i>&nbsp
+													<fmt:formatNumber>${servPriceListValue.servprice_price}  </fmt:formatNumber>
+												</td>
+												<td class="" colspan="5">
+													<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
+														<span class="label label-info ageLabel" style="vertical-align: 15%;">${servAgeListValue.servage_age}대</span>
+													</c:forEach>
+												</td>
+											</tr>
 										</c:forEach>
 								</tbody>
 							</table>
@@ -379,6 +377,7 @@
 							<h3>관리자 공간</h3>
 							<button type="button" class="btn btn-primary btn-block" id="modifyHospitalDetailBT">수정 버튼</button>
 							<button type="button" class="btn btn-primary btn-block" id="deleteHospitalDetailBT">삭제 버튼</button>
+							<button type="button" class="btn btn-primary btn-block" id="deleteHospitalDetailFromDatabaseBT">데이터베이스에서 완전 삭제 버튼</button>
 						</div>
 					</div>
 				</div>
@@ -490,15 +489,59 @@
 			serviceImageModalChange();
 			
 			/* 관리자용 버튼: 수정 버튼, 삭제 버튼 */
-			modifyHospitalDetail();
+			adminBTforModifyAndDelete();
+			
+			/* ageLabel 의 나이에 따라 색을 달리해준다. */
+			ageLabelColorChange();
+			
 		});
-		
-		function modifyHospitalDetail(){
-			$("#modifyHospitalDetailBT").click(function(){
-				console.log('this is modifyBT click:');
-				location.href='/bigyo/modifyHospitalDetail?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
-	
+		function ageLabelColorChange(){
+			$('.ageLabel').each(function() {
+			    console.log('this is label:'+$(this).text());
+			    var ageText = $(this).text();
+			    if(ageText=="20대"){
+			    	$(this).css("background-color","#5bc0de");
+			    }else if(ageText=="30대"){
+			    	$(this).css("background-color","#5bc0de");
+			    }else if(ageText=="전체"){
+			    	$(this).css("background-color","#28a745");
+			    }
 			});
+		}
+		function adminBTforModifyAndDelete(){
+			$("#deleteHospitalDetailBT").click(function(){
+				var confirmAnwer = confirm("해당 정보를 정말로 삭제하시겠습니까?");
+			if(confirmAnwer ==true){
+
+				location.href='/bigyo/deleteByUpdate_chk_DTO?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+								}else{
+				
+			}
+		});
+			
+			
+			
+			
+			$("#modifyHospitalDetailBT").click(function(){
+					var confirmAnwer = confirm("해당 정보를 정말로 수정하시겠습니까?");
+				if(confirmAnwer ==true){
+
+					location.href='/bigyo/modifyHospitalDetail?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+									}else{
+					
+				}
+			});
+			
+			$("#deleteHospitalDetailFromDatabaseBT").click(function(){
+				var confirmAnwer = confirm("해당 정보를 데이터베이스에서 정말로 삭제하겠습니까?");
+				if(confirmAnwer ==true){
+
+				location.href='/bigyo/deleteHospitalDetailFromDatabaseBT?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+				}else{
+					
+				}
+			});
+			
 		}
 		
 		/* 건강검진 서비스 이미지 동적으로 처리, SERVICE PICTURE MODAL 클릭 시에 동적으로 처리 */

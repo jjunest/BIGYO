@@ -463,9 +463,6 @@
 			
 		});
 		function modifyFormSubMit(){
-		
-			
-			
 			$("#modifyHospitalDetailForm").submit( function(e) {
 				
 				//1-1. checkup_info  TABLE 수정을 위해서  chk_rcdno를 받아서 넘겨준다. 
@@ -522,7 +519,7 @@
 					console.log('this is yes');
 					var serv_rcdno = $(this).parent("a").attr('serv_rcdno');
 					deletedServPic_serv_rcdno.push(serv_rcdno);
-					
+					$(this).parent().remove();
 				}else{
 					//아니오라고 눌렀을 시에, 아무 이벤트도 발생하지 않는다.
 				}
@@ -534,8 +531,7 @@
 		function servicePriceAndAgeFromDatabase(){
 			// DATA BASE에 존재하는 Price와 Age 정보 JSON 객체에 담아 넣기. 
 			var servPriceAndAgeList = new Array();
-			<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}">
-			 <c:forEach var="servPriceListValue" items="${servListValue.servpriceList}" varStatus="indexNum">
+			 <c:forEach var="servPriceListValue" items="${chk_hos_serv_dto.servpriceList}" varStatus="indexNum">
 				var json = new Object();
 				json.servprice_price = "${servPriceListValue.servprice_price}";
 				json.servageList = [];
@@ -546,7 +542,6 @@
 			  </c:forEach>
 			  servPriceAndAgeList.push(json);
 			 </c:forEach>
-			</c:forEach>
 			// 받은 JSON 객체를 이용하여, PRICE와 AGE 가격 표시해주기. 
 			//console.log("this is jsonStringfy:"+JSON.stringify(servPriceAndAgeList));
 			var priceTotalOptionIndex = servPriceAndAgeList.length-1;

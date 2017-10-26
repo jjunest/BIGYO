@@ -11,6 +11,11 @@
 %>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.Collections"%>
+<%@ page import="com.innovest.dtos.Chk_Hos_Serv_DTO"%>
+<%@ page import="com.innovest.dtos.Serv_DTO"%>
+<%@ page import="com.innovest.dtos.ServAge_DTO"%>
+<%@ page import="com.innovest.dtos.ServPrice_DTO"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -66,9 +71,18 @@
 #quickMapMenu.hidden {
 	visibility: hidden;
 }
+
+.img-rounded {
+	border-radius: 6px;
+	width: 300px;
+	height: 200px;
+}
 </style>
 
 </head>
+
+
+
 
 <body class="body-wrapper">
 	<div class="page-loader" style="background: url(resources/img/preloader.gif) center no-repeat #fff;"></div>
@@ -93,25 +107,25 @@
 
 		<!-- CATEGORY SEARCH SECTION -->
 		<section class="clearfix searchArea banerInfo searchAreaGray">
-		<form action="">
+		<form action="eventHospitals">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-6 col-xs-12">
 						<div class="form-group">
 							<div class="searchSelectbox">
-								<select name="guiest_id2" id="guiest_id2" class="select-drop">
-									<option value="0">시/도 선택</option>
-									<option value="1">전체 선택</option>
-									<option value="2">서울특별시</option>
-									<option value="3">경기도</option>
-									<option value="4">충청북도</option>
-									<option value="5">충청남도</option>
-									<option value="6">경상북도</option>
-									<option value="7">경상남도</option>
-									<option value="8">강원도</option>
-									<option value="9">전라북도</option>
-									<option value="10">전라남도</option>
-									<option value="11">제주도</option>
+								<select name="siDoSelect" id="siDoSelect" class="select-drop">
+									<option value="전체">시/도 선택</option>
+									<option value="전체">전체 선택</option>
+									<option value="서울특별시">서울특별시</option>
+									<option value="경기도">경기도</option>
+									<option value="충청북도">충청북도</option>
+									<option value="충청남도">충청남도</option>
+									<option value="경상북도">경상북도</option>
+									<option value="경상남도">경상남도</option>
+									<option value="강원도">강원도</option>
+									<option value="전라북도">전라북도</option>
+									<option value="전라남도">전라남도</option>
+									<option value="제주도">제주도</option>
 								</select>
 							</div>
 						</div>
@@ -142,47 +156,50 @@
 						</h2>
 
 					</div>
+
+
 					<c:forEach var="listValue" items="${result_list}">
 						<div class="listContent">
 							<div class="row">
 								<div class="col-sm-5 col-xs-12">
 									<div class="categoryImage">
-										<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}"><img src="${listValue.hosList[0].hos_pic_link}" alt="Image category" class="img-responsive img-rounded"> <span
+										<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}"><img src="${listValue.hosList[0].hos_pic_link}" alt="Image category" class="img-responsive img-rounded"> <!-- <span
 											class="label label-primary"
-										>Verified</span> </a>
+										>Verified</span> --> </a>
 									</div>
 								</div>
 								<div class="col-sm-7 col-xs-12">
 									<div class="categoryDetails">
 										<ul class="list-inline rating">
 											<li><span class="label label-default">추천 연령</span></li>
-											<!-- 연령대를 중복체크해서 중복되는 연령대는 삭제 -->
+
+											<!-- AGE의 중복체크 + 오름차순 + 0을 전체연령으로 바꿔주기 위한 jsp tag  시작 -->
 											<%
-												List<String> ageDupCheckList = new ArrayList<String>();
-											%>
-
-											<c:forEach var="servListValue" items="${listValue.servList}" varStatus="indexNum">
-												<c:forEach var="servPriceListValue" items="${servListValue.servpriceList}">
-													<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
-														<!-- jsp 에서 jstl 변수를 사용하기 위해, jstl 변수를 설정 -->
-														<c:set var="ageCheckValue" value="${servAgeListValue.servage_age }" />
-														<%
-															String ageCheckValue = (String) pageContext.getAttribute("ageCheckValue");
-																			if (!ageDupCheckList.contains(ageCheckValue)) {
-																				ageDupCheckList.add(ageCheckValue);
-														%>
-														<!-- 만약에 리스트에 age가 없으면 출력해주고, 아니면 넘어간다.  -->
-														<span class="label label-info">${servAgeListValue.servage_age}대</span>
-
-														<%
+												//ageSetting 
+													List<String> AgesSettingList = new ArrayList<String>();
+													Chk_Hos_Serv_DTO chk_hos_serv_dto = (Chk_Hos_Serv_DTO) pageContext.getAttribute("listValue");
+													for (ServPrice_DTO servprice_dto : chk_hos_serv_dto.getServpriceList()) {
+														for (ServAge_DTO servage_dto : servprice_dto.getServageList()) {
+															String afterSettingAge;
+															afterSettingAge = servage_dto.getServage_age() + "대";
+															if (AgesSettingList.contains(afterSettingAge)) {
 															} else {
-
-																			}
-														%>
-
-													</c:forEach>
-												</c:forEach>
-											</c:forEach>
+																AgesSettingList.add(afterSettingAge);
+															}
+														}
+													}
+													Collections.sort(AgesSettingList);
+													if (AgesSettingList.contains("0대")) {
+														Collections.replaceAll(AgesSettingList, "0대", "전체");
+													}
+													//AgeSettingList후에 20대, 30대 출력
+													for (String filterAge : AgesSettingList) {
+											%>
+											<span class="label label-info ageLabel"><%=filterAge%></span>
+											<%
+												}
+											%>
+											<!-- AGE의 중복체크 + 오름차순 + 0을 전체연령으로 바꿔주기 위한 jsp tag  끝 -->
 										</ul>
 										<h2>
 											<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}" style="color: #222222">${listValue.chk_hos_name}</a>
@@ -192,16 +209,27 @@
 
 
 
-											<c:forEach var="servListValue" items="${listValue.servList}" varStatus="indexNum">
-												<c:forEach var="servPriceListValue" items="${servListValue.servpriceList}">
-													<i class="fa fa-won" style="vertical-align: baseline;"></i>
-													<span style="font-weight: bold"><fmt:formatNumber>${servPriceListValue.servprice_price}  </fmt:formatNumber> &nbsp;</span>
-													<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
-														<span class="label label-info" style="vertical-align: 15%;">${servAgeListValue.servage_age}대</span>
+											<c:forEach var="servPriceListValue" items="${listValue.servpriceList}">
+												<i class="fa fa-won" style="vertical-align: baseline;"></i>
+												<span style="font-weight: bold"><fmt:formatNumber>${servPriceListValue.servprice_price}  </fmt:formatNumber> &nbsp;</span>
+												<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
+													<!-- 전체 연령을 표시 시작 -->
+													<%
+														ServAge_DTO servage_dto = (ServAge_DTO) pageContext.getAttribute("servAgeListValue");
+																	String filteredAge;
+																	if (servage_dto.getServage_age().equals("0")) {
+																		filteredAge = "전체";
 
-													</c:forEach>
-													<br>	
+																	} else {
+																		filteredAge = servage_dto.getServage_age() + "대";
+																	}
+													%>
+
+
+													<span class="label label-info ageLabel" style="vertical-align: 15%;"><%=filteredAge %></span>
+													<!-- 전체 연령을 표시 끝 -->
 												</c:forEach>
+												<br>
 											</c:forEach>
 										</p>
 
@@ -339,8 +367,26 @@
 
 			/* hover 시에 googleMapMarker change : 리스트에 마우스 올렸을 시에 MAP 전환 시켜주는 함수 */
 			hoverMapFocusChange();
+			
+			/* ageLabel 의 나이에 따라 색을 달리해준다. */
+			ageLabelColorChange();
+			
 
 		});
+		function ageLabelColorChange(){
+			$('.ageLabel').each(function() {
+			    console.log('this is label:'+$(this).text());
+			    var ageText = $(this).text();
+			    if(ageText=="20대"){
+			    	$(this).css("background-color","#5bc0de");
+			    }else if(ageText=="30대"){
+			    	$(this).css("background-color","#5bc0de");
+			    }else if(ageText=="전체"){
+			    	$(this).css("background-color","#28a745");
+			    }
+			});
+		}
+		
 		//pageNavigationInit() started
 		function pageNavigationInit() {
 			var activePageNum = '${pNo % 5}';

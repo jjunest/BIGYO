@@ -2,11 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.innovest.daos.IDao">
 
-	<!-- select LIST DATA FROM DATABASE -->
-	<select id="selectAll_chkDTO" resultType="com.innovest.dtos.CheckUp_DTO">
-		SELECT * FROM
-		checkup_info LIMIT #{offset}, 10 WHERE chk_ifdeleted = 'N'
-	</select>
+
 
 	<!-- 상세정보 페이지를 위한 쿼리문 : select ONE DATA 1:N TABLE FROM DATABASE START -->
 	<resultMap type="com.innovest.dtos.Chk_Hos_Serv_DTO" id="Chk_Hos_Serv_resultMap">
@@ -28,6 +24,8 @@
 			column="chk_rcdno" ofType="com.innovest.dtos.Hos_DTO" select="get_hosList" />
 		<collection property="servList" javaType="java.util.ArrayList"
 			column="chk_rcdno" ofType="com.innovest.dtos.Serv_DTO" select="get_servList" />
+		<collection property="servpriceList" javaType="java.util.ArrayList"
+			column="chk_rcdno" ofType="com.innovest.dtos.ServPrice_DTO" select="get_servpriceList" />
 	</resultMap>
 	<!-- test 시작 -->
 	<resultMap type="com.innovest.dtos.Serv_DTO" id="Serv_resultMap">
@@ -42,13 +40,12 @@
 		<result property="serv_picStoreId" column="serv_picStoreId" />
 		<result property="serv_ifdeleted" column="serv_ifdeleted" />
 		<result property="serv_create_date" column="serv_create_date" />
-		<collection property="servpriceList" javaType="java.util.ArrayList"
-			column="serv_rcdno" ofType="com.innovest.dtos.ServPrice_DTO" select="get_servpriceList" />
+
 	</resultMap>
 
 	<resultMap type="com.innovest.dtos.ServPrice_DTO" id="Serv_priceMap">
 		<result property="servprice_rcdno" column="servprice_rcdno" />
-		<result property="servprice_servinfo_rcdno" column="servprice_servinfo_rcdno" />
+		<result property="servprice_chk_rcdno" column="servprice_chk_rcdno" />
 		<result property="servprice_price" column="servprice_price" />
 		<collection property="servageList" javaType="java.util.ArrayList"
 			column="servprice_rcdno" ofType="com.innovest.dtos.ServAge_DTO"
@@ -57,7 +54,7 @@
 
 	<select id="get_servpriceList" resultMap="Serv_priceMap">
 		SELECT * FROM
-		service_price WHERE servprice_servinfo_rcdno = #{serv_rcdno}
+		service_price WHERE servprice_chk_rcdno = #{chk_rcdno}
 	</select>
 	<!-- <collection property="servageList" javaType="java.util.ArrayList" column="serv_rcdno" 
 		ofType="com.innovest.dtos.ServAge_DTO" select="get_servageList" /> -->
@@ -93,11 +90,19 @@
 
 	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE START -->
 	<select id="selectAll_chk_hos_serv" resultMap="Chk_Hos_Serv_resultMap">
-		SELECT * FROM checkup_info WHERE chk_ifdeleted = 'N' LIMIT #{offset},
-		10
+		SELECT * FROM checkup_info WHERE chk_ifdeleted = 'N' LIMIT #{offset}, 10
 		<!-- SELECT * FROM checkup_info LIMIT #{offset}, 10 -->
 	</select>
 	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE START -->
+	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 (siDo를 활용한 Filter 검색) : select ALL DATA FROM DATABASE START -->
+	<select id="selectAll_chk_hos_serv_filter" resultMap="Chk_Hos_Serv_resultMap"
+		parameterType="hashmap">
+		SELECT * FROM checkup_info WHERE chk_ifdeleted = 'N' AND chk_loc_sido
+		= #{chk_loc_sido} LIMIT #{offset},
+		10
+		<!-- SELECT * FROM checkup_info LIMIT #{offset}, 10 -->
+	</select>
+	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 (siDo를 활용한 Filter 검색)  : select ALL DATA FROM DATABASE START -->
 
 
 	<!-- insert checkup_info Database -->
@@ -162,10 +167,10 @@
 	<!-- insert serv_price TABLE -->
 	<insert id="insert_servPrice_DTO_ByObj">
 		INSERT INTO service_price
-		(servprice_servinfo_rcdno,
+		(servprice_chk_rcdno,
 		servprice_price)
 		VALUES
-		(#{servprice_servinfo_rcdno},#{servprice_price})
+		(#{servprice_chk_rcdno},#{servprice_price})
 	</insert>
 
 
@@ -187,26 +192,51 @@
 
 	<update id="update_chk_DTO_ByObj">
 		UPDATE checkup_info SET
-		chk_hos_name = #{chk_hos_name},
+		chk_hos_name =
+		#{chk_hos_name},
 		chk_hos_pnum= #{chk_hos_pnum},
-		chk_price= #{chk_price}, chk_loc_sido= #{chk_loc_sido}, chk_loc_full= #{chk_loc_full}, chk_loc_lat= #{chk_loc_lat},
+		chk_price= #{chk_price},
+		chk_loc_sido= #{chk_loc_sido}, chk_loc_full= #{chk_loc_full},
+		chk_loc_lat= #{chk_loc_lat},
 		chk_loc_lng= #{chk_loc_lng},
-		chk_target_age= #{chk_target_age}, chk_info_link= #{chk_info_link}, chk_mid_company= #{chk_mid_company},
-		chk_mid_company_pnum= #{chk_mid_company_pnum},
-		chk_mid_company_link= #{chk_mid_company_link}, chk_end_date= #{chk_end_date}, chk_ifdeleted= #{chk_ifdeleted} WHERE chk_rcdno=#{chk_rcdno}
+		chk_target_age= #{chk_target_age}, chk_info_link= #{chk_info_link},
+		chk_mid_company= #{chk_mid_company},
+		chk_mid_company_pnum=
+		#{chk_mid_company_pnum},
+		chk_mid_company_link= #{chk_mid_company_link},
+		chk_end_date= #{chk_end_date}, chk_ifdeleted= #{chk_ifdeleted} WHERE
+		chk_rcdno=#{chk_rcdno}
 	</update>
 
 	<update id="deleteByUpdate_hos_DTO">
 		UPDATE hos_info SET
 		hos_ifdeleted = 'Y'
-		WHERE hos_rcdno= #{hos_rcdno}
+		WHERE
+		hos_rcdno= #{hos_rcdno}
 	</update>
-	
+
 	<update id="deleteByUpdate_serv_DTO">
-		UPDATE serv_info SET
+		UPDATE service_info SET
 		serv_ifdeleted = 'Y'
-		WHERE serv_rcdno= #{serv_rcdno}
+		WHERE
+		serv_rcdno= #{serv_rcdno}
 	</update>
+	<update id="deleteByUpdate_chk_DTO">
+		UPDATE checkup_info SET
+		chk_ifdeleted = 'Y'
+		WHERE
+		chk_rcdno= #{chk_rcdno}
+	</update>
+
+
+	<delete id="delete_servPrice_chkrcdno">
+		DELETE FROM service_price where servprice_chk_rcdno =
+		#{chk_rcdno}
+	</delete>
+	<delete id="delete_chkTable_chkrcdno">
+		DELETE FROM checkup_info where chk_rcdno =
+		#{chk_rcdno}
+	</delete>
 
 </mapper>
 

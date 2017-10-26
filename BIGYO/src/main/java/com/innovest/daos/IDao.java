@@ -2,6 +2,7 @@ package com.innovest.daos;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.innovest.dto.MemberDto;
 import com.innovest.dtos.CheckUp_DTO;
@@ -18,6 +19,8 @@ public interface IDao {
 	public Chk_Hos_Serv_DTO selectOne_chk_hos_serv(int chk_rcdno);
 
 	public List<Chk_Hos_Serv_DTO> selectAll_chk_hos_serv(int offset);
+	
+	public List<Chk_Hos_Serv_DTO> selectAll_chk_hos_serv_filter(Map insertMap);
 
 	public int insert_chk_hos_serv_DTO_ByObj(CheckUp_DTO insertObj);
 
@@ -40,4 +43,10 @@ public interface IDao {
 	public int deleteByUpdate_hos_DTO(int hos_rcdno);
 
 	public int deleteByUpdate_serv_DTO(int serv_rcdno);
+	
+	public int delete_servPrice_chkrcdno(int chk_rcdno);
+	
+	public int delete_chkTable_chkrcdno(int chk_rcdno);
+	
+	public int deleteByUpdate_chk_DTO(int chk_rcdno);
 }

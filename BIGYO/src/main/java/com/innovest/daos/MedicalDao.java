@@ -43,6 +43,12 @@ public class MedicalDao {
 		List<Chk_Hos_Serv_DTO> result_list = dao.selectAll_chk_hos_serv(offset);
 		return result_list;
 	}
+	
+	public List<Chk_Hos_Serv_DTO> selectAll_chk_hos_serv_filter(Map insertMap) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		List<Chk_Hos_Serv_DTO> result_list = dao.selectAll_chk_hos_serv_filter(insertMap);
+		return result_list;
+	}
 
 	public int insert_chk_hos_serv_DTO_ByObj(CheckUp_DTO targetObj) {
 		System.out.println("this is insert_chk_hos_serv_DTO_ByObj() Started");
@@ -109,5 +115,22 @@ public class MedicalDao {
 		IDao dao = sqlsession.getMapper(IDao.class);
 		int updateByObj_result = dao.deleteByUpdate_serv_DTO(serv_rcdno);
 		return updateByObj_result;
+	}
+	
+	public int delete_servPrice_chkrcdno(int chk_rcdno) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int db_result = dao.delete_servPrice_chkrcdno(chk_rcdno);
+		return db_result;
+	}
+	
+	public int delete_chkTable_chkrcdno(int chk_rcdno) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int db_result = dao.delete_chkTable_chkrcdno(chk_rcdno);
+		return db_result;
+	}
+	public int deleteByUpdate_chk_DTO(int chk_rcdno) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int db_result = dao.deleteByUpdate_chk_DTO(chk_rcdno);
+		return db_result;
 	}
 }

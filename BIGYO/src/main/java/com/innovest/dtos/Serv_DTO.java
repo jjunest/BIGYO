@@ -25,15 +25,9 @@ public class Serv_DTO {
 	String serv_picStoreId;
 	String serv_ifdeleted;
 	Timestamp serv_create_date;
-	List<ServPrice_DTO> servpriceList;
-	
-	
-	
-	
 	public Serv_DTO(Integer serv_rcdno, Integer serv_chk_rcdno, String serv_pic_link, String serv_originalpic_name,
 			String serv_storedpic_name, Integer serv_picsize, Integer serv_price, String serv_target_age,
-			String serv_picStoreId, String serv_ifdeleted, Timestamp serv_create_date,
-			List<ServPrice_DTO> servpriceList) {
+			String serv_picStoreId, String serv_ifdeleted, Timestamp serv_create_date) {
 		super();
 		this.serv_rcdno = serv_rcdno;
 		this.serv_chk_rcdno = serv_chk_rcdno;
@@ -46,28 +40,11 @@ public class Serv_DTO {
 		this.serv_picStoreId = serv_picStoreId;
 		this.serv_ifdeleted = serv_ifdeleted;
 		this.serv_create_date = serv_create_date;
-		this.servpriceList = servpriceList;
 	}
 	public Serv_DTO(Integer serv_chk_rcdno, String serv_pic_link, String serv_originalpic_name,
 			String serv_storedpic_name, Integer serv_picsize, Integer serv_price, String serv_target_age,
 			String serv_picStoreId, String serv_ifdeleted, Timestamp serv_create_date) {
 		super();
-		this.serv_chk_rcdno = serv_chk_rcdno;
-		this.serv_pic_link = serv_pic_link;
-		this.serv_originalpic_name = serv_originalpic_name;
-		this.serv_storedpic_name = serv_storedpic_name;
-		this.serv_picsize = serv_picsize;
-		this.serv_price = serv_price;
-		this.serv_target_age = serv_target_age;
-		this.serv_picStoreId = serv_picStoreId;
-		this.serv_ifdeleted = serv_ifdeleted;
-		this.serv_create_date = serv_create_date;
-	}
-	public Serv_DTO(Integer serv_rcdno, Integer serv_chk_rcdno, String serv_pic_link, String serv_originalpic_name,
-			String serv_storedpic_name, Integer serv_picsize, Integer serv_price, String serv_target_age,
-			String serv_picStoreId, String serv_ifdeleted, Timestamp serv_create_date) {
-		super();
-		this.serv_rcdno = serv_rcdno;
 		this.serv_chk_rcdno = serv_chk_rcdno;
 		this.serv_pic_link = serv_pic_link;
 		this.serv_originalpic_name = serv_originalpic_name;
@@ -145,12 +122,7 @@ public class Serv_DTO {
 	public void setServ_create_date(Timestamp serv_create_date) {
 		this.serv_create_date = serv_create_date;
 	}
-	public List<ServPrice_DTO> getServpriceList() {
-		return servpriceList;
-	}
-	public void setServpriceList(List<ServPrice_DTO> servpriceList) {
-		this.servpriceList = servpriceList;
-	}
+	
 	
 	
 	

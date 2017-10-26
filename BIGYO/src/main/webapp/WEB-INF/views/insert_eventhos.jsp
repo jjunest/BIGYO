@@ -492,8 +492,8 @@
 							$("#service_price_age_inputTags" + i)
 									.removeClass("hidden");
 							// 해당부분을 hidden후에는 값도 초기화 시켜줘야 한다. 
-							$("#service_price_age_inputTags"+i+" input").val("");
-							$("#service_price_age_inputTags"+i+" input:checkbox").removeAttr('checked');
+							 $("#service_price_age_inputTags"+i+" input:text").val("");
+							$("#service_price_age_inputTags"+i+" input:checkbox").attr('checked',false);
 							
 						}
 

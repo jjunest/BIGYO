@@ -64,6 +64,12 @@
   <![endif]-->
 
 <style>
+@media (max-width:768px){
+#quickMapMenu {
+	display:none;
+}
+
+}
 .pagination.hidden {
 	visibility: hidden;
 }
@@ -114,8 +120,7 @@
 						<div class="form-group">
 							<div class="searchSelectbox">
 								<select name="siDoSelect" id="siDoSelect" class="select-drop">
-									<option value="전체">시/도 선택</option>
-									<option value="전체">전체 선택</option>
+									<option value="전체">전체 시/도</option>
 									<option value="서울특별시">서울특별시</option>
 									<option value="경기도">경기도</option>
 									<option value="충청북도">충청북도</option>
@@ -226,7 +231,7 @@
 													%>
 
 
-													<span class="label label-info ageLabel" style="vertical-align: 15%;"><%=filteredAge %></span>
+													<span class="label label-info ageLabel" style="vertical-align: 15%;"><%=filteredAge%></span>
 													<!-- 전체 연령을 표시 끝 -->
 												</c:forEach>
 												<br>
@@ -266,11 +271,11 @@
 							<li><a href="eventHospitals?pNo=${pNo_share*5}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 							</a></li>
 
-							<li id="pageNavi1"><a href="eventHospitals?pNo=${pNo_share*5+1}">${pNo_share*5+1}</a></li>
-							<li id="pageNavi2"><a href="eventHospitals?pNo=${pNo_share*5+2}">${pNo_share*5+2}</a></li>
-							<li id="pageNavi3"><a href="eventHospitals?pNo=${pNo_share*5+3}">${pNo_share*5+3}</a></li>
-							<li id="pageNavi4"><a href="eventHospitals?pNo=${pNo_share*5+4}">${pNo_share*5+4}</a></li>
-							<li id="pageNavi0"><a href="eventHospitals?pNo=${pNo_share*5+5}">${pNo_share*5+5}</a></li>
+							<li id="pageNavi1"><a href="eventHospitals?pNo=${pNo_share*5+1}&siDoSelect=${siDoSelect}">${pNo_share*5+1}</a></li>
+							<li id="pageNavi2"><a href="eventHospitals?pNo=${pNo_share*5+2}&siDoSelect=${siDoSelect}">${pNo_share*5+2}</a></li>
+							<li id="pageNavi3"><a href="eventHospitals?pNo=${pNo_share*5+3}&siDoSelect=${siDoSelect}">${pNo_share*5+3}</a></li>
+							<li id="pageNavi4"><a href="eventHospitals?pNo=${pNo_share*5+4}&siDoSelect=${siDoSelect}">${pNo_share*5+4}</a></li>
+							<li id="pageNavi0"><a href="eventHospitals?pNo=${pNo_share*5+5}&siDoSelect=${siDoSelect}">${pNo_share*5+5}</a></li>
 							<li><a href="eventHospitals?pNo=${pNo_share*5+6}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 							</a></li>
 						</ul>
@@ -367,26 +372,38 @@
 
 			/* hover 시에 googleMapMarker change : 리스트에 마우스 올렸을 시에 MAP 전환 시켜주는 함수 */
 			hoverMapFocusChange();
-			
+
 			/* ageLabel 의 나이에 따라 색을 달리해준다. */
 			ageLabelColorChange();
-			
+
+			/* search Area select TAG setting 하기 */
+			areaSelectTagSetting();
 
 		});
-		function ageLabelColorChange(){
+		function areaSelectTagSetting() {
+			var siDoSelect = "${siDoSelect}";
+			if (siDoSelect == null || siDoSelect == "" || siDoSelect == "전체") {
+				siDoSelect = "전체 시/도";
+			}
+			$("#siDoSelect option[value=0]").attr("selected", "selected");
+			$("#siDoSelect option[value=0]").trigger("click");
+			var sb = $("#siDoSelect").attr("sb");
+			$("#sbSelector_" + sb).text(siDoSelect);
+		}
+		function ageLabelColorChange() {
+			//해당 클래스 각각을 별도로 검사해서 필요한 것들을 작업
 			$('.ageLabel').each(function() {
-			    console.log('this is label:'+$(this).text());
-			    var ageText = $(this).text();
-			    if(ageText=="20대"){
-			    	$(this).css("background-color","#5bc0de");
-			    }else if(ageText=="30대"){
-			    	$(this).css("background-color","#5bc0de");
-			    }else if(ageText=="전체"){
-			    	$(this).css("background-color","#28a745");
-			    }
+				var ageText = $(this).text();
+				if (ageText == "20대") {
+					$(this).css("background-color", "#5bc0de");
+				} else if (ageText == "30대") {
+					$(this).css("background-color", "#5bc0de");
+				} else if (ageText == "전체") {
+					$(this).css("background-color", "#28a745");
+				}
 			});
 		}
-		
+
 		//pageNavigationInit() started
 		function pageNavigationInit() {
 			var activePageNum = '${pNo % 5}';
@@ -407,8 +424,6 @@
 		//navigationMenuColored() end
 		//noResultData() started
 		function noResultData() {
-			console.log('this is jstl data :');
-			console.log('this is jstl data :' + '${fn:length(result_list)}');
 			if ('${fn:length(result_list)}' < 1) {
 				/* 	$(".pagination").addClass("hidden"); */
 				$("#quickMapMenu").addClass("hidden");
@@ -428,7 +443,6 @@
 						hoverRefreshMap(markerLists[index].chk_loc_lat,
 								markerLists[index].chk_loc_lng);
 						/* quck menu textbox 이름 변경*/
-						console.log('this is index :' + index);
 						/* 단순 접근은 되지만 index 변수를 활용한 접근은 불가능하다. */
 						/* 	$("#quickMenu_Textbox h4").text(
 									markerLists[index].chk_hos_name); */
@@ -446,7 +460,6 @@
 		//hoverMapFocusChange() end		
 		//hoverRefreshMap() started
 		function hoverRefreshMap(paramLat, paramLng) {
-			console.log('this is eventHospitals.js hoverRefreshMap()');
 			var myLatLng = {
 				lat : paramLat,
 				lng : paramLng
@@ -476,12 +489,14 @@
 				icon : image,
 				animation : google.maps.Animation.BOUNCE
 			});
-			google.maps.event.addListener(marker, 'click', function() {
+
+			// google map marker click 시에 발생하는 것 주석처리
+			/* google.maps.event.addListener(marker, 'click', function() {
 				var infowindow = new google.maps.InfoWindow({
 					content : contentString
 				});
 				infowindow.open(map, marker);
-			});
+			}); */
 
 		}
 		//hoverRefreshMap() end
@@ -510,7 +525,7 @@
 			$(window).scroll(function() {
 				// 430 이 움직이지 않은 값이다. 430 밑으로 가면 floating menu 가 동작함.
 				yPosition = $win.scrollTop() - 430;
-				/* 		console.log('this is yPosition:' + yPosition);
+				/* 		console.log('	 yPosition:' + yPosition);
 						console.log('this is footerInfo height :' + footerTop); */
 				if (yPosition < 0) {
 					yPosition = 0;
@@ -534,14 +549,12 @@
 		function googlemapSingleMarker() {
 			var id = document.getElementById('map-canvas_eventList');
 			if (id) {
-				console.log('this is hospitalDetails.js id()');
 				initMap();
 			}
 
 		}
 
 		function initMap() {
-			console.log('this is hospitalDetails.js initMap()');
 			var myLatLng = {
 				lat : markerLists[0].chk_loc_lat,
 				lng : markerLists[0].chk_loc_lng
@@ -557,7 +570,6 @@
 				center : myLatLng,
 				styles : mapStyles
 			});
-			console.log('lat:' + myLatLng.lat + ', lng:' + myLatLng.lng);
 			var image = 'resources/img/map/marker.png';
 			var contentString = '<div id="content">'
 					+ '<div id="siteNotice">'
@@ -573,12 +585,12 @@
 				icon : image,
 				animation : google.maps.Animation.BOUNCE
 			});
-			google.maps.event.addListener(marker, 'click', function() {
+			/* google.maps.event.addListener(marker, 'click', function() {
 				var infowindow = new google.maps.InfoWindow({
 					content : contentString
 				});
 				infowindow.open(map, marker);
-			});
+			}); */
 
 		}
 

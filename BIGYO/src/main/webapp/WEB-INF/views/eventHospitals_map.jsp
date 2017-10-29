@@ -280,7 +280,7 @@
 						var contentString = '<div id="content">'
 								+ '<div id="siteNotice">'
 								+ '</div>'
-								+ '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'
+								+ '<h1 id="firstHeading" class="firstHeading">'+"${}"+'</h1>'
 								+ '<div id="bodyContent">'
 								+ '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large '
 								+ 'sandstone rock formation in the southern part of the '

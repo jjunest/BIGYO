@@ -152,6 +152,8 @@ public class HomeController {
 			model.addAttribute("result_list", result_list);
 			// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
 			model.addAttribute("pNo", pNo);
+			model.addAttribute("siDoSelect",siDoSelect);
+			
 		} else {
 			// HashMap 에 담에서 sql에 전달하자
 			HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
@@ -161,6 +163,7 @@ public class HomeController {
 			model.addAttribute("result_list", result_list);
 			// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
 			model.addAttribute("pNo", pNo);
+			model.addAttribute("siDoSelect",siDoSelect);
 		}
 		return "eventHospitals";
 	}

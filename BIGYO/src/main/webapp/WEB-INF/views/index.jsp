@@ -92,23 +92,22 @@
 			<div class="row">
 				<div class="col-xs-12 ">
 					<div class="bg-search">
-						<form class="form-inline" action="category-grid.html">
+						<form class="form-inline" action="eventHospitals">
 
 							<div class="form-group col-sm-6 col-xs-12">
 								<div class="searchSelectbox">
-									<select name="guiest_id2" id="guiest_id2" class="select-drop">
-										<option value="0">시/도 선택</option>
-										<option value="1">전체 선택</option>
-										<option value="2">서울특별시</option>
-										<option value="3">경기도</option>
-										<option value="4">충청북도</option>
-										<option value="5">충청남도</option>
-										<option value="6">경상북도</option>
-										<option value="7">경상남도</option>
-										<option value="8">강원도</option>
-										<option value="9">전라북도</option>
-										<option value="10">전라남도</option>
-										<option value="11">제주도</option>
+									<select name="siDoSelect" id="siDoSelect" class="select-drop">
+										<option value="전체">전체 시/도</option>
+										<option value="서울특별시">서울특별시</option>
+										<option value="경기도">경기도</option>
+										<option value="충청북도">충청북도</option>
+										<option value="충청남도">충청남도</option>
+										<option value="경상북도">경상북도</option>
+										<option value="경상남도">경상남도</option>
+										<option value="강원도">강원도</option>
+										<option value="전라북도">전라북도</option>
+										<option value="전라남도">전라남도</option>
+										<option value="제주도">제주도</option>
 									</select>
 								</div>
 							</div>

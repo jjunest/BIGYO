@@ -157,7 +157,7 @@
 				<div class="col-sm-8 col-xs-12">
 					<div class="resultBar barSpaceAdjust">
 						<h2>
-							조건 검색 결과 : <span>${fn:length(result_list)}</span> 개
+							조건 검색 결과 : <span>${totalSearchNum}</span> 개
 						</h2>
 
 					</div>

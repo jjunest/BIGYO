@@ -77,7 +77,7 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="pageTitle">
-						<h2> 주식회사 INNOVEST 소개 </h2>
+						<h2> INNOVEST 소개 </h2>
 					</div>
 				</div>
 			</div>

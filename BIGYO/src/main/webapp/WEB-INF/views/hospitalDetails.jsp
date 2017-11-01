@@ -267,6 +267,7 @@
 						<div class="detailsInfoBox">
 
 							<c:forEach var="servListValue" items="${chk_hos_serv_dto.servList}" varStatus="indexNum">
+
 								<a data-toggle="modal" data-target="#myModal" class="servicePic_modalPart" id="servicePic_modalPart${indexNum.index }" tagforjquery="${servListValue.serv_pic_link}" title=""><img
 									style="width: 100%;" src="${servListValue.serv_pic_link}"
 								> </a>
@@ -276,129 +277,130 @@
 
 						</div>
 						<!-- 건강검진 서비스 설명 DETAIL PICTURE IMAGE 사진 부분 끝 -->
+						<!-- 가격이 비슷한 병원 리스트들 시작 -->
 						<div class="detailsInfoBox">
 							<h3>비슷한 건강검진 상품 TOP5</h3>
+
 							<ul class="nav nav-tabs">
-								<li class="active"><a data-toggle="tab" href="#home">가격</a></li>
-								<!-- 	<li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
-								<li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
-								<li><a data-toggle="tab" href="#menu3">Menu 3</a></li> -->
+
+								<c:forEach var="servPriceListValue" items="${chk_hos_serv_dto.servpriceList}" varStatus="indexNum">
+									<c:if test="${indexNum.index eq 0 }">
+										<li class="active"><a data-toggle="tab" href="#top5Menu${ indexNum.index}"> &nbsp 가격<br> <fmt:formatNumber>${servPriceListValue.servprice_price}</fmt:formatNumber>
+										</a></li>
+									</c:if>
+									<c:if test="${indexNum.index ne 0 }">
+										<li class=""><a data-toggle="tab" href="#top5Menu${ indexNum.index}"> &nbsp 가격<br> <fmt:formatNumber>${servPriceListValue.servprice_price}</fmt:formatNumber>
+										</a></li>
+									</c:if>
+								</c:forEach>
 							</ul>
 
 							<div class="tab-content">
-								<div id="home" class="tab-pane fade in active">
-									<!-- 가격이 비슷한 병원 리스트들 시작 -->
-									<c:forEach var="listValue" items="${top5_list}">
-										<div class="listContent">
-											<div class="row">
-												<div class="col-sm-5 col-xs-12">
-													<div class="categoryImage">
-														<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}"><img src="${listValue.hosList[0].hos_pic_link}" alt="Image category" class="img-responsive img-rounded"> <!-- <span
+								<c:forEach var="servPriceListValue" items="${chk_hos_serv_dto.servpriceList}" varStatus="indexNum">
+									<div id="top5Menu${indexNum.index}" class="tab-pane fade">
+										<c:set var="priceList" value="priceTop5_list_${indexNum.index}" />
+										<c:forEach var="listValue" items="${requestScope[priceList]}">
+											<div class="listContent">
+												<div class="row">
+													<div class="col-sm-5 col-xs-12">
+														<div class="categoryImage">
+															<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}"><img src="${listValue.hosList[0].hos_pic_link}" alt="Image category" class="img-responsive img-rounded"> <!-- <span
 											class="label label-primary"
 										>Verified</span> --> </a>
+														</div>
 													</div>
-												</div>
-												<div class="col-sm-7 col-xs-12">
-													<div class="categoryDetails">
-														<ul class="list-inline rating">
-															<li><span class="label label-default">추천 연령</span></li>
+													<div class="col-sm-7 col-xs-12">
+														<div class="categoryDetails">
+															<ul class="list-inline rating">
+																<li><span class="label label-default">추천 연령</span></li>
 
-															<!-- AGE의 중복체크 + 오름차순 + 0을 전체연령으로 바꿔주기 위한 jsp tag  시작 -->
-															<%
-																//ageSetting 
-																	List<String> AgesSettingList = new ArrayList<String>();
-																	Chk_Hos_Serv_DTO chk_hos_serv_dto = (Chk_Hos_Serv_DTO) pageContext.getAttribute("listValue");
-																	for (ServPrice_DTO servprice_dto : chk_hos_serv_dto.getServpriceList()) {
-																		for (ServAge_DTO servage_dto : servprice_dto.getServageList()) {
-																			String afterSettingAge;
-																			afterSettingAge = servage_dto.getServage_age() + "대";
-																			if (AgesSettingList.contains(afterSettingAge)) {
-																			} else {
-																				AgesSettingList.add(afterSettingAge);
-																			}
-																		}
-																	}
-																	Collections.sort(AgesSettingList);
-																	if (AgesSettingList.contains("0대")) {
-																		Collections.replaceAll(AgesSettingList, "0대", "전체");
-																	}
-																	//AgeSettingList후에 20대, 30대 출력
-																	for (String filterAge : AgesSettingList) {
-															%>
-															<span class="label label-info ageLabel"><%=filterAge%></span>
-															<%
-																}
-															%>
-															<!-- AGE의 중복체크 + 오름차순 + 0을 전체연령으로 바꿔주기 위한 jsp tag  끝 -->
-														</ul>
-														<h2>
-															<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}" style="color: #222222">${listValue.chk_hos_name}</a>
-														</h2>
-
-														<p style="margin: 1px">
-
-
-
-															<c:forEach var="servPriceListValue" items="${listValue.servpriceList}">
-																<i class="fa fa-won" style="vertical-align: baseline;"></i>
-																<span style="font-weight: bold"><fmt:formatNumber>${servPriceListValue.servprice_price}  </fmt:formatNumber> &nbsp;</span>
-																<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
-																	<!-- 전체 연령을 표시 시작 -->
-																	<%
-																		ServAge_DTO servage_dto = (ServAge_DTO) pageContext.getAttribute("servAgeListValue");
-																					String filteredAge;
-																					if (servage_dto.getServage_age().equals("0")) {
-																						filteredAge = "전체";
-
+																<!-- AGE의 중복체크 + 오름차순 + 0을 전체연령으로 바꿔주기 위한 jsp tag  시작 -->
+																<%
+																	//ageSetting 
+																			List<String> AgesSettingList = new ArrayList<String>();
+																			Chk_Hos_Serv_DTO chk_hos_serv_dto = (Chk_Hos_Serv_DTO) pageContext.getAttribute("listValue");
+																			for (ServPrice_DTO servprice_dto : chk_hos_serv_dto.getServpriceList()) {
+																				for (ServAge_DTO servage_dto : servprice_dto.getServageList()) {
+																					String afterSettingAge;
+																					afterSettingAge = servage_dto.getServage_age() + "대";
+																					if (AgesSettingList.contains(afterSettingAge)) {
 																					} else {
-																						filteredAge = servage_dto.getServage_age() + "대";
+																						AgesSettingList.add(afterSettingAge);
 																					}
-																	%>
+																				}
+																			}
+																			Collections.sort(AgesSettingList);
+																			if (AgesSettingList.contains("0대")) {
+																				Collections.replaceAll(AgesSettingList, "0대", "전체");
+																			}
+																			//AgeSettingList후에 20대, 30대 출력
+																			for (String filterAge : AgesSettingList) {
+																%>
+																<span class="label label-info ageLabel"><%=filterAge%></span>
+																<%
+																	}
+																%>
+																<!-- AGE의 중복체크 + 오름차순 + 0을 전체연령으로 바꿔주기 위한 jsp tag  끝 -->
+															</ul>
+															<h2>
+																<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}" style="color: #222222">${listValue.chk_hos_name}</a>
+															</h2>
+
+															<p style="margin: 1px">
 
 
-																	<span class="label label-info ageLabel" style="vertical-align: 15%;"><%=filteredAge%></span>
-																	<!-- 전체 연령을 표시 끝 -->
+
+																<c:forEach var="servPriceListValue" items="${listValue.servpriceList}">
+																	<i class="fa fa-won" style="vertical-align: baseline;"></i>
+																	<span style="font-weight: bold"><fmt:formatNumber>${servPriceListValue.servprice_price}  </fmt:formatNumber> &nbsp;</span>
+																	<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
+																		<!-- 전체 연령을 표시 시작 -->
+																		<%
+																			ServAge_DTO servage_dto = (ServAge_DTO) pageContext.getAttribute("servAgeListValue");
+																							String filteredAge;
+																							if (servage_dto.getServage_age().equals("0")) {
+																								filteredAge = "전체";
+
+																							} else {
+																								filteredAge = servage_dto.getServage_age() + "대";
+																							}
+																		%>
+
+
+																		<span class="label label-info ageLabel" style="vertical-align: 15%;"><%=filteredAge%></span>
+																		<!-- 전체 연령을 표시 끝 -->
+																	</c:forEach>
+																	<br>
 																</c:forEach>
-																<br>
-															</c:forEach>
-														</p>
+															</p>
 
-														<p style="margin: 1px">
-															<span class="glyphicon glyphicon-copyright-mark"></span>&nbsp;&nbsp;주관 업체: ${listValue.chk_mid_company}
-														</p>
-														<p style="margin: 1px">
-															<span class="glyphicon glyphicon-earphone"></span>&nbsp;&nbsp;예약 전화: <a href="tel:${listValue.chk_mid_company_pnum}">${listValue.chk_mid_company_pnum}</a>
-														</p>
+															<p style="margin: 1px">
+																<span class="glyphicon glyphicon-copyright-mark"></span>&nbsp;&nbsp;주관 업체: ${listValue.chk_mid_company}
+															</p>
+															<p style="margin: 1px">
+																<span class="glyphicon glyphicon-earphone"></span>&nbsp;&nbsp;예약 전화: <a href="tel:${listValue.chk_mid_company_pnum}">${listValue.chk_mid_company_pnum}</a>
+															</p>
 
 
-														<p style="margin: 1px">
-															<span class="glyphicon glyphicon-phone-alt"></span>&nbsp;&nbsp;병원 전화: ${listValue.chk_hos_pnum}
-														</p>
-														<p style="margin: 3px">
-															<span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp;<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}" index=${status.index}>${listValue.chk_loc_full}</a>
+															<p style="margin: 1px">
+																<span class="glyphicon glyphicon-phone-alt"></span>&nbsp;&nbsp;병원 전화: ${listValue.chk_hos_pnum}
+															</p>
+															<p style="margin: 3px">
+																<span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp;<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}" index=${status.index}>${listValue.chk_loc_full}</a>
 
-														</p>
+															</p>
 
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-									</c:forEach>
-									<!-- 가격이 비슷한 병원 리스트들 끝 -->
+										</c:forEach>
 
-								</div>
-								<div id="menu1" class="tab-pane fade">
-									<h3>Menu 1</h3>
-									<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-								</div>
-								<div id="menu2" class="tab-pane fade">
-									<h3>Menu 2</h3>
-									<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-								</div>
-								<div id="menu3" class="tab-pane fade">
-									<h3>Menu 3</h3>
-									<p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-								</div>
+										<!-- 가격이 비슷한 병원 리스트들 끝 -->
+
+									</div>
+								</c:forEach>
+
 							</div>
 						</div>
 
@@ -430,7 +432,6 @@
 							<ul class="list-unstyled list-address">
 								<li><span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span> 주관 업체: ${chk_hos_serv_dto.chk_mid_company}</li>
 								<li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> 예약 전화: ${chk_hos_serv_dto.chk_mid_company_pnum}</li>
-
 								<li><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 병원 상세 주소 <br> ${chk_hos_serv_dto.chk_loc_full}</li>
 								<li><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> 병원 전화: ${chk_hos_serv_dto.chk_hos_pnum}</li>
 							</ul>
@@ -533,7 +534,15 @@
 			/* ageLabel 의 나이에 따라 색을 달리해준다. */
 			ageLabelColorChange();
 			
+			// Top5 의 메뉴 초반에 보이게 하기. 
+			top5MenuSetting();
+			
 		});
+		function top5MenuSetting(){
+		$("#top5Menu0").addClass("active in"); 
+			
+		}
+		
 		function ageLabelColorChange(){
 			$('.ageLabel').each(function() {
 			    var ageText = $(this).text();

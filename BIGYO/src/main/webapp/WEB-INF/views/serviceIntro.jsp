@@ -58,16 +58,162 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="pageTitle">
-						<h2>BIGYO 란 ?</h2>
+						<h2>검진모아란?</h2>
 					</div>
 				</div>
 			</div>
 		</div>
 		</section>
 
-		<section></section>
-
-		<section></section>
+		<!-- HOW WORKS SECTION -->
+		<section class="clearfix howWorksSection">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="howWorksInner">
+						<div class="row">
+							<div class="col-sm-4 col-sm-push-8 col-xs-12">
+								<div class="howWorksImage text-right">
+									<img src="img/works/works-big-1.png" alt="Image Works">
+								</div>
+							</div>
+							<div class="col-sm-8 col-sm-pull-4 col-xs-12">
+								<div class="howWorksInfo text-left">
+									<p>Step 1</p>
+									<h3>Find what you want</h3>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+										proident. sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="howWorksInner">
+						<div class="row">
+							<div class="col-sm-4 col-xs-12">
+								<div class="howWorksImage text-left">
+									<img src="img/works/works-big-2.png" alt="Image Works">
+								</div>
+							</div>
+							<div class="col-sm-8 col-xs-12">
+								<div class="howWorksInfo text-right">
+									<p>Step 2</p>
+									<h3>Review & Plan your day</h3>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+										proident. sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="howWorksInner">
+						<div class="row">
+							<div class="col-sm-4 col-sm-push-8 col-xs-12">
+								<div class="howWorksImage text-right">
+									<img src="img/works/works-big-3.png" alt="Image Works">
+								</div>
+							</div>
+							<div class="col-sm-8 col-sm-pull-4 col-xs-12">
+								<div class="howWorksInfo text-left">
+									<p>Step 3</p>
+									<h3>Explore Location</h3>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+										proident. sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
+		<!-- SERVICES SECTION -->
+		<section class="clearfix servicesSection">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="servicesItem">
+						<ul class="list-inline listServices">
+							<li>
+								<div class="servicesIcon">
+									<i class="icon-listy icon-key"></i>
+								</div>
+								<div class="servicesInfo">
+									<h2>Secure Trading</h2>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiusmod</p>
+								</div>
+							</li>
+							<li>
+								<div class="servicesIcon">
+									<i class="icon-listy icon-wreath"></i>
+								</div>
+								<div class="servicesInfo">
+									<h2>24/7 Hours Support</h2>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiusmod</p>
+								</div>
+							</li>
+							<li>
+								<div class="servicesIcon">
+									<i class="icon-listy icon-tag3"></i>
+								</div>
+								<div class="servicesInfo">
+									<h2>Easy Trading</h2>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiusmod</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
+		<!-- WORKS SECTION -->
+		<section class="clearfix worksArea">
+		<div class="container">
+			<div class="page-header text-center">
+				<h2>
+					How it Works? <small>This are some of most popular listing</small>
+				</h2>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 col-xs-12">
+					<div class="thumbnail text-center worksContent">
+						<img src="img/works/works-1.png" alt="Image works">
+						<div class="caption">
+							<a href="how-it-works.html"><h3>Find what you want</h3></a>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 col-xs-12">
+					<div class="thumbnail text-center worksContent">
+						<img src="img/works/works-2.png" alt="Image works">
+						<div class="caption">
+							<a href="how-it-works.html"><h3>Review & Plan your day</h3></a>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 col-xs-12">
+					<div class="thumbnail text-center worksContent">
+						<img src="img/works/works-3.png" alt="Image works">
+						<div class="caption">
+							<a href="how-it-works.html"><h3>Explore Location</h3></a>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="btnArea text-center">
+						<a href="#" class="btn btn-primary">Watch it now <i class="fa fa-play-circle" aria-hidden="true"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
 
 
 
@@ -105,8 +251,8 @@
 			var urlpath = $(location).attr("pathname");
 			if (urlpath.includes("/bigyo/serviceIntro")) {
 
-				$("#navmenu_serviceIntro").css("color","#39a1f4");
-		
+				$("#navmenu_serviceIntro").css("color", "#39a1f4");
+
 			}
 			/* navigation menu 주소에 따라서 active 설정 끝 */
 		});

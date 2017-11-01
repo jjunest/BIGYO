@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -152,8 +153,11 @@ public class HomeController {
 			model.addAttribute("result_list", result_list);
 			// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
 			model.addAttribute("pNo", pNo);
-			model.addAttribute("siDoSelect",siDoSelect);
-			
+			model.addAttribute("siDoSelect", siDoSelect);
+			// 검색된 총 데이터 수 구하기.
+			int totalSearchNum = medicaldao.selectAll_chk_hos_serv_totalNum();
+			model.addAttribute("totalSearchNum", totalSearchNum);
+
 		} else {
 			// HashMap 에 담에서 sql에 전달하자
 			HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
@@ -163,7 +167,13 @@ public class HomeController {
 			model.addAttribute("result_list", result_list);
 			// pageNo 전달해주기 - 밑에 pageNavigator를 위해서
 			model.addAttribute("pNo", pNo);
-			model.addAttribute("siDoSelect",siDoSelect);
+			model.addAttribute("siDoSelect", siDoSelect);
+			// 검색된 총 데이터 수 구하기.
+			String totalSearchNum = null;
+			HashMap<String, Object> totalNumMap = new HashMap<String, Object>();
+			totalNumMap.put("chk_loc_sido", siDoSelect);
+			int totalSearchNum_filter = medicaldao.selectAll_chk_hos_serv_filter_totalNum(totalNumMap);
+			model.addAttribute("totalSearchNum", totalSearchNum_filter);
 		}
 		return "eventHospitals";
 	}
@@ -208,7 +218,21 @@ public class HomeController {
 		String chk_rcdno = httpServletRequest.getParameter("chk_rcdno");
 
 		Chk_Hos_Serv_DTO chk_hos_serv_dto = medicaldao.selectOne_chk_hos_serv(Integer.parseInt(chk_rcdno));
-
+		// 가격이 비슷한 TOP5 병원을 구하기 위한 쿼리.
+		List<ServPrice_DTO> servPriceList = chk_hos_serv_dto.getServpriceList();
+		for (int i = 0; i < servPriceList.size(); i++) {
+			HashMap<String, Object> hashMap = new HashMap<String, Object>();
+			int selectedPrice = servPriceList.get(i).getServprice_price();
+			hashMap.put("chk_rcdno", chk_rcdno);
+			hashMap.put("selectedPrice", selectedPrice);
+			List<Chk_Hos_Serv_DTO> priceTop5_list = medicaldao.selectTop5_Pricew_chk_hos_serv(hashMap);
+			model.addAttribute("priceTop5_list_" + i, priceTop5_list);
+		}
+		// 5개의 비슷한 가격대의 병원 리스트 구하기
+		/*
+		 * List<Chk_Hos_Serv_DTO> result_list =
+		 * medicaldao.selectTop5_Price_chk_hos_serv();
+		 */
 		model.addAttribute("chk_hos_serv_dto", chk_hos_serv_dto);
 		return "hospitalDetails";
 	}
@@ -321,11 +345,12 @@ public class HomeController {
 		Date chk_end_date = java.sql.Date.valueOf(chk_end_date_string);
 
 		// 게시글이 만들어진 현재 시각 저장 current Time stamp
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String currentTimeStamp = null;
 		currentTimeStamp = formatter.format(cal.getTime());
 		Timestamp created_date = Timestamp.valueOf(currentTimeStamp);
+		System.out.println("this is created_date:" + created_date);
 
 		CheckUp_DTO insert_chkDTO = new CheckUp_DTO(chk_hos_name, chk_hos_pnum, "chk_price: field: not used",
 				chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, "chk_target_age field: not used", chk_info_link,
@@ -352,13 +377,17 @@ public class HomeController {
 			if (originalFilename.equals("")) {
 
 			} else {
-				System.out.println("this is originalFileName is empty");
+				System.out.println("this is originalFileName is not empty");
 				Integer originalFileBytes = new Integer((int) multipartFile.getSize());
 
 				String storedFileName = randId + "." + getExtension(originalFilename);
+				System.out.println("this is storedFileName:" + storedFileName);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/hostable_pic/");
 				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				// String uploadFullPath = uploadResourcesPath + storedFileName;
+
 				String imageUrl = "resources/img/hostable_pic/" + storedFileName;
+				System.out.println("this is imageUrl:" + imageUrl);
 				try {
 
 					// HOS_DTO 객체 만들기
@@ -367,8 +396,8 @@ public class HomeController {
 
 					// 파일 서버에 저장
 					multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
-					System.out.println("originalFilename => " + originalFilename);
-					System.out.println("fileFullPath => " + uploadFullPath);
+					System.out.println("this is originalFilename => " + originalFilename);
+					System.out.println("this is uploadFullPath => " + uploadFullPath);
 
 					// HOS_DTO 객체를 DataBase에 INSERT 해준다.
 					int insert_result_hos_table = medicaldao.insert_hos_DTO_ByObj(hos_dto);
@@ -397,6 +426,7 @@ public class HomeController {
 				String storedFileName = randId + "." + getExtension(originalFilename);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/servtable_pic/");
 				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				// String uploadFullPath = uploadResourcesPath + storedFileName;
 				String imageUrl = "resources/img/servtable_pic/" + storedFileName;
 				try {
 

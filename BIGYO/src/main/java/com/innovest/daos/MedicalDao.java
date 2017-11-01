@@ -44,10 +44,22 @@ public class MedicalDao {
 		return result_list;
 	}
 	
-	public List<Chk_Hos_Serv_DTO> selectAll_chk_hos_serv_filter(Map insertMap) {
+	public int selectAll_chk_hos_serv_totalNum() {
 		IDao dao = sqlsession.getMapper(IDao.class);
-		List<Chk_Hos_Serv_DTO> result_list = dao.selectAll_chk_hos_serv_filter(insertMap);
+		int result = dao.selectAll_chk_hos_serv_totalNum();
+		return result;
+	}
+	
+	public List<Chk_Hos_Serv_DTO> selectAll_chk_hos_serv_filter(Map hashMap) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		List<Chk_Hos_Serv_DTO> result_list = dao.selectAll_chk_hos_serv_filter(hashMap);
 		return result_list;
+	}
+	
+	public int selectAll_chk_hos_serv_filter_totalNum(Map hashMap) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int result = dao.selectAll_chk_hos_serv_filter_totalNum(hashMap);
+		return result;
 	}
 
 	public int insert_chk_hos_serv_DTO_ByObj(CheckUp_DTO targetObj) {
@@ -133,4 +145,11 @@ public class MedicalDao {
 		int db_result = dao.deleteByUpdate_chk_DTO(chk_rcdno);
 		return db_result;
 	}
+	
+	public List<Chk_Hos_Serv_DTO> selectTop5_Pricew_chk_hos_serv(Map hashMap) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		List<Chk_Hos_Serv_DTO> result_list = dao.selectTop5_Price_chk_hos_serv(hashMap);
+		return result_list;
+	}
+	
 }

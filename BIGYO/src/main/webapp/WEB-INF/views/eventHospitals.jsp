@@ -20,8 +20,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="ko">
-<style>
-</style>
 <head>
 
 <!-- SITE TITTLE -->
@@ -64,12 +62,12 @@
   <![endif]-->
 
 <style>
-@media (max-width:768px){
-#quickMapMenu {
-	display:none;
+@media ( max-width :768px) {
+	#quickMapMenu {
+		display: none;
+	}
 }
 
-}
 .pagination.hidden {
 	visibility: hidden;
 }
@@ -414,12 +412,16 @@
 		//navigationMenuColored() started
 		function navigationMenuColored() {
 			var urlpath = $(location).attr("pathname");
-			if (urlpath.includes("/bigyo/eventHospitals_map")) {
-				$("#navmenu_eventHospitals_map").css("color", "#39a1f4");
-			} else if (urlpath.includes("/bigyo/eventHospitals")) {
-				$("#navmenu_eventHospitals").css("color", "#39a1f4");
-			}
 
+			//로컬용
+		/* 	if (urlpath.indexOf("/bigyo/eventHospitals")!=-1) {
+				$("#navmenu_eventHospitals").css("color", "#39a1f4");
+			} 
+ */
+			//서버용
+			if (urlpath.indexOf("/eventHospitals")!=-1) {
+				$("#navmenu_eventHospitals").css("color", "#39a1f4");
+			} 
 		}
 		//navigationMenuColored() end
 		//noResultData() started

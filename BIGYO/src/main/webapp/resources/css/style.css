@@ -2018,7 +2018,7 @@ a.link:hover {
 
 @media ( min-width : 768px) {
 	.navbar-default .navbar-nav.navbar-right {
-		margin-right: 165px;
+		margin-right: 40px;
 	}
 }
 
@@ -2046,7 +2046,7 @@ a.link:hover {
 	.navbar-default .navbar-nav>li>a {
 		margin: 0;
 		padding: 38px 10px;
-		font-size: 12px;
+	font-size: 17px;
 		color: #ffffff;
 	}
 }
@@ -2055,7 +2055,7 @@ a.link:hover {
 	.navbar-default .navbar-nav>li>a {
 		margin: 0;
 		padding: 40px 20px 37px 20px;
-		font-size: 14px;
+		font-size: 17px;
 	}
 }
 
@@ -2924,13 +2924,13 @@ a.link:hover {
 
 .navbar-brand {
 	width: 150px;
-	padding: 15px 10px;
+	padding: 10px 10px;
 }
 
 @media ( min-width : 768px) {
 	.navbar-brand {
 		width: auto;
-		padding: 25px 10px;
+		padding: 10px 10px;
 	}
 }
 

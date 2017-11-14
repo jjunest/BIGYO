@@ -8,7 +8,32 @@
 <%--ContextPath 선언 --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<head>
 
+<style>
+@font-face {
+
+}
+
+a {
+	
+}
+
+.navbar-brand>img {
+    width: 250px;
+}
+
+@media (max-width:768px){ 
+	.navbar-brand>img {
+		  width: 200px;
+	}
+}
+
+
+
+</style>
+
+</head>
 
 
 
@@ -37,7 +62,7 @@
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
 				<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<%=cp%>/index"><img src="<%=cp%>/resources/img/bigyo_logo_blue.png" alt="logo"></a>
+			<a class="navbar-brand" href="<%=cp%>/index"><img src="<%=cp%>/resources/img/LOGO.png" alt="logo"></a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -46,10 +71,10 @@
 
 
 
-				<li class=""><a href="<%=cp%>/serviceIntro" id="navmenu_serviceIntro">서비스 소개 </a></li>
-				<li class=""><a href="<%=cp%>/companyIntro" id="navmenu_companyIntro">회사 소개 </a></li>
-				<li class=""><a href="<%=cp%>/eventHospitals" id="navmenu_eventHospitals">할인 검진 병원 </a></li>
-				<li class=""><a href="<%=cp%>/eventHospitals_map" id="navmenu_eventHospitals_map">지도 검색 </a></li>
+				<li class=""><a href="<%=cp%>/serviceIntro" style="font-family: NavFont" id="navmenu_serviceIntro">서비스 소개 </a></li>
+				<li class=""><a href="<%=cp%>/companyIntro" style="font-family: NavFont"  id="navmenu_companyIntro">회사 소개 </a></li>
+				<li class=""><a href="<%=cp%>/eventHospitals" style="font-family: NavFont"  id="navmenu_eventHospitals">할인 검진 병원 </a></li>
+	<%-- 			<li class=""><a href="<%=cp%>/eventHospitals_map" style="font-family: NavFont"  id="navmenu_eventHospitals_map">지도 검색 </a></li> --%>
 
 
 
@@ -60,11 +85,10 @@
 
 					</c:when>
 					<c:otherwise>
-					
-						<li class=""><a href="<%=cp%>/insert_eventhos" id="navmenu_insert_eventhos">정보 입력 </a></li>
-						<li class=""><a href="<%=cp%>/questions" id="navmenu_questions">문의 사항 </a></li>
-						<li class=""><a href="<c:url value="/j_spring_security_logout" />">
-						 <sec:authorize access="hasRole('ROLE_ADMIN')">관리자</sec:authorize> 로그아웃
+
+						<li class=""><a href="<%=cp%>/insert_eventhos" style="font-family: NavFont"  id="navmenu_insert_eventhos">정보 입력 </a></li>
+						<li class=""><a href="<%=cp%>/questions" style="font-family: NavFont"  id="navmenu_questions">문의 사항 </a></li>
+						<li class=""><a href="<c:url value="/j_spring_security_logout" />" style="font-family: NavFont" > <sec:authorize access="hasRole('ROLE_ADMIN')">관리자</sec:authorize> 로그아웃
 						</a></li>
 
 					</c:otherwise>

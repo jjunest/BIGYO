@@ -56,4 +56,10 @@ public interface IDao {
 	
 	public List<Chk_Hos_Serv_DTO> selectTop5_Price_chk_hos_serv(Map hashMap);
 	
+	public int update_click_num(Map hashMap);
+	
+	public List<Chk_Hos_Serv_DTO> selectTopSix_orderByClickNum();
+	
+	public List<Chk_Hos_Serv_DTO> selectTopSix_orderByCreatedDate();
+	
 }

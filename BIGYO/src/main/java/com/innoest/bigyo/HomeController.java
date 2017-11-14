@@ -63,14 +63,16 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 
-		return "redirect:index";
+		return "redirect:serviceIntro";
 	}
 
 	@RequestMapping("/index")
 	public String index(Model model) {
-
 		System.out.println("this is index");
-
+		List<Chk_Hos_Serv_DTO> topSix_click_result_list = medicaldao.selectTopSix_orderByClickNum();
+		List<Chk_Hos_Serv_DTO> topSix_creDate_result_list =  medicaldao.selectTopSix_orderByCreatedDate();
+		model.addAttribute("topSix_click_result_list", topSix_click_result_list);
+		model.addAttribute("topSix_creDate_result_list", topSix_creDate_result_list);
 		return "index";
 	}
 
@@ -217,6 +219,11 @@ public class HomeController {
 	public String hospitalDetails(HttpServletRequest httpServletRequest, Model model) {
 		String chk_rcdno = httpServletRequest.getParameter("chk_rcdno");
 
+		// HIT 수를 위한 UPDATE 문
+		HashMap<String, Object> hitHashMap = new HashMap<String, Object>();
+		hitHashMap.put("chk_rcdno", chk_rcdno);
+		medicaldao.update_click_num(hitHashMap);
+		
 		Chk_Hos_Serv_DTO chk_hos_serv_dto = medicaldao.selectOne_chk_hos_serv(Integer.parseInt(chk_rcdno));
 		// 가격이 비슷한 TOP5 병원을 구하기 위한 쿼리.
 		List<ServPrice_DTO> servPriceList = chk_hos_serv_dto.getServpriceList();
@@ -379,12 +386,13 @@ public class HomeController {
 			} else {
 				System.out.println("this is originalFileName is not empty");
 				Integer originalFileBytes = new Integer((int) multipartFile.getSize());
-
 				String storedFileName = randId + "." + getExtension(originalFilename);
 				System.out.println("this is storedFileName:" + storedFileName);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/hostable_pic/");
-				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
-				// String uploadFullPath = uploadResourcesPath + storedFileName;
+				// 로켈에서 돌아가는 경로
+				//String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				// 서버에서 돌아가는 경로
+				String uploadFullPath = uploadResourcesPath + storedFileName;
 
 				String imageUrl = "resources/img/hostable_pic/" + storedFileName;
 				System.out.println("this is imageUrl:" + imageUrl);
@@ -425,8 +433,10 @@ public class HomeController {
 				Integer originalFileBytes = new Integer((int) multipartFile.getSize());
 				String storedFileName = randId + "." + getExtension(originalFilename);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/servtable_pic/");
-				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
-				// String uploadFullPath = uploadResourcesPath + storedFileName;
+				// 로컬에서 돌아가는 업로드 경로
+				//String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				// 서버에서 돌아가는 업로드 경로
+				String uploadFullPath = uploadResourcesPath + storedFileName;
 				String imageUrl = "resources/img/servtable_pic/" + storedFileName;
 				try {
 
@@ -617,7 +627,10 @@ public class HomeController {
 
 				String storedFileName = randId + "." + getExtension(originalFilename);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/hostable_pic/");
-				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				// 로컬에서 돌아가는 업로드 경로
+				//String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				// 서버에서 돌아가는 업로드 경로
+				String uploadFullPath = uploadResourcesPath + storedFileName;
 				String imageUrl = "resources/img/hostable_pic/" + storedFileName;
 				try {
 
@@ -655,7 +668,11 @@ public class HomeController {
 
 				String storedFileName = randId + "." + getExtension(originalFilename);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/servtable_pic/");
-				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				// 로컬에서 돌아가는 업로드 경로
+				//String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				// 서버에서 돌아가는 업로드 경로
+				String uploadFullPath = uploadResourcesPath + storedFileName;
+				
 				String imageUrl = "resources/img/servtable_pic/" + storedFileName;
 				try {
 

@@ -556,8 +556,10 @@
 			$("#deleteHospitalDetailBT").click(function(){
 				var confirmAnwer = confirm("해당 정보를 정말로 삭제하시겠습니까?");
 			if(confirmAnwer ==true){
-
-				location.href='/bigyo/deleteByUpdate_chk_DTO?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+				/* 로컬용 주소 */
+				//location.href='/bigyo/deleteByUpdate_chk_DTO?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+				/* 서버용 주소 */
+				location.href='/deleteByUpdate_chk_DTO?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
 								}else{
 				
 			}
@@ -569,8 +571,10 @@
 			$("#modifyHospitalDetailBT").click(function(){
 					var confirmAnwer = confirm("해당 정보를 정말로 수정하시겠습니까?");
 				if(confirmAnwer ==true){
-
-					location.href='/bigyo/modifyHospitalDetail?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+/* 로컬용 주소 */
+					//location.href='/bigyo/modifyHospitalDetail?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+					/* 서버용 주소 */
+					location.href='/modifyHospitalDetail?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
 									}else{
 					
 				}
@@ -579,8 +583,10 @@
 			$("#deleteHospitalDetailFromDatabaseBT").click(function(){
 				var confirmAnwer = confirm("해당 정보를 데이터베이스에서 정말로 삭제하겠습니까?");
 				if(confirmAnwer ==true){
-
-				location.href='/bigyo/deleteHospitalDetailFromDatabaseBT?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+					/* 로컬용 주소 */
+				//location.href='/bigyo/deleteHospitalDetailFromDatabaseBT?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
+				/* 서버용 주소 */
+				location.href='/deleteHospitalDetailFromDatabaseBT?chk_rcdno='+'${chk_hos_serv_dto.chk_rcdno}';
 				}else{
 					
 				}

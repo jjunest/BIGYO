@@ -89,13 +89,23 @@
 
 	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE 시작 -->
 	<select id="selectAll_chk_hos_serv" resultMap="Chk_Hos_Serv_resultMap">
-		SELECT * FROM checkup_info WHERE chk_ifdeleted = 'N' LIMIT #{offset},
+		SELECT * FROM
+		checkup_info WHERE chk_ifdeleted = 'N' LIMIT #{offset},
 		10
-		<!-- SELECT * FROM checkup_info LIMIT #{offset}, 10 -->
 	</select>
 	<select id="selectAll_chk_hos_serv_totalNum" resultType="Integer">
-		SELECT COUNT(*) FROM checkup_info WHERE chk_ifdeleted = 'N'
-		<!-- SELECT * FROM checkup_info LIMIT #{offset}, 10 -->
+		SELECT
+		COUNT(*) FROM checkup_info WHERE chk_ifdeleted = 'N'
+	</select>
+	<select id="selectTopSix_orderByClickNum" resultMap="Chk_Hos_Serv_resultMap">
+		SELECT *
+		FROM checkup_info WHERE chk_ifdeleted = 'N' ORDER BY chk_click_number DESC
+		LIMIT 6
+	</select>
+	<select id="selectTopSix_orderByCreatedDate" resultMap="Chk_Hos_Serv_resultMap">
+		SELECT *
+		FROM checkup_info WHERE chk_ifdeleted = 'N' ORDER BY chk_created_date DESC
+		LIMIT 6
 	</select>
 	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE 끝 -->
 
@@ -122,17 +132,24 @@
 		DATA FROM DATABASE 끝 -->
 
 	<!-- hospitalDetail 페이지를 위한, 가격이 비슷한 TOP 5 항목 구하기 시작 -->
-	<select id="selectTop5_Price_chk_hos_serv" resultMap="Chk_Hos_Serv_resultMap" parameterType="hashmap">
+	<select id="selectTop5_Price_chk_hos_serv" resultMap="Chk_Hos_Serv_resultMap"
+		parameterType="hashmap">
 		SELECT
-		CHKT.chk_rcdno, CHKT.chk_hos_name, CHKT.chk_hos_pnum,
+		CHKT.chk_rcdno, CHKT.chk_hos_name,
+		CHKT.chk_hos_pnum,
 		CHKT.chk_price,
-		CHKT.chk_loc_sido, CHKT.chk_loc_full, CHKT.chk_loc_lat,
-		CHKT.chk_loc_lng, CHKT.chk_target_age, CHKT.chk_info_link,
+		CHKT.chk_loc_sido, CHKT.chk_loc_full,
+		CHKT.chk_loc_lat,
+		CHKT.chk_loc_lng, CHKT.chk_target_age,
+		CHKT.chk_info_link,
 		CHKT.chk_mid_company, CHKT.chk_mid_company_pnum,
 		CHKT.chk_mid_company_link, CHKT.chk_end_date, CHKT.chk_created_date,
-		CHKT.chk_ifdeleted from checkup_info AS CHKT INNER JOIN service_price AS SPT on
-		CHKT.chk_rcdno = SPT.servprice_chk_rcdno WHERE CHKT.chk_ifdeleted =
-		'N' AND NOT (chk_rcdno = #{chk_rcdno}) order by ABS(SPT.servprice_price - #{selectedPrice} ) limit 5;
+		CHKT.chk_ifdeleted from checkup_info AS CHKT INNER JOIN service_price
+		AS SPT on
+		CHKT.chk_rcdno = SPT.servprice_chk_rcdno WHERE
+		CHKT.chk_ifdeleted =
+		'N' AND NOT (chk_rcdno = #{chk_rcdno}) order by
+		ABS(SPT.servprice_price - #{selectedPrice} ) limit 5;
 	</select>
 	<!-- hospitalDetail 페이지를 위한, 가격이 비슷한 TOP 5 항목 구하기 끝 -->
 
@@ -150,7 +167,8 @@
 		VALUES
 		(#{chk_hos_name},#{chk_hos_pnum},#{chk_price},#{chk_loc_sido},#{chk_loc_full},
 		#{chk_loc_lat},#{chk_loc_lng},#{chk_target_age},#{chk_info_link},#{chk_mid_company},#{chk_mid_company_pnum},
-		#{chk_mid_company_link},#{chk_end_date}, #{chk_created_date}, #{chk_ifdeleted})
+		#{chk_mid_company_link},#{chk_end_date}, #{chk_created_date},
+		#{chk_ifdeleted})
 	</insert>
 	<!-- checkupinfo 테이블에서 Max rcdno 찾아오기 -->
 	<select id="select_rcdno_chkTable" resultType="Integer">
@@ -266,6 +284,16 @@
 		DELETE FROM checkup_info where chk_rcdno =
 		#{chk_rcdno}
 	</delete>
+
+	<update id="update_click_num" parameterType="hashmap">
+		UPDATE checkup_info
+		SET chk_click_number = chk_click_number + 1 WHERE chk_rcdno =
+		${chk_rcdno}
+	</update>
+
+
+
+
 
 </mapper>
 

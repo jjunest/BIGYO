@@ -74,16 +74,14 @@
 						<div class="row">
 							<div class="col-sm-4 col-sm-push-8 col-xs-12">
 								<div class="howWorksImage text-right">
-									<img src="img/works/works-big-1.png" alt="Image Works">
+									<i class="fa fa-binoculars processImg" aria-hidden="true" style="color: #2980bc; font-size: 80px; vertical-align: middle; margin-right: 200px"></i>
 								</div>
 							</div>
 							<div class="col-sm-8 col-sm-pull-4 col-xs-12">
 								<div class="howWorksInfo text-left">
-									<p>Step 1</p>
-									<h3>Find what you want</h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-										proident. sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem</p>
+									<p style="font-size: 25px; color: black; font-weight: bold;">Step 1</p>
+									<h3>전국 건강 검진 상품 정보 수집</h3>
+									<p>검진모아가 대한민국에 존재하는 모든 할인 건강검진 상품을 수집합니다.</p>
 								</div>
 							</div>
 						</div>
@@ -92,16 +90,14 @@
 						<div class="row">
 							<div class="col-sm-4 col-xs-12">
 								<div class="howWorksImage text-left">
-									<img src="img/works/works-big-2.png" alt="Image Works">
+									<i class="fa fa-balance-scale processImg" aria-hidden="true" style="color: #2980bc; font-size: 80px; vertical-align: middle; margin-left: 200px"></i>
 								</div>
 							</div>
 							<div class="col-sm-8 col-xs-12">
 								<div class="howWorksInfo text-right">
-									<p>Step 2</p>
-									<h3>Review & Plan your day</h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-										proident. sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem</p>
+									<p style="font-size: 25px;color: black; font-weight: bold;">Step 2</p>
+									<h3>검진모아에서 건강검진 상품 비교 및 선택</h3>
+									<p>검진모아에서 전국 건강검진 상품들을 자세히 비교하세요.</p>
 								</div>
 							</div>
 						</div>
@@ -110,16 +106,15 @@
 						<div class="row">
 							<div class="col-sm-4 col-sm-push-8 col-xs-12">
 								<div class="howWorksImage text-right">
-									<img src="img/works/works-big-3.png" alt="Image Works">
+									<i class="fa fa-hospital-o processImg" aria-hidden="true" style="color: #2980bc; font-size: 80px; vertical-align: middle; margin-right: 200px"></i>
+
 								</div>
 							</div>
 							<div class="col-sm-8 col-sm-pull-4 col-xs-12">
 								<div class="howWorksInfo text-left">
-									<p>Step 3</p>
-									<h3>Explore Location</h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-										proident. sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem</p>
+									<p style="font-size: 25px;color: black; font-weight: bold;">Step 3</p>
+									<h3>주관 업체 및 중개업체를 통해 예약과 검진</h3>
+									<p>주관 업체 및 중개 업체를 통해서 건강검진을 예약하고 검진받으세요.</p>
 								</div>
 							</div>
 						</div>
@@ -128,92 +123,7 @@
 			</div>
 		</div>
 		</section>
-		<!-- SERVICES SECTION -->
-		<section class="clearfix servicesSection">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="servicesItem">
-						<ul class="list-inline listServices">
-							<li>
-								<div class="servicesIcon">
-									<i class="icon-listy icon-key"></i>
-								</div>
-								<div class="servicesInfo">
-									<h2>Secure Trading</h2>
-									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiusmod</p>
-								</div>
-							</li>
-							<li>
-								<div class="servicesIcon">
-									<i class="icon-listy icon-wreath"></i>
-								</div>
-								<div class="servicesInfo">
-									<h2>24/7 Hours Support</h2>
-									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiusmod</p>
-								</div>
-							</li>
-							<li>
-								<div class="servicesIcon">
-									<i class="icon-listy icon-tag3"></i>
-								</div>
-								<div class="servicesInfo">
-									<h2>Easy Trading</h2>
-									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiusmod</p>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		</section>
-		<!-- WORKS SECTION -->
-		<section class="clearfix worksArea">
-		<div class="container">
-			<div class="page-header text-center">
-				<h2>
-					How it Works? <small>This are some of most popular listing</small>
-				</h2>
-			</div>
-			<div class="row">
-				<div class="col-sm-4 col-xs-12">
-					<div class="thumbnail text-center worksContent">
-						<img src="img/works/works-1.png" alt="Image works">
-						<div class="caption">
-							<a href="how-it-works.html"><h3>Find what you want</h3></a>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-4 col-xs-12">
-					<div class="thumbnail text-center worksContent">
-						<img src="img/works/works-2.png" alt="Image works">
-						<div class="caption">
-							<a href="how-it-works.html"><h3>Review & Plan your day</h3></a>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-4 col-xs-12">
-					<div class="thumbnail text-center worksContent">
-						<img src="img/works/works-3.png" alt="Image works">
-						<div class="caption">
-							<a href="how-it-works.html"><h3>Explore Location</h3></a>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="btnArea text-center">
-						<a href="#" class="btn btn-primary">Watch it now <i class="fa fa-play-circle" aria-hidden="true"></i></a>
-					</div>
-				</div>
-			</div>
-		</div>
-		</section>
+
 
 
 
@@ -249,12 +159,26 @@
 		$(document).ready(function() {
 			/* navigation menu 주소에 따라서 active 설정 시작 */
 			var urlpath = $(location).attr("pathname");
-			if (urlpath.includes("/bigyo/serviceIntro")) {
+			
+			//로컬용
+	/* 		if (urlpath.includes("/bigyo/serviceIntro")) {
+
+				$("#navmenu_serviceIntro").css("color", "#39a1f4");
+
+			} */
+			
+			//서버용
+					if (urlpath.indexOf("/serviceIntro") != -1) {
 
 				$("#navmenu_serviceIntro").css("color", "#39a1f4");
 
 			}
+			
 			/* navigation menu 주소에 따라서 active 설정 끝 */
+			
+			
+			// 모바일 버전 
+			alert('현재 검진모아는 PC 전용 기준으로 개발되었습니다. \n스마트폰 화면은 다소 불편하실 수 있으니 PC버전 화면으로 사용해주시면 감사하겠습니다.\n또한, 검진모아 Android/IOS 버전 어플리케이션은 12월 안에 출시할 예정입니다. \n검진모아를 기억해주시고 많은 이용 부탁드립니다. \n감사합니다.');
 		});
 	</script>
 </body>

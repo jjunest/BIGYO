@@ -1,5 +1,18 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- 나누기의 몫을 정수값으로 구하기 위한 jstl 태그 라이브러리 설정 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<!-- Listsize를 위한 jstl태그라이브러리 설정 -->
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.Collections"%>
+<%@ page import="com.innovest.dtos.Chk_Hos_Serv_DTO"%>
+<%@ page import="com.innovest.dtos.Serv_DTO"%>
+<%@ page import="com.innovest.dtos.ServAge_DTO"%>
+<%@ page import="com.innovest.dtos.ServPrice_DTO"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="ko">
@@ -43,6 +56,65 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+<style>
+@font-face {
+	font-family: 'MyFont';
+	src: url(resources/font/BM_HANNA_11yrs.ttf);
+	font-weight: bold;
+}
+
+.articleContent {
+	text-align: center;
+}
+
+.worksArea .fa {
+	font-size: 100px;
+	margin: 0px 0px 30px 0px;
+	color: #2980bc;
+}
+
+body {
+	font-family: MyFont;
+}
+
+h1 {
+	color: #373c48;
+}
+
+.howWorksSection .fa {
+	font-size: 100px;
+	color: #2980bc;
+}
+
+
+.processText {
+	display: block;
+	margin-top: 100px;
+	font-size: 25px;
+	color: #3b291c;
+	font-weight: 600;
+	text-align: center;
+}
+
+.processImg {
+	text-align: center;
+	display: block;
+	margin-top: 55px;
+}
+
+@media ( max-width :768px) {
+	#quickMapMenu {
+		display: none;
+	}
+	.processText {
+		margin-top: 140px;
+	}
+	.processImg {
+		
+	}
+}
+</style>
+
 </head>
 
 <body class="body-wrapper">
@@ -57,31 +129,40 @@
 		<div class="inner">
 
 			<!-- Slide One -->
-			<div class="slide slide1" style="background-image: url(resources/img/banner/slider-1.jpg);">
+			<div class="slide slide1" style="background-image: url(resources/img/index_imgs/jumbotron3black.png);">
 				<div class="container">
 					<div class="slide-inner1 common-inner">
-						<span class="h1 from-bottom">건강검진 후보 병원 No1</span> <span class="h4 from-bottom"> 30% 할인 된 가격으로 건강검진 시작!</span><br>
+						<span class="h2 from-bottom" style="font-family: MyFont; color: #ffffff; font-size: 40px">국내 최초 프리미엄 건강검진 비교 검색 서비스</span><br> <span class="h1 from-bottom"
+							style="font-family: MyFont; color: #ffffff; text-align: center"
+						> - 검진모아 - </span><br>
 					</div>
 				</div>
 			</div>
 
 			<!-- Slide Two -->
-			<div class="slide slide2" style="background-image: url(resources/img/banner/slider-1.jpg);">
+			<div class="slide slide2" style="background-image: url(resources/img/index_imgs/jumbotron8.jpg);">
 				<div class="container">
 					<div class="slide-inner2 common-inner">
-						<span class="h1 from-bottom">건강검진 후보 병원 No2</span> <span class="h4 from-bottom"> 30% 할인 된 가격으로 건강검진 시작!</span><br>
+						<span class="h2 from-bottom" style="font-family: MyFont; color: #ffffff; font-size: 40px">모든 건강검진 상품을 한 곳에 모았습니다</span><br> <span class="h1 from-bottom"
+							style="font-family: MyFont; color: #ffffff; text-align: center"
+						> 프리미엄 건강검진 비교 검색 서비스 - 검진모아</span><br>
 					</div>
 				</div>
 			</div>
 
 			<!-- Slide Three -->
-			<div class="slide slideResize slide4" style="background-image: url(resources/img/banner/slider-1.jpg);">
+			<div class="slide slide3" style="background-image: url(resources/img/index_imgs/jumbotron7black.png);">
 				<div class="container">
-					<div class="common-inner slide-inner4">
-						<span class="h1 from-bottom">건강검진 후보 병원 No3</span> <span class="h4 from-bottom"> 30% 할인 된 가격으로 건강검진 시작!</span><br>
+					<div class="slide-inner3 common-inner">
+						<span class="h2 from-bottom" style="font-family: MyFont; color: #ffffff; font-size: 40px; text-align: right">이제 검진모아를 사용하고</span> <span class="h2 from-bottom"
+							style="font-family: MyFont; color: #ffffff; font-size: 40px; text-align: right"
+						>합리적인 비용으로</span><br> <span class="h1 from-bottom" style="font-family: MyFont; color: #ffffff;"> 건강검진을 받으세요</span><br>
 					</div>
 				</div>
 			</div>
+
+
+
 
 		</div>
 		</section>
@@ -115,7 +196,7 @@
 
 							<div class="form-group col-sm-6 col-xs-12">
 								<button type="submit" class="btn btn-primary">
-									Search <i class="fa fa-search" aria-hidden="true"></i>
+									건강검진 상품 검색 <i class="fa fa-search" aria-hidden="true"></i>
 								</button>
 							</div>
 
@@ -127,7 +208,7 @@
 		</section>
 
 		<!-- YOUTUBE VIDEO SECTION -->
-		<section>
+		<!-- 		<section>
 		<div class="container">
 			<div class="thumbnail blogInner">
 				<div class="embed-responsive embed-responsive-16by9">
@@ -135,469 +216,216 @@
 				</div>
 			</div>
 		</div>
-		</section>
+		</section> -->
 
 
-		<!-- CARS SECTION -->
-		<section class="clearfix filterProtfolio">
+		<!-- worksArea SECTION-->
+		<section class="clearfix worksArea">
 		<div class="container">
 			<div class="page-header text-center">
-				<h2>
-					New/Used Cars <small>This are some of most popular listing</small>
-				</h2>
+				<h1>
+					이제 합리적인 비교 후에 <br> 건강검진 상품을 선택하세요
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 col-xs-12">
+					<div class="thumbnail articleContent">
+						<i class="fa fa-search-plus" aria-hidden="true"></i>
+						<div class="caption">
+
+							<h3 style="font-family: MyFont; font-size: 27px">전국/지역별 건강검진 상품 검색</h3>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 col-xs-12">
+					<div class="thumbnail articleContent">
+						<i class="fa fa-balance-scale" aria-hidden="true"></i>
+						<div class="caption">
+
+							<h3 style="font-family: MyFont; font-size: 27px">
+								비슷한 건강검진 상품과 비교하기
+								<p>가격 비교, 항목 비교</p>
+							</h3>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-sm-4 col-xs-12">
+					<div class="thumbnail articleContent">
+						<i class="fa fa-user-md" aria-hidden="true"></i>
+						<div class="caption">
+
+							<h3 style="font-family: MyFont; font-size: 27px">
+								나에게 적합한 건강검진 추천
+								<p>*추후 서비스 예정</p>
+							</h3>
+
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
+
+	<section> </section>
+
+		<!-- CARS SECTION -->
+		<section class="clearfix filterProtfolio" style="background-color: #dddddd;">
+		<div class="container">
+			<div class="page-header text-center">
+				<h1>전국 건강 검진 상품</h1>
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="filter-container isotopeFilters">
 						<ul class="list-inline filter">
-							<li class="active"><a href="#" data-filter="*">Popular Item</a></li>
-							<li><a href="#" data-filter=".recentItem">Recent Item</a></li>
-							<li><a href="#" data-filter=".featuredItem">Featured Item</a></li>
+							<li class="active" id="activeClickTopHosList_liTag" class=""><a href="#" data-filter=".clickTopItem" id="activeClickTopHosList_aTag">인기 건강 검진</a></li>
+							<!-- 		<li class = ""><a href="#" data-filter=".recentItem">최근 등록 검진</a></li> -->
+
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="row isotopeContainer" id="container">
-				<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector featuredItem">
-					<article class=""> <figure> <img src="resources/img/cars/car-1.jpg" alt="Image Protfolio" class="img-responsive">
-					<div class="overlay-background">
-						<div class="inner"></div>
-					</div>
-					<a href="category-grid.html">
-						<div class="overlay">
-							<div class="overlayInfo">
-								<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
-							</div>
+				<c:forEach var="listValue" items="${topSix_click_result_list}">
+					<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector clickTopItem">
+						<article class=""> <figure> <img src="${listValue.hosList[0].hos_pic_link}" alt="Image Protfolio" class="img-responsive">
+						<div class="overlay-background">
+							<div class="inner"></div>
 						</div>
-					</a> </figure>
-					<div class="figureBody">
-						<h2>
-							<a href="category-grid.html">BMW M3 E92 2016 <i class="fa fa-check-circle" aria-hidden="true"></i></a>
-						</h2>
-						<p>
-							19 Dec, 2016, <a href="category-grid.html">BMW</a>
-						</p>
-						<h3>$80,000</h3>
-					</div>
-					<div class="figureFooter">
-						<p>Brand New, Automatic, 80 km/h</p>
-					</div>
-					</article>
-				</div>
-
-				<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector recentItem">
-					<article class=""> <figure> <img src="resources/img/cars/car-2.jpg" alt="Image Protfolio" class="img-responsive">
-					<div class="overlay-background">
-						<div class="inner"></div>
-					</div>
-					<a href="category-list-left.html">
-						<div class="overlay">
-							<div class="overlayInfo">
-								<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
+						<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}">
+							<div class="overlay">
+								<!-- <div class="overlayInfo">
+									<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
+								</div> -->
 							</div>
-						</div>
-					</a> </figure>
-					<div class="figureBody">
-						<h2>
-							<a href="category-list-left.html">BMW M3 E92 2016 <i class="fa fa-check-circle" aria-hidden="true"></i></a>
-						</h2>
-						<p>
-							19 Dec, 2016, <a href="category-list-left.html">BMW</a>
-						</p>
-						<h3>$80,000</h3>
-					</div>
-					<div class="figureFooter">
-						<p>Brand New, Automatic, 80 km/h</p>
-					</div>
-					</article>
-				</div>
+						</a> </figure>
+						<div class="figureBody">
+							<h2>
+								<a href="hospitalDetails?chk_rcdno=${listValue.chk_rcdno}">${listValue.chk_hos_name}<i class="fa fa-check-circle" aria-hidden="true"></i></a>
+							</h2>
 
-				<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector recentItem">
-					<article class=""> <figure> <img src="resources/img/cars/car-3.jpg" alt="Image Protfolio" class="img-responsive">
-					<div class="overlay-background">
-						<div class="inner"></div>
+							<%
+								//ageSetting 
+									List<String> AgesSettingList = new ArrayList<String>();
+									Chk_Hos_Serv_DTO chk_hos_serv_dto = (Chk_Hos_Serv_DTO) pageContext.getAttribute("listValue");
+									for (ServPrice_DTO servprice_dto : chk_hos_serv_dto.getServpriceList()) {
+										for (ServAge_DTO servage_dto : servprice_dto.getServageList()) {
+											String afterSettingAge;
+											afterSettingAge = servage_dto.getServage_age() + "대";
+											if (AgesSettingList.contains(afterSettingAge)) {
+											} else {
+												AgesSettingList.add(afterSettingAge);
+											}
+										}
+									}
+									Collections.sort(AgesSettingList);
+									if (AgesSettingList.contains("0대")) {
+										Collections.replaceAll(AgesSettingList, "0대", "전체");
+									}
+							%>
+
+							<c:forEach var="servPriceListValue" items="${listValue.servpriceList}">
+								<div>
+									<h3 style="color: #848484; display: inline;">
+										<i class="fa fa-krw" aria-hidden="true"></i>
+										<fmt:formatNumber>${servPriceListValue.servprice_price}  </fmt:formatNumber>
+
+									</h3>
+									<c:forEach var="servAgeListValue" items="${servPriceListValue.servageList}">
+										<!-- 전체 연령을 표시 시작 -->
+										<%
+											ServAge_DTO servage_dto = (ServAge_DTO) pageContext.getAttribute("servAgeListValue");
+														String filteredAge;
+														if (servage_dto.getServage_age().equals("0")) {
+															filteredAge = "전체";
+
+														} else {
+															filteredAge = servage_dto.getServage_age() + "대";
+														}
+										%>
+
+
+										<span class="label label-info ageLabel" style="vertical-align: 25%;"><%=filteredAge%></span>
+										<!-- 전체 연령을 표시 끝 -->
+									</c:forEach>
+								</div>
+							</c:forEach>
+						</div>
+						<div class="figureFooter">
+							<p style="font-size: 15px">
+								<span class="glyphicon glyphicon-copyright-mark"></span>&nbsp;&nbsp;주관 업체: ${listValue.chk_mid_company}
+							</p>
+						</div>
+						</article>
 					</div>
-					<a href="category-grid-right.html">
-						<div class="overlay">
-							<div class="overlayInfo">
-								<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
+				</c:forEach>
+
+
+
+				<%-- <c:forEach var="listValue" items="${topSix_creDate_result_list}">
+					<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector recentItem">
+						<article class=""> <figure> <img src="${listValue.hosList[0].hos_pic_link}" alt="Image Protfolio" class="img-responsive">
+						<div class="overlay-background">
+							<div class="inner"></div>
+						</div>
+						<a href="category-list-left.html">
+							<div class="overlay">
+								<div class="overlayInfo">
+									<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
+								</div>
 							</div>
+						</a> </figure>
+						<div class="figureBody">
+							<h2>
+								<a href="category-list-left.html">BMW M3 E92 2016 <i class="fa fa-check-circle" aria-hidden="true"></i></a>
+							</h2>
+							<p>
+								19 Dec, 2016, <a href="category-list-left.html">BMW</a>
+							</p>
+							<h3>$80,000</h3>
 						</div>
-					</a> </figure>
-					<div class="figureBody">
-						<h2>
-							<a href="category-grid-right.html">BMW M3 E92 2016 <i class="fa fa-check-circle" aria-hidden="true"></i></a>
-						</h2>
-						<p>
-							19 Dec, 2016, <a href="category-grid-right.html">BMW</a>
-						</p>
-						<h3>$80,000</h3>
-					</div>
-					<div class="figureFooter">
-						<p>Brand New, Automatic, 80 km/h</p>
-					</div>
-					</article>
-				</div>
-
-				<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector recentItem">
-					<article class=""> <figure> <img src="resources/img/cars/car-4.jpg" alt="Image Protfolio" class="img-responsive">
-					<div class="overlay-background">
-						<div class="inner"></div>
-					</div>
-					<a href="category-grid.html">
-						<div class="overlay">
-							<div class="overlayInfo">
-								<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
-							</div>
+						<div class="figureFooter">
+							<p>Brand New, Automatic, 80 km/h</p>
 						</div>
-					</a> </figure>
-					<div class="figureBody">
-						<h2>
-							<a href="category-grid.html">BMW M3 E92 2016 <i class="fa fa-check-circle" aria-hidden="true"></i></a>
-						</h2>
-						<p>
-							19 Dec, 2016, <a href="category-grid.html">BMW</a>
-						</p>
-						<h3>$80,000</h3>
+						</article>
 					</div>
-					<div class="figureFooter">
-						<p>Brand New, Automatic, 80 km/h</p>
-					</div>
-					</article>
-				</div>
-
-				<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector recentItem">
-					<article class=""> <figure> <img src="resources/img/cars/car-4.jpg" alt="Image Protfolio" class="img-responsive">
-					<div class="overlay-background">
-						<div class="inner"></div>
-					</div>
-					<a href="category-grid.html">
-						<div class="overlay">
-							<div class="overlayInfo">
-								<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
-							</div>
-						</div>
-					</a> </figure>
-					<div class="figureBody">
-						<h2>
-							<a href="category-grid.html">BMW M3 E92 2016 <i class="fa fa-check-circle" aria-hidden="true"></i></a>
-						</h2>
-						<p>
-							19 Dec, 2016, <a href="category-grid.html">BMW</a>
-						</p>
-						<h3>$80,000</h3>
-					</div>
-					<div class="figureFooter">
-						<p>Brand New, Automatic, 80 km/h</p>
-					</div>
-					</article>
-				</div>
-
-
-
-				<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector featuredItem">
-					<article class=""> <figure> <img src="resources/img/cars/car-5.jpg" alt="Image Protfolio" class="img-responsive">
-					<div class="overlay-background">
-						<div class="inner"></div>
-					</div>
-					<a href="category-list-full.html">
-						<div class="overlay">
-							<div class="overlayInfo">
-								<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
-							</div>
-						</div>
-					</a> </figure>
-					<div class="figureBody">
-						<h2>
-							<a href="category-list-full.html">BMW M3 E92 2016 <i class="fa fa-check-circle" aria-hidden="true"></i></a>
-						</h2>
-						<p>
-							19 Dec, 2016, <a href="category-list-full.html">BMW</a>
-						</p>
-						<h3>$80,000</h3>
-					</div>
-					<div class="figureFooter">
-						<p>Brand New, Automatic, 80 km/h</p>
-					</div>
-					</article>
-				</div>
-
-				<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector featuredItem">
-					<article class=""> <figure> <img src="resources/img/cars/car-6.jpg" alt="Image Protfolio" class="img-responsive">
-					<div class="overlay-background">
-						<div class="inner"></div>
-					</div>
-					<a href="category-list-left.html">
-						<div class="overlay">
-							<div class="overlayInfo">
-								<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
-							</div>
-						</div>
-					</a> </figure>
-					<div class="figureBody">
-						<h2>
-							<a href="category-list-left.html">BMW M3 E92 2016 <i class="fa fa-check-circle" aria-hidden="true"></i></a>
-						</h2>
-						<p>
-							19 Dec, 2016, <a href="category-list-left.html">BMW</a>
-						</p>
-						<h3>$80,000</h3>
-					</div>
-					<div class="figureFooter">
-						<p>Brand New, Automatic, 80 km/h</p>
-					</div>
-					</article>
-				</div>
-
-				<div class="col-md-4 col-sm-6 col-xs-12 isotopeSelector featuredItem">
-					<article class=""> <figure> <img src="resources/img/cars/car-6.jpg" alt="Image Protfolio" class="img-responsive">
-					<div class="overlay-background">
-						<div class="inner"></div>
-					</div>
-					<a href="category-list-left.html">
-						<div class="overlay">
-							<div class="overlayInfo">
-								<span class="label label-primary"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span> <span class="label label-primary"><i class="fa fa-camera" aria-hidden="true"></i> 8</span>
-							</div>
-						</div>
-					</a> </figure>
-					<div class="figureBody">
-						<h2>
-							<a href="category-list-left.html">BMW M3 E92 2016 <i class="fa fa-check-circle" aria-hidden="true"></i></a>
-						</h2>
-						<p>
-							19 Dec, 2016, <a href="category-list-left.html">BMW</a>
-						</p>
-						<h3>$80,000</h3>
-					</div>
-					<div class="figureFooter">
-						<p>Brand New, Automatic, 80 km/h</p>
-					</div>
-					</article>
-				</div>
-
+				</c:forEach> --%>
 
 			</div>
 		</div>
 		</section>
 
-		<!-- COUNT UP SECTION -->
-		<section class="clearfix countUpSection countUpVerTwo">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-3 col-xs-12">
-					<div class="countItem">
-						<div class="iconArea">
-							<i class="icon-listy icon-car-1"></i>
-						</div>
-						<div class="totalCount">
-							<span class="counter">15000</span>+
-							<p>병원 데이터 확보 수</p>
-						</div>
-					</div>
+		<!-- WORKS SECTION -->
+		<section class="clearfix howWorksSection" style = "margin:100px">
+		<div class="container process">
+			<div class="page-header text-center" style="margin: 30px 0 30px 0;">
+				<h1>검진모아의 프로세스</h1>
+			</div>
+			<div class="row" style="">
+				<div class="col-md-4 col-sm-12 pro_box" style="width: 300px; height: 340px; background: url(resources/img/index_imgs/process_bg.png) no-repeat; margin: 30px">
+					<i class="fa fa-binoculars processImg" aria-hidden="true" style="color: #776b62"></i> <span class="processText" style="">1.정보수집</span>
 				</div>
-				<div class="col-sm-3 col-xs-12">
-					<div class="countItem">
-						<div class="iconArea">
-							<i class="icon-listy icon-user-11"></i>
-						</div>
-						<div class="totalCount">
-							<span class="counter">2500</span>+
-							<p>일주일 방문자 수</p>
-						</div>
-					</div>
+				<div class="col-md-4 col-sm-12 pro_box" style="width: 300px; height: 340px; background: url(resources/img/index_imgs/process_bg_on.png) no-repeat; margin: 30px">
+					<i class="fa fa-balance-scale processImg" aria-hidden="true" style="color: #ffffff"></i> <span class="processText"style="color: #ffffff">2.검색비교</span>
 				</div>
-				<div class="col-sm-3 col-xs-12">
-					<div class="countItem">
-						<div class="iconArea">
-							<i class="icon-listy icon-chat-3"></i>
-						</div>
-						<div class="totalCount">
-							<span class="counter">3000</span>+
-							<p>일주일 예약자 수</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3 col-xs-12">
-					<div class="countItem">
-						<div class="iconArea">
-							<i class="icon-listy icon-shield"></i>
-						</div>
-						<div class="totalCount">
-							<span class="counter">190</span>+
-							<p>일주일 검진완료</p>
-						</div>
-					</div>
+				<div class="col-md-4 col-sm-12 pro_box" style="width: 300px; height: 340px; background: url(resources/img/index_imgs/process_bg.png) no-repeat; margin: 30px">
+					<i class="fa fa-hospital-o processImg" aria-hidden="true" style="color: #776b62"></i> <span class="processText" style="">3.예약접수</span>
 				</div>
 			</div>
+
+
+
 		</div>
+
 		</section>
-
-		<!-- ARTICLES SECTION-->
-		<section class="clearfix articlesSection">
-		<div class="container">
-			<div class="page-header text-center">
-				<h2>
-					News & Reviews <small>This are some of most popular News </small>
-				</h2>
-			</div>
-			<div class="row">
-				<div class="col-sm-4 col-xs-12">
-					<div class="thumbnail articleContent">
-						<img src="resources/img/news/news-1.jpg" alt="Image news" class="img-responsive">
-						<div class="caption">
-							<h4>
-								Nov 22, 2016 by <a href="#">Admin</a>
-							</h4>
-							<h3>
-								<a href="blog-details.html">Donec id dolor in erat imperdiet.</a>
-							</h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-4 col-xs-12">
-					<div class="thumbnail articleContent">
-						<img src="resources/img/news/news-2.jpg" alt="Image news" class="img-responsive">
-						<div class="caption">
-							<h4>
-								Nov 22, 2016 by <a href="#">Admin</a>
-							</h4>
-							<h3>
-								<a href="blog-details.html">Donec id dolor in erat imperdiet.</a>
-							</h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-4 col-xs-12">
-					<div class="thumbnail articleContent">
-						<img src="resources/img/news/news-3.jpg" alt="Image news" class="img-responsive">
-						<div class="caption">
-							<h4>
-								Nov 22, 2016 by <a href="#">Admin</a>
-							</h4>
-							<h3>
-								<a href="blog-details.html">Donec id dolor in erat imperdiet.</a>
-							</h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</section>
+	</div>
 
 
-		<!-- 		 WORKS SECTION -->
-		<section class="clearfix worksArea">
-		<div class="container">
-			<div class="page-header text-center">
-				<h2>
-					How it Works? <small>This are some of most popular listing</small>
-				</h2>
-			</div>
-			<div class="row">
-				<div class="col-sm-4 col-xs-12">
-					<div class="thumbnail text-center worksContent">
-						<img src="img/works/works-1.png" alt="Image works">
-						<div class="caption">
-							<a href="how-it-works.html"><h3>Find what you want</h3></a>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-4 col-xs-12">
-					<div class="thumbnail text-center worksContent">
-						<img src="img/works/works-2.png" alt="Image works">
-						<div class="caption">
-							<a href="how-it-works.html"><h3>Review & Plan your day</h3></a>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-4 col-xs-12">
-					<div class="thumbnail text-center worksContent">
-						<img src="img/works/works-3.png" alt="Image works">
-						<div class="caption">
-							<a href="how-it-works.html"><h3>Explore Location</h3></a>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="btnArea text-center">
-						<a href="#" class="btn btn-primary">Watch it now <i class="fa fa-play-circle" aria-hidden="true"></i></a>
-					</div>
-				</div>
-			</div>
-		</div>
-		</section>
-
-
-
-
-
-		<!-- BRAND SECTION -->
-		<section class="brandSection clearfix">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="owl-carousel partnersLogoSlider">
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<img src="resources/img/brands/brand-1.png" alt="Image Brand">
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<img src="resources/img/brands/brand-2.png" alt="Image Brand">
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<img src="resources/img/brands/brand-3.png" alt="Image Brand">
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<img src="resources/img/brands/brand-4.png" alt="Image Brand">
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<img src="resources/img/brands/brand-5.png" alt="Image Brand">
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<img src="resources/img/brands/brand-1.png" alt="Image Brand">
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<img src="resources/img/brands/brand-2.png" alt="Image Brand">
-							</div>
-						</div>
-						<div class="slide">
-							<div class="partnersLogo clearfix">
-								<img src="resources/img/brands/brand-3.png" alt="partner-img">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</section>
-
-
-
-
-
-		<!-- FOOTER FILE INCLUDE  -->
-		<jsp:include page="footer.jsp"></jsp:include>
+	<!-- FOOTER FILE INCLUDE  -->
+	<jsp:include page="footer.jsp"></jsp:include>
 	</div>
 
 
@@ -621,7 +449,26 @@
 	<script src="resources/js/single-map.js"></script>
 	<script src="resources/js/map.js"></script>
 	<script src="resources/js/custom.js"></script>
+	<script>
+		// html dom 이 다 로딩된 후 실행된다.
+		$(document).ready(function() {
+			activeClickTopHosList();
+		});
+		function activeClickTopHosList() {
 
+			$("#activeClickTopHosList_liTag").click(function(event) {
+				console.log("this is liTag Clicked");
+			});
+			$("#activeClickTopHosList_aTag").click(function(event) {
+				console.log("this is aTag Clicked");
+			});
+			$("#activeClickTopHosList_aTag").trigger("click");
+			$(".recentItem").css({
+
+			});
+
+		}
+	</script>
 </body>
 
 </html>

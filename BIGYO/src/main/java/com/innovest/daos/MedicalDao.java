@@ -152,4 +152,22 @@ public class MedicalDao {
 		return result_list;
 	}
 	
+	public int update_click_num(Map hashMap) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		int db_result = dao.update_click_num(hashMap);
+		return db_result;
+	}
+	
+	public List<Chk_Hos_Serv_DTO> selectTopSix_orderByClickNum() {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		List<Chk_Hos_Serv_DTO> result_list = dao.selectTopSix_orderByClickNum();
+		return result_list;
+	}
+	public List<Chk_Hos_Serv_DTO> selectTopSix_orderByCreatedDate() {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		List<Chk_Hos_Serv_DTO> result_list =  dao.selectTopSix_orderByCreatedDate();
+		return result_list;
+	}
+	
+	
 }

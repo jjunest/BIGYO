@@ -21,35 +21,13 @@ public class Chk_Hos_Serv_DTO {
 	Date chk_end_date;
 	Timestamp chk_created_date;
 	String chk_ifdeleted;
+	Integer chk_click_number;
 	List<Hos_DTO> hosList;
 	List<Serv_DTO> servList;
 	List<ServPrice_DTO> servpriceList;
-	public Chk_Hos_Serv_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_price,
-			String chk_loc_sido, String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age,
-			String chk_info_link, String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link,
-			Date chk_end_date, Timestamp chk_created_date, String chk_ifdeleted, List<Hos_DTO> hosList,
-			List<Serv_DTO> servList, List<ServPrice_DTO> servpriceList) {
-		super();
-		this.chk_rcdno = chk_rcdno;
-		this.chk_hos_name = chk_hos_name;
-		this.chk_hos_pnum = chk_hos_pnum;
-		this.chk_price = chk_price;
-		this.chk_loc_sido = chk_loc_sido;
-		this.chk_loc_full = chk_loc_full;
-		this.chk_loc_lat = chk_loc_lat;
-		this.chk_loc_lng = chk_loc_lng;
-		this.chk_target_age = chk_target_age;
-		this.chk_info_link = chk_info_link;
-		this.chk_mid_company = chk_mid_company;
-		this.chk_mid_company_pnum = chk_mid_company_pnum;
-		this.chk_mid_company_link = chk_mid_company_link;
-		this.chk_end_date = chk_end_date;
-		this.chk_created_date = chk_created_date;
-		this.chk_ifdeleted = chk_ifdeleted;
-		this.hosList = hosList;
-		this.servList = servList;
-		this.servpriceList = servpriceList;
-	}
+	
+	
+	
 	public Chk_Hos_Serv_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_price,
 			String chk_loc_sido, String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age,
 			String chk_info_link, String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link,
@@ -75,7 +53,7 @@ public class Chk_Hos_Serv_DTO {
 	public Chk_Hos_Serv_DTO(String chk_hos_name, String chk_hos_pnum, String chk_price, String chk_loc_sido,
 			String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age, String chk_info_link,
 			String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link, Date chk_end_date,
-			Timestamp chk_created_date, String chk_ifdeleted) {
+			Timestamp chk_created_date, String chk_ifdeleted, Integer chk_click_number) {
 		super();
 		this.chk_hos_name = chk_hos_name;
 		this.chk_hos_pnum = chk_hos_pnum;
@@ -92,6 +70,57 @@ public class Chk_Hos_Serv_DTO {
 		this.chk_end_date = chk_end_date;
 		this.chk_created_date = chk_created_date;
 		this.chk_ifdeleted = chk_ifdeleted;
+		this.chk_click_number = chk_click_number;
+	}
+	public Chk_Hos_Serv_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_price,
+			String chk_loc_sido, String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age,
+			String chk_info_link, String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link,
+			Date chk_end_date, Timestamp chk_created_date, String chk_ifdeleted, Integer chk_click_number) {
+		super();
+		this.chk_rcdno = chk_rcdno;
+		this.chk_hos_name = chk_hos_name;
+		this.chk_hos_pnum = chk_hos_pnum;
+		this.chk_price = chk_price;
+		this.chk_loc_sido = chk_loc_sido;
+		this.chk_loc_full = chk_loc_full;
+		this.chk_loc_lat = chk_loc_lat;
+		this.chk_loc_lng = chk_loc_lng;
+		this.chk_target_age = chk_target_age;
+		this.chk_info_link = chk_info_link;
+		this.chk_mid_company = chk_mid_company;
+		this.chk_mid_company_pnum = chk_mid_company_pnum;
+		this.chk_mid_company_link = chk_mid_company_link;
+		this.chk_end_date = chk_end_date;
+		this.chk_created_date = chk_created_date;
+		this.chk_ifdeleted = chk_ifdeleted;
+		this.chk_click_number = chk_click_number;
+	}
+	public Chk_Hos_Serv_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_price,
+			String chk_loc_sido, String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age,
+			String chk_info_link, String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link,
+			Date chk_end_date, Timestamp chk_created_date, String chk_ifdeleted, Integer chk_click_number,
+			List<Hos_DTO> hosList, List<Serv_DTO> servList, List<ServPrice_DTO> servpriceList) {
+		super();
+		this.chk_rcdno = chk_rcdno;
+		this.chk_hos_name = chk_hos_name;
+		this.chk_hos_pnum = chk_hos_pnum;
+		this.chk_price = chk_price;
+		this.chk_loc_sido = chk_loc_sido;
+		this.chk_loc_full = chk_loc_full;
+		this.chk_loc_lat = chk_loc_lat;
+		this.chk_loc_lng = chk_loc_lng;
+		this.chk_target_age = chk_target_age;
+		this.chk_info_link = chk_info_link;
+		this.chk_mid_company = chk_mid_company;
+		this.chk_mid_company_pnum = chk_mid_company_pnum;
+		this.chk_mid_company_link = chk_mid_company_link;
+		this.chk_end_date = chk_end_date;
+		this.chk_created_date = chk_created_date;
+		this.chk_ifdeleted = chk_ifdeleted;
+		this.chk_click_number = chk_click_number;
+		this.hosList = hosList;
+		this.servList = servList;
+		this.servpriceList = servpriceList;
 	}
 	public Integer getChk_rcdno() {
 		return chk_rcdno;
@@ -189,6 +218,12 @@ public class Chk_Hos_Serv_DTO {
 	public void setChk_ifdeleted(String chk_ifdeleted) {
 		this.chk_ifdeleted = chk_ifdeleted;
 	}
+	public Integer getChk_click_number() {
+		return chk_click_number;
+	}
+	public void setChk_click_number(Integer chk_click_number) {
+		this.chk_click_number = chk_click_number;
+	}
 	public List<Hos_DTO> getHosList() {
 		return hosList;
 	}
@@ -207,6 +242,9 @@ public class Chk_Hos_Serv_DTO {
 	public void setServpriceList(List<ServPrice_DTO> servpriceList) {
 		this.servpriceList = servpriceList;
 	}
+	
+	
+	
 	
 	
 

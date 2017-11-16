@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.innovest.dao.IDao">
+
+	<insert id="insertQuestionByObj">
+		INSERT INTO question
+		(user_name, user_phone, user_phone_extra, question_title, question_body, question_date)
+		VALUES
+		(#{user_name},#{user_phone},#{user_phone_extra},#{question_title},#{question_body},#{question_date})
+	</insert>
+
+	<select id="selectAllList" resultType="com.innovest.dto.questionDTO">
+		SELECT * from question order by rcdno DESC
+	</select>
+
+
+</mapper>
+

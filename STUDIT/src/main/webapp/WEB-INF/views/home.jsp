@@ -18,7 +18,16 @@
 <!-- load css for cubeportfolio -->
 <link rel="stylesheet" type="text/css" href="resources/cubeportfolio/css/cubeportfolio.min.css">
 <link href="resources/css/style.css" rel="stylesheet">
-
+<style>
+@media ( max-width :768px) {
+	#studit_logo {
+		width: 120px;
+	}
+	#studit_logo_white {
+		width: 120px;
+	}
+}
+</style>
 </head>
 
 <body data-spy="scroll" data-target="#navbarsspy" data-offset="52">
@@ -32,8 +41,8 @@
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsspy" aria-controls="navbarsspy" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<a class="navbar-brand" data-scroll href="#home" style="top: -15px"> <img src="resources/images/studit_logo2.png" alt="" class="logo-dark"> <img
-			src="resources/images/studit_logo2_white.png" alt="" class="logo-light"
+		<a class="navbar-brand" data-scroll href="#home" style="top: -15px"> <img id="studit_logo" src="resources/images/studit_editlogo.png" alt="" class="logo-dark"> <img id="studit_logo_white"
+			src="resources/images/studit_editlogo_white.png" alt="" class="logo-light"
 		>
 		</a>
 
@@ -43,7 +52,7 @@
 				<li class="nav-item"><a data-scroll class="nav-link" href="#about">코딩이란</a></li>
 				<li class="nav-item"><a data-scroll class="nav-link" href="#services">서비스소개</a></li>
 				<li class="nav-item"><a data-scroll class="nav-link" href="#portfolio">수강 대상</a></li>
-				<li class="nav-item"><a data-scroll class="nav-link" href="#pricing">FAO</a></li>
+				<li class="nav-item"><a data-scroll class="nav-link" href="#pricing">FAQ</a></li>
 				<li class="nav-item"><a data-scroll class="nav-link" href="#team">강사 소개</a></li>
 				<li class="nav-item"><a data-scroll class="nav-link" href="#contact">연락처</a></li>
 
@@ -463,7 +472,7 @@
 					<li><i class="fa fa-mobile"></i> <a href="#">카카오톡 아이디: jjunest</a></li>
 				</ul>
 			</div>
-			<!-- 		<div class="col-md-6 offset-md-1 pb40">
+			<div class="col-md-6 offset-md-1 pb40">
 				<h3 class="font300 mb30">문의 사항을 남겨주시면 연락드리겠습니다.</h3>
 				<div class="smart-wrap">
 					<div class="smart-forms smart-container wrap-2">
@@ -471,50 +480,49 @@
 						<form method="post" action="questionProcess" id="smart-form">
 							<div class="form-body">
 								<div class="section">
-									<label class="field prepend-icon"> <input type="text" name="sendername" id="sendername" class="gui-input" placeholder="성함"> <span class="field-icon" style = "top: 14px;"><i
+									<label class="field prepend-icon"> <input type="text" name="user_name" id="user_name" class="gui-input" placeholder="성함"> <span class="field-icon" style="top: 14px;"><i
 											class="fa fa-user"
 										></i></span>
 									</label>
 								</div>
-								end section
+
 								<div class="section">
-									<label class="field prepend-icon"> <input type="email" name="emailaddress" id="emailaddress" class="gui-input" placeholder="연락처"> <span class="field-icon" style = "top: 14px;"><i
-											class="fa fa-envelope"
+									<label class="field prepend-icon"> <input type="text" name="user_phone" id="user_phone" class="gui-input" placeholder="연락처"> <span class="field-icon" style="top: 14px;"><i
+											class="fa fa-mobile"
 										></i></span>
 									</label>
 								</div>
-								end section
+
 								<div class="section">
-									<label class="field prepend-icon"> <input type="text" name="sendersubject" id="sendersubject" class="gui-input" placeholder="상담제목"> <span class="field-icon" style = "top: 14px;"><i
-											class="fa fa-lightbulb-o"
-										></i></span>
+									<label class="field prepend-icon"> <input type="text" name="user_phone_extra" id="user_phone_extra" class="gui-input" placeholder="비상연락처(학생 또는 학부모)"> <span class="field-icon"
+										style="top: 14px;"
+									><i class="fa fa-mobile"></i></span>
 									</label>
 								</div>
-								end section
 								<div class="section">
-									<label class="field prepend-icon"> <textarea class="gui-textarea" id="sendermessage" name="sendermessage" placeholder="상담내용"></textarea> <span class="field-icon" style = "top: 14px;"><i
+									<label class="field prepend-icon"> <input type="text" name="question_title" id="question_title" class="gui-input" placeholder="상담제목"> <span class="field-icon"
+										style="top: 14px;"
+									><i class="fa fa-lightbulb-o"></i></span>
+									</label>
+								</div>
+								<div class="section">
+									<label class="field prepend-icon"> <textarea class="gui-textarea" id="question_body" name="question_body" placeholder="상담내용"></textarea> <span class="field-icon" style="top: 14px;"><i
 											class="fa fa-comments"
-										></i></span> <span class="input-hint"> <strong>주의!</strong> 최소 10글자 이상의 문의 내용을 남겨주세요. 
+										></i></span> <span class="input-hint"> <strong>주의!</strong> 최소 10글자 이상의 문의 내용을 남겨주세요.
 									</span>
 									</label>
 								</div>
-								end section
 
 								<div class="result"></div>
-								end .result  section
 							</div>
-							end .form-body section
 							<div class="form-footer">
-								<button type="submit" data-btntext-sending="Sending..." class="button btn btn-primary">문의하기</button>
+								<button id="submitQuestionBT" type="submit" data-btntext-sending="Sending..." class="button btn btn-primary">문의하기</button>
 								<button type="reset" class="button btn-secondary">문의취소</button>
 							</div>
-							end .form-footer section
 						</form>
 					</div>
-					end .smart-forms section
 				</div>
-				end .smart-wrap section
-			</div> -->
+			</div>
 		</div>
 	</div>
 	</section>
@@ -563,5 +571,72 @@
 	<script type="text/javascript" src="resources/smart-form/contact-recaptcha/js/additional-methods.min.js"></script>
 	<script type="text/javascript" src="resources/smart-form/contact-recaptcha/js/smart-form.js"></script>
 	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<script>
+		$(document).ready(function() {
+
+			console.log("javascript in home.jsp");
+
+			$("#submitQuestionBT").click(function(e) {
+
+				console.log('submitBT clicked');
+				doAjaxPost();
+				e.preventDefault();
+			});
+
+		});
+
+		function doAjaxPost() {
+			// get the form values
+			var user_name = $('#user_name').val();
+			var user_phone = $('#user_phone').val();
+			var user_phone_extra = $("#user_phone_extra").val();
+			var question_title = $('#question_title').val();
+			var question_body = $('#question_body').val();
+
+			$
+					.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/questionProcess",
+						data : {
+							"user_name" : user_name,
+							"user_phone" : user_phone,
+							"user_phone_extra" : user_phone_extra,
+							"question_title" : question_title,
+							"question_body" : question_body
+						},
+						success : function(data) {
+							// we have the response
+							alert('성공적으로 문의사항이 등록되었습니다! 곧 연락드리겠습니다! \n *연락처가 정확한지 다시 한 번 확인부탁드립니다.\n*접수된 연락처:'
+									+ user_phone
+									+ '\n*예비 연락처:'
+									+ user_phone_extra);
+							$('#user_name').val('');
+							$('#user_phone').val('');
+							$("#user_phone_extra").val('');
+							$('#question_title').val('');
+
+							$('#question_body').val('');
+						},
+						error : function(e) {
+							alert('오류가 발생했습니다. 다시 시도하거나 아래 연락처로 연락주시기 바랍니다: 010-7272-9771');
+						}
+					});
+
+		}
+
+		var getUrlParameter = function getUrlParameter(sParam) {
+			var sPageURL = decodeURIComponent(window.location.search
+					.substring(1)), sURLVariables = sPageURL.split('&'), sParameterName, i;
+
+			for (i = 0; i < sURLVariables.length; i++) {
+				sParameterName = sURLVariables[i].split('=');
+
+				if (sParameterName[0] === sParam) {
+					return sParameterName[1] === undefined ? true
+							: sParameterName[1];
+				}
+			}
+		};
+	</script>
 </body>
 </html>

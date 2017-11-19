@@ -84,7 +84,7 @@ p {
 		</div>
 		</section>
 		<!-- HOW WORKS SECTION -->
-		<section class="clearfix howWorksSection" style="margin:50px">
+		<section class="clearfix howWorksSection" style="margin-top:50px">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">

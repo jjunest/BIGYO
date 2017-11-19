@@ -353,6 +353,7 @@
 	<script src="resources/js/single-map.js"></script>
 	<script src="resources/js/map.js"></script>
 	<script src="resources/js/custom.js"></script>
+	<script src='resources/lib/proj4.js'></script>
 	<script>
 		var upLoadAreaDiv = $(".upload-area");
 		var upLoadAreaDiv_hosTable_string = ".upload-area-hosTable";
@@ -407,9 +408,9 @@
 			// 주소검색을 수행할 팝업 페이지를 호출합니다.
 			// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrCoordUrl.do)를 호출하게 됩니다.
 			//로컬용 팝업
-			//var pop = window.open("/bigyo/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+			var pop = window.open("/bigyo/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 			//서버용 팝업
-			var pop = window.open("/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+			//var pop = window.open("/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 		}
 		function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn,detBdNmList,bdNm,bdKdcd,siNm,sggNm,emdNm,liNm,rn,udrtYn,buldMnnm,buldSlno,mtYn,lnbrMnnm,lnbrSlno,emdNo,entX,entY){
 				// 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
@@ -419,9 +420,21 @@
 				$("#chk_loc_full").val(jibunAddr);
 				$("#chk_loc_full_road").val(roadFullAddr);
 				$("#chk_loc_sido").val(siNm);
-				$("#chk_loc_lat").val(entX);
-				$("#chk_loc_lng").val(entY);
 				
+				var point1 = [entX, entY];
+
+				var firstProjection = "+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs";
+				var secondProjection = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+				 var lonAndLat1 = proj4(firstProjection, secondProjection, point1);// from 경위도
+
+				//I'm not going to redefine those two in latter examples.
+				var result = proj4(firstProjection, secondProjection, point1);
+				console.log('this is result:' + result);
+				
+				
+				$("#chk_loc_lat").val(result[1]);
+				$("#chk_loc_lng").val(result[0]);
+	
 	
 					
 			/* 	document.form.roadFullAddr.value = roadFullAddr;

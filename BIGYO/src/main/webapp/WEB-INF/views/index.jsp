@@ -399,7 +399,7 @@ h1 {
 		</section>
 
 		<!-- WORKS SECTION -->
-		<section class="clearfix howWorksSection" style = "margin:100px">
+		<section class="clearfix howWorksSection" style = "margin-top:100px">
 		<div class="container process">
 			<div class="page-header text-center" style="margin: 30px 0 30px 0;">
 				<h1>검진모아의 프로세스</h1>

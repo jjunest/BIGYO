@@ -667,12 +667,12 @@
 				icon : image,
 				animation : google.maps.Animation.BOUNCE
 			});
-			google.maps.event.addListener(marker, 'click', function() {
+		/* 	google.maps.event.addListener(marker, 'click', function() {
 				var infowindow = new google.maps.InfoWindow({
 					content : contentString
 				});
 				infowindow.open(map, marker);
-			});
+			}); */
 
 		}
 

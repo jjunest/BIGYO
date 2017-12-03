@@ -62,4 +62,6 @@ public interface IDao {
 	
 	public List<Chk_Hos_Serv_DTO> selectTopSix_orderByCreatedDate();
 	
+	public List<Chk_Hos_Serv_DTO> searchHospitalInfoFromDatabase(Map hashMap);
+	
 }

@@ -154,8 +154,8 @@ h1 {
 			<div class="slide slide3" style="background-image: url(resources/img/index_imgs/jumbotron7black.png);">
 				<div class="container">
 					<div class="slide-inner3 common-inner">
-						<span class="h2 from-bottom" style="font-family: MyFont; color: #ffffff; font-size: 40px; text-align: right">이제 검진모아를 사용하고</span> <span class="h2 from-bottom"
-							style="font-family: MyFont; color: #ffffff; font-size: 40px; text-align: right"
+						<span class="h2 from-bottom" style="font-family: MyFont; color: #ffffff; font-size: 40px; ">이제 검진모아를 사용하고</span> <span class="h2 from-bottom"
+							style="font-family: MyFont; color: #ffffff; font-size: 40px; "
 						>합리적인 비용으로</span><br> <span class="h1 from-bottom" style="font-family: MyFont; color: #ffffff;"> 건강검진을 받으세요</span><br>
 					</div>
 				</div>

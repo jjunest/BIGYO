@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,10 +28,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.innovest.dao.MemberDao;
 import com.innovest.daos.MedicalDao;
 import com.innovest.dto.HospitalDto_Test;
@@ -63,14 +65,14 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 
-		return "redirect:serviceIntro";
+		return "redirect:index";
 	}
 
 	@RequestMapping("/index")
 	public String index(Model model) {
 		System.out.println("this is index");
 		List<Chk_Hos_Serv_DTO> topSix_click_result_list = medicaldao.selectTopSix_orderByClickNum();
-		List<Chk_Hos_Serv_DTO> topSix_creDate_result_list =  medicaldao.selectTopSix_orderByCreatedDate();
+		List<Chk_Hos_Serv_DTO> topSix_creDate_result_list = medicaldao.selectTopSix_orderByCreatedDate();
 		model.addAttribute("topSix_click_result_list", topSix_click_result_list);
 		model.addAttribute("topSix_creDate_result_list", topSix_creDate_result_list);
 		return "index";
@@ -223,7 +225,7 @@ public class HomeController {
 		HashMap<String, Object> hitHashMap = new HashMap<String, Object>();
 		hitHashMap.put("chk_rcdno", chk_rcdno);
 		medicaldao.update_click_num(hitHashMap);
-		
+
 		Chk_Hos_Serv_DTO chk_hos_serv_dto = medicaldao.selectOne_chk_hos_serv(Integer.parseInt(chk_rcdno));
 		// 가격이 비슷한 TOP5 병원을 구하기 위한 쿼리.
 		List<ServPrice_DTO> servPriceList = chk_hos_serv_dto.getServpriceList();
@@ -325,7 +327,8 @@ public class HomeController {
 		String chk_loc_full = httpServletRequest.getParameter("chk_loc_full");
 		String chk_loc_lat = httpServletRequest.getParameter("chk_loc_lat");
 		String chk_loc_lng = httpServletRequest.getParameter("chk_loc_lng");
-
+		String selectedHosPic_hospic_info = httpServletRequest.getParameter("selectedHosPic_hospic_info");
+		System.out.println("this is selectedHosPic Info:"+selectedHosPic_hospic_info);
 		/*
 		 * GEO TRANSFER 부분 GeoPoint grs80 = new
 		 * GeoPoint(Double.parseDouble(chk_loc_lng),Double.parseDouble(chk_loc_lat));
@@ -390,9 +393,9 @@ public class HomeController {
 				System.out.println("this is storedFileName:" + storedFileName);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/hostable_pic/");
 				// 로켈에서 돌아가는 경로
-				//String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
 				// 서버에서 돌아가는 경로
-				String uploadFullPath = uploadResourcesPath + storedFileName;
+				// String uploadFullPath = uploadResourcesPath + storedFileName;
 
 				String imageUrl = "resources/img/hostable_pic/" + storedFileName;
 				System.out.println("this is imageUrl:" + imageUrl);
@@ -434,9 +437,9 @@ public class HomeController {
 				String storedFileName = randId + "." + getExtension(originalFilename);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/servtable_pic/");
 				// 로컬에서 돌아가는 업로드 경로
-				//String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
 				// 서버에서 돌아가는 업로드 경로
-				String uploadFullPath = uploadResourcesPath + storedFileName;
+				// String uploadFullPath = uploadResourcesPath + storedFileName;
 				String imageUrl = "resources/img/servtable_pic/" + storedFileName;
 				try {
 
@@ -628,9 +631,9 @@ public class HomeController {
 				String storedFileName = randId + "." + getExtension(originalFilename);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/hostable_pic/");
 				// 로컬에서 돌아가는 업로드 경로
-				//String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
 				// 서버에서 돌아가는 업로드 경로
-				String uploadFullPath = uploadResourcesPath + storedFileName;
+				// String uploadFullPath = uploadResourcesPath + storedFileName;
 				String imageUrl = "resources/img/hostable_pic/" + storedFileName;
 				try {
 
@@ -669,10 +672,10 @@ public class HomeController {
 				String storedFileName = randId + "." + getExtension(originalFilename);
 				String uploadResourcesPath = session.getServletContext().getRealPath("/resources/img/servtable_pic/");
 				// 로컬에서 돌아가는 업로드 경로
-				//String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
+				String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
 				// 서버에서 돌아가는 업로드 경로
-				String uploadFullPath = uploadResourcesPath + storedFileName;
-				
+				// String uploadFullPath = uploadResourcesPath + storedFileName;
+
 				String imageUrl = "resources/img/servtable_pic/" + storedFileName;
 				try {
 
@@ -745,4 +748,24 @@ public class HomeController {
 
 		return "redirect:eventHospitals";
 	}
+
+	@RequestMapping("/searchHospitalInfoFromDatabase")
+	@ResponseBody
+	public List<Chk_Hos_Serv_DTO> searchHospitalInfoFromDatabase(Locale locale, Model model,
+			HttpServletRequest httpServletRequest) {
+		System.out.println("this is searchHospitalInfoFromDatabase");
+		String chk_hos_name_search_array = httpServletRequest.getParameter("chk_hos_name");
+		chk_hos_name_search_array = chk_hos_name_search_array.replaceAll("병원", "");
+		String[] hos_search_array = chk_hos_name_search_array.split(" ");
+		for (int i = 0; i < hos_search_array.length; i++) {
+			System.out.println("this is hos_search:" + hos_search_array[i]);
+		}
+		// HashMap 에 담에서 sql에 전달하자
+		HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
+		sqlParameterHashMap.put("hos_search_array", hos_search_array);
+
+		List<Chk_Hos_Serv_DTO> result_list = medicaldao.searchHospitalInfoFromDatabase(sqlParameterHashMap);
+		return result_list;
+	}
+
 }

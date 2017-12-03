@@ -74,6 +74,7 @@
 							<p class="lead text-white-gray" style="font-weight: bold; font-size: 25px">중∙고등학생 웹/앱 기반 코딩 전문 수업</p>
 							<h2 class="text-white h1 hero-big-text">STUDIT</h2>
 							<p class="lead text-white-gray" style="font-size: 20px">* 12월 4일 개강반 모집 중</p>
+								<p class="lead text-white-gray" style="font-size: 20px">* 12월 18일 개강반 모집 중</p>
 							<div class="circle-button"></div>
 						</div>
 					</div>

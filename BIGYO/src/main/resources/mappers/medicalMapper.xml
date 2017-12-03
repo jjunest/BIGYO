@@ -99,12 +99,14 @@
 	</select>
 	<select id="selectTopSix_orderByClickNum" resultMap="Chk_Hos_Serv_resultMap">
 		SELECT *
-		FROM checkup_info WHERE chk_ifdeleted = 'N' ORDER BY chk_click_number DESC
+		FROM checkup_info WHERE chk_ifdeleted = 'N' ORDER BY chk_click_number
+		DESC
 		LIMIT 6
 	</select>
 	<select id="selectTopSix_orderByCreatedDate" resultMap="Chk_Hos_Serv_resultMap">
 		SELECT *
-		FROM checkup_info WHERE chk_ifdeleted = 'N' ORDER BY chk_created_date DESC
+		FROM checkup_info WHERE chk_ifdeleted = 'N' ORDER BY chk_created_date
+		DESC
 		LIMIT 6
 	</select>
 	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE 끝 -->
@@ -288,12 +290,23 @@
 	<update id="update_click_num" parameterType="hashmap">
 		UPDATE checkup_info
 		SET chk_click_number = chk_click_number + 1 WHERE chk_rcdno =
-		${chk_rcdno}
+		#{chk_rcdno}
 	</update>
 
+	<!-- searchHospitalInfoFromDatabase: 병원 검색을 위한 쿼리문 시작 -->
+	<select id="searchHospitalInfoFromDatabase" resultMap="Chk_Hos_Serv_resultMap"
+		parameterType="hashmap">
+		SELECT * FROM checkup_info WHERE
+
+		<foreach item="item" index="index" collection="hos_search_array"
+			open="(" separator="OR" close=")">
+			chk_hos_name LIKE
+			CONCAT('%',#{item},'%')
+		</foreach>
 
 
-
+	</select>
+	<!-- searchHospitalInfoFromDatabase: 병원 검색을 위한 쿼리문 끝 -->
 
 </mapper>
 

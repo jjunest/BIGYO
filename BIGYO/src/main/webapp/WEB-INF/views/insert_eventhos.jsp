@@ -10,7 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>프리미엄 건강검진 비교 검색 서비스 BIGYO</title>
+<title>건강검진 비교 검색 서비스 검진모아</title>
 
 <!-- PLUGINS CSS STYLE -->
 <link href="resources/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
@@ -116,6 +116,22 @@
 .service_price_age_inputArea {
 	margin: 10px;
 }
+
+.pic_removeBT {
+	color: blue;
+	position: absolute;
+	top: 5px;
+	right: 10px;
+}
+
+.hosPicPreviewDiv .pic_removeBT:hover {
+	color: red;
+}
+
+.ImgsPreviewDiv {
+	display: inline-block;
+	position: relative;
+}
 </style>
 
 </head>
@@ -146,7 +162,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
-					<form action="insert_eventhos_process" method="post" class="listing__form" enctype="multipart/form-data">
+					<form id="insertHospitalForm" action="insert_eventhos_process" method="post" class="listing__form" enctype="multipart/form-data">
 						<div class="dashboardPageTitle text-center">
 							<h2>건강검진 정보 입력</h2>
 						</div>
@@ -172,10 +188,16 @@
 									<!-- hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<!--  hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">병원 이름(chk_hos_name)</label> <input type="text" class="form-control" name="chk_hos_name" placeholder="병원 이름( chk_hos_name )">
+
+
+										<label for="listingTitle">병원 이름(chk_hos_name)</label>
+										<div class="row">
+											<input type="text" class="form-control col-xs-8" style="width: 70%" id="chk_hos_name" name="chk_hos_name" placeholder="병원 정보를 검색해서 입력하시거나 직접 입력하세요.">
+											<button type="button" id="hospitalModalBT" class="btn btn-primary col-xs-4" style="width: 25%; margin-left: 2%" data-toggle="modal" data-target="#hospitalModal">기존병원검색</button>
+										</div>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">병원 전화(chk_hos_pnum)</label> <input type="text" class="form-control" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)">
+										<label for="listingTitle">병원 전화(chk_hos_pnum)</label> <input type="text" class="form-control" id="chk_hos_pnum" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)">
 									</div>
 									<!-- 	<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">검진 가격(chk_price)</label> <input type="text" class="form-control" name="chk_price" placeholder="검진 가격(chk_price)">
@@ -235,6 +257,10 @@
 											</div>
 										</div>
 									</div>
+								</div>
+								<div class="">
+									<div>병원 검색을 통해 삽입할 병원 사진들</div>
+									<div id="searchedHosPictures"></div>
 								</div>
 							</div>
 						</div>
@@ -332,6 +358,28 @@
 
 		<!-- FOOTER FILE INCLUDE  -->
 		<jsp:include page="footer.jsp"></jsp:include>
+
+		<!-- HIDDEN PART : HOSPITAL MODAL 부분 -->
+		<!-- Modal -->
+		<div id="hospitalModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">병원 정보 검색</h4>
+					</div>
+					<div class="modal-body" id="searchHosModalContent">
+						<p>Some text in the modal.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary btn-md" style="width: 100px" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
 	</div>
 
 	<!-- JAVASCRIPTS -->
@@ -362,31 +410,141 @@
 		var upLoadAreaDiv_servTable_selector = $(".upload-area-servTable");
 		//rowCount 는 StatusBar 생성 시에 사용한다. createStatusbar() 함수에서 사용한다.  
 		var rowCount = 0;
+		//전역변수, hospital data를 받아온다.
+		var searchHosInfoDataList;
+		
 		// html dom 이 다 로딩된 후 실행된다. 
 		$(document).ready(function() {
-
 			console.log("javascript in insert_eventhos.jsp");
 			// drag & drop 시에 Jquery 로 css 변화 효과 주기
 			dragAndDropJqueryCss();
-
 			// Input multiple files 변화 시에, inputfiles 정리해주고, status div 알맞게 추가하기.
 			inputFilesChange();
 			displayFilesInDiv_inDatabase();
-			
-			
-			
 			// service 상품의 개수를 선택하면, 해당 갯수 만큼 가격 및 연령대 입력란을 만들어주는 함수
 			servicepriceTotalNumChange();
-
 			// DatePicker 한글화로 만들고, input TAG DATE 부분의 DatePicker 달력을 자동으로 Open시키는 함수.
 			datePickerSetting();
-			
 			//serv_price_inputbox 에 숫자만 입력하게 & 3자리 단위 씩 가격 표시
 			priceInputboxSetting();
-
 			// 주소 검색을 위한 chk_loc_full input tag 설정 시작
 			inputTag_chk_loc_full_Setting();
+			// 기존 저장된 병원 검색을 위한 hospitalModal 처리.
+			hopsitalModalSetting();
+			//병원사진 x표시 눌렀을 시에 사진이 없어지고, hidden inputbox로, deleteFile name & original name을 전달하자.
+			clickXButtonOnPicture();
+			//insertForm을 제출하는 버튼을 눌렀을 경우
+			insertFormSubmit();
+			
 		});
+		
+
+		
+		
+		function insertFormSubmit(){
+			
+				$("#insertHospitalForm").submit( function(e) {
+				
+				//2. deleteHos 와 Serv 사진의 rcdno를 inputtag에 저장해서 넘겨준다.
+			      $('<input />').attr('type', 'hidden')
+		          .attr("name", "selectedHosPic_hospic_info")
+		          .attr('value', JSON.stringify(selectedHosPic_hospic_info))
+		          .appendTo('#insertHospitalForm');
+				
+		      return true;
+		  });
+			
+		}
+		
+		function clickXButtonOnPicture(){
+			//병원 사진에 있는 x버튼 클릭 시..
+			$(document).on('click', ".pic_removeBT", function(e) {
+				console.log("this is x button clicked");
+				e.preventDefault();
+		 		var confirmAnwer = confirm("해당 병원 사진을 정말로 삭제하겠습니까?")
+				if(confirmAnwer ==true){
+					var hos_rcdno = $(this).parent("a").attr('hos_rcdno');
+					$(this).parent().remove();
+					for (i = 0; i < selectedHosPic_hospic_info.length; i++) {
+						if(selectedHosPic_hospic_info[i].hos_rcdno==hos_rcdno){
+							console.log("this is selectedHosPicLoop and hos_rcdno1==hosrcdno2");
+							selectedHosPic_hospic_info.splice(i,1);
+						}
+					}
+					
+					
+					console.log("this is selectedPicData when x button clicked:"+JSON.stringify(selectedHosPic_hospic_info));
+				}else{
+					//아니오라고 눌렀을 시에, 아무 이벤트도 발생하지 않는다.
+				}      
+			});
+			
+			
+			
+			
+		}
+		
+		
+		
+		function hopsitalModalSetting(){
+			$("#hospitalModalBT").click(function(e){
+				console.log('this is hospitalModalBT clicked');
+				var chk_hos_name = $('#chk_hos_name').val();
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/searchHospitalInfoFromDatabase",
+					data : {
+						"chk_hos_name" : chk_hos_name
+					},
+					success : function(data) {
+						var hosSearchBodyHtml = "";
+						searchHosInfoDataList = data;
+						for(var i=0; i<data.length; i++){
+						
+							console.log("this is data's name");
+							
+							hosSearchBodyHtml = hosSearchBodyHtml+"<div style =\"background:#eff0f2; margin:5px\"><a href=\"javascript:selectHospitalInfo("+i+");\"><p style =\"background:#eff0f2; margin:3px\">"+data[i].chk_hos_name+"</p><p style =\"background:#eff0f2; margin:3px\">병원 주소: "+data[i].chk_loc_full+"</p> <p style =\"background:#eff0f2; margin:3px\"> 병원사진:"+data[i].hosList.length+"개</p></a></div>";
+			            }
+						 $("#searchHosModalContent").html(hosSearchBodyHtml);
+			                $("#hospitalModal").modal('show');
+					},
+					error : function(e) {
+						console.log("searchHospital ajax 실패! ");
+						alert('오류가 발생했습니다. 아래 연락처로 문제 상황을 말씀해주시기 바랍니다: 010-7272-9771');
+					}
+				});
+			  });
+		}
+		var selectedHosPic_hospic_info;
+		function selectHospitalInfo(index){
+			//선택된 병원 사진의 hos_rcdno를 저장하는 배열을 초기화 시켜준다.
+			selectedHosPic_hospic_info ="";
+			//selectedHosPic_hosList 를 저장한다. 
+			selectedHosPic_hospic_info = searchHosInfoDataList[index].hosList;
+			console.log("this is selectedPicData :"+JSON.stringify(selectedHosPic_hospic_info));
+		
+			
+			//1. hospital MODAL 에서 병원을 선택했을때 input tag들에다 정보를 넣어준다.
+			$("#chk_hos_name").val(searchHosInfoDataList[index].chk_hos_name);
+			$("#chk_hos_pnum").val(searchHosInfoDataList[index].chk_hos_pnum);
+			$("#chk_loc_full").val(searchHosInfoDataList[index].chk_loc_full);
+			$("#chk_loc_full_road").val(searchHosInfoDataList[index].chk_loc_full_road);
+			$("#chk_loc_sido").val(searchHosInfoDataList[index].chk_loc_sido);
+			$("#chk_loc_lat").val(searchHosInfoDataList[index].chk_loc_lat);
+			$("#chk_loc_lng").val(searchHosInfoDataList[index].chk_loc_lng);
+			
+			console.log("this is hosList:"+searchHosInfoDataList[index].hosList.length);
+			$( "#searchedHosPictures" ).empty();
+			for(var i =0; i<searchHosInfoDataList[index].hosList.length; i++ ){
+				var hosPictureDiv = "<div class=\"ImgsPreviewDiv hosPicPreviewDiv\" style = \"margin:5px\"><a href="+searchHosInfoDataList[index].hosList[i].hos_pic_link+" target=\"_blank\" hos_rcdno="+searchHosInfoDataList[index].hosList[i].hos_rcdno+"><img src="+searchHosInfoDataList[index].hosList[i].hos_pic_link+" class=\"img-rounded ImgsTag\" height=\"200\" width=\"200\" ><span class=\"glyphicon glyphicon-remove pic_removeBT\" id=\"pic_removeBT\" aria-hidden=\"true\"></span></a></div>";
+				$(hosPictureDiv).appendTo( $( "#searchedHosPictures" ) );
+			}
+			   $("#hospitalModal").modal('toggle');
+			   
+			   
+			   
+		}
+		
 		
 		function displayFilesInDiv_inDatabase(){
 			
@@ -397,7 +555,7 @@
 		
 		function inputTag_chk_loc_full_Setting(){
 			$("#chk_loc_full").click(function(e){
-				event.preventDefault();
+				e.preventDefault();
 				goPopup();
 			});
 			
@@ -408,7 +566,7 @@
 			// 주소검색을 수행할 팝업 페이지를 호출합니다.
 			// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrCoordUrl.do)를 호출하게 됩니다.
 			//로컬용 팝업
-			var pop = window.open("/bigyo/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+			var pop = window.open("${pageContext.request.contextPath}/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 			//서버용 팝업
 			//var pop = window.open("/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 		}

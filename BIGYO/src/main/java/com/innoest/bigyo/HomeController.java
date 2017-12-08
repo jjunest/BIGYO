@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.innovest.dao.MemberDao;
 import com.innovest.daos.MedicalDao;
@@ -322,13 +328,12 @@ public class HomeController {
 		System.out.println("this is insert_eventhos_process");
 		String chk_hos_name = httpServletRequest.getParameter("chk_hos_name");
 		String chk_hos_pnum = httpServletRequest.getParameter("chk_hos_pnum");
-		/* String chk_price = httpServletRequest.getParameter("chk_price"); */
+		 String chk_loc_full_road = httpServletRequest.getParameter("chk_loc_full_road"); 
 		String chk_loc_sido = httpServletRequest.getParameter("chk_loc_sido");
 		String chk_loc_full = httpServletRequest.getParameter("chk_loc_full");
 		String chk_loc_lat = httpServletRequest.getParameter("chk_loc_lat");
 		String chk_loc_lng = httpServletRequest.getParameter("chk_loc_lng");
-		String selectedHosPic_hospic_info = httpServletRequest.getParameter("selectedHosPic_hospic_info");
-		System.out.println("this is selectedHosPic Info:"+selectedHosPic_hospic_info);
+
 		/*
 		 * GEO TRANSFER 부분 GeoPoint grs80 = new
 		 * GeoPoint(Double.parseDouble(chk_loc_lng),Double.parseDouble(chk_loc_lat));
@@ -362,7 +367,7 @@ public class HomeController {
 		Timestamp created_date = Timestamp.valueOf(currentTimeStamp);
 		System.out.println("this is created_date:" + created_date);
 
-		CheckUp_DTO insert_chkDTO = new CheckUp_DTO(chk_hos_name, chk_hos_pnum, "chk_price: field: not used",
+		CheckUp_DTO insert_chkDTO = new CheckUp_DTO(chk_hos_name, chk_hos_pnum, chk_loc_full_road,
 				chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, "chk_target_age field: not used", chk_info_link,
 				chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date, created_date, "N");
 		int insert_result_chk_hos_serv_table = medicaldao.insert_chk_hos_serv_DTO_ByObj(insert_chkDTO);
@@ -491,6 +496,44 @@ public class HomeController {
 			}
 			// service_age TABLE 에 ServAge_DTO 를 INSERT 끝
 		}
+
+		// 기존에 DB에서 선택 된 hospic_info 들을 받아서, DATABASE에 저장.
+		String selected_hospic_info_json = httpServletRequest.getParameter("selected_hospic_info_json");
+		System.out.println("this is selected_hospic_info_json:"+selected_hospic_info_json);
+		if(selected_hospic_info_json.equals("{}")) {
+			
+		}else {
+			JSONParser jsonParser = new JSONParser();
+			// JSON데이터를 넣어 JSON Object 로 만들어 준다.
+			try {
+				JSONObject jsonObject = (JSONObject) jsonParser.parse(selected_hospic_info_json);
+				// books의 배열을 추출
+				JSONArray hospic_jsonArray = (JSONArray) jsonObject.get("hospic_jsonlist");
+				for (int i = 0; i < hospic_jsonArray.size(); i++) {
+					// 배열 안에 있는것도 JSON형식 이기 때문에 JSON Object 로 추출
+					JSONObject hospicObject = (JSONObject) hospic_jsonArray.get(i);
+
+					// JSON name으로 추출
+
+					String hos_pic_link = (String) hospicObject.get("hos_pic_link");
+					String hos_originalpic_name = (String) hospicObject.get("hos_originalpic_name");
+					String hos_storedpic_name = (String) hospicObject.get("hos_storedpic_name");
+					Integer hos_picsize = Integer.valueOf(String.valueOf(hospicObject.get("hos_picsize")));
+					String hos_picStoreId = (String) hospicObject.get("hos_picStoreId");
+					String hos_ifdeleted = (String) hospicObject.get("hos_ifdeleted");
+					Hos_DTO hos_dto = new Hos_DTO(chk_rcdno, hos_pic_link,
+							hos_originalpic_name, hos_storedpic_name,
+							hos_picsize, "ho_picStoredId", "N", created_date);
+					// HOS_DTO 객체를 DataBase에 INSERT 해준다.
+					int insert_result_hos_table = medicaldao.insert_hos_DTO_ByObj(hos_dto);
+				}
+			} catch (org.json.simple.parser.ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	
+
 		return "redirect:hospitalDetails?chk_rcdno=" + chk_rcdno;
 	}
 
@@ -541,9 +584,10 @@ public class HomeController {
 		String chk_rcdno = httpServletRequest.getParameter("chk_rcdno");
 		String chk_hos_name = httpServletRequest.getParameter("chk_hos_name");
 		String chk_hos_pnum = httpServletRequest.getParameter("chk_hos_pnum");
-		/* String chk_price = httpServletRequest.getParameter("chk_price"); */
+		String chk_loc_full_road = httpServletRequest.getParameter("chk_loc_full_road");
 		String chk_loc_sido = httpServletRequest.getParameter("chk_loc_sido");
 		String chk_loc_full = httpServletRequest.getParameter("chk_loc_full");
+
 		String chk_loc_lat = httpServletRequest.getParameter("chk_loc_lat");
 		String chk_loc_lng = httpServletRequest.getParameter("chk_loc_lng");
 
@@ -584,7 +628,7 @@ public class HomeController {
 		Timestamp created_date = Timestamp.valueOf(currentTimeStamp);
 
 		CheckUp_DTO update_chkDTO = new CheckUp_DTO(Integer.parseInt(chk_rcdno), chk_hos_name, chk_hos_pnum,
-				"chk_price: field: not used", chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng,
+				chk_loc_full_road, chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng,
 				"chk_target_age field: not used", chk_info_link, chk_mid_company, chk_mid_company_pnum,
 				chk_mid_company_link, chk_end_date, created_date, "N");
 		int result_chk_table = medicaldao.update_chk_DTO_ByObj(update_chkDTO);
@@ -751,7 +795,7 @@ public class HomeController {
 
 	@RequestMapping("/searchHospitalInfoFromDatabase")
 	@ResponseBody
-	public List<Chk_Hos_Serv_DTO> searchHospitalInfoFromDatabase(Locale locale, Model model,
+	public JSONObject searchHospitalInfoFromDatabase(Locale locale, Model model,
 			HttpServletRequest httpServletRequest) {
 		System.out.println("this is searchHospitalInfoFromDatabase");
 		String chk_hos_name_search_array = httpServletRequest.getParameter("chk_hos_name");
@@ -765,7 +809,33 @@ public class HomeController {
 		sqlParameterHashMap.put("hos_search_array", hos_search_array);
 
 		List<Chk_Hos_Serv_DTO> result_list = medicaldao.searchHospitalInfoFromDatabase(sqlParameterHashMap);
-		return result_list;
+		// 명확한 jsonObject로 만들어서 결과값을 보내준다.
+		JSONObject hospic_jsonlist = new JSONObject();
+		hospic_jsonlist.put("hospic_jsonlist", result_list);
+
+		return hospic_jsonlist;
 	}
 
+	
+	@RequestMapping("/searchMidCompanyInfoFromDatabase")
+	@ResponseBody
+	public JSONObject searchMidCompanyInfoFromDatabase(Locale locale, Model model,
+			HttpServletRequest httpServletRequest) {
+		System.out.println("this is searchMidCompanyInfoFromDatabase");
+		String chk_mid_company = httpServletRequest.getParameter("chk_mid_company");
+		String[] company_search_array = chk_mid_company.split(" ");
+		for (int i = 0; i < company_search_array.length; i++) {
+			System.out.println("this is company_search:" + company_search_array[i]);
+		}
+		// HashMap 에 담에서 sql에 전달하자
+		HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
+		sqlParameterHashMap.put("company_search_array", company_search_array);
+
+		List<Chk_Hos_Serv_DTO> result_list = medicaldao.searchCompanyInfoFromDatabase(sqlParameterHashMap);
+		// 명확한 jsonObject로 만들어서 결과값을 보내준다.
+		JSONObject company_jsonlist = new JSONObject();
+		company_jsonlist.put("company_jsonlist", result_list);
+
+		return company_jsonlist;
+	}
 }

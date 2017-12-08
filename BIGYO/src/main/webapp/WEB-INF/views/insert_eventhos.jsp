@@ -184,12 +184,10 @@
 									</div>
 									-->
 
-									<!-- chk_rcdno, chk_hos_name, chk_hos_pnum, chk_price, chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, chk_target_age, chk_info_link, chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date -->
+									<!-- chk_rcdno, chk_hos_name, chk_hos_pnum, chk_loc_full_road, chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, chk_target_age, chk_info_link, chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date -->
 									<!-- hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<!--  hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<div class="form-group col-sm-6 col-xs-12">
-
-
 										<label for="listingTitle">병원 이름(chk_hos_name)</label>
 										<div class="row">
 											<input type="text" class="form-control col-xs-8" style="width: 70%" id="chk_hos_name" name="chk_hos_name" placeholder="병원 정보를 검색해서 입력하시거나 직접 입력하세요.">
@@ -197,10 +195,10 @@
 										</div>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">병원 전화(chk_hos_pnum)</label> <input type="text" class="form-control" id="chk_hos_pnum" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)">
+										<label for="listingTitle">병원 전화(chk_hos_pnum) *숫자만입력</label> <input type="text" class="form-control" id="chk_hos_pnum" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)">
 									</div>
 									<!-- 	<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">검진 가격(chk_price)</label> <input type="text" class="form-control" name="chk_price" placeholder="검진 가격(chk_price)">
+										<label for="listingTitle">검진 가격(chk_loc_full_road)</label> <input type="text" class="form-control" name="chk_price" placeholder="검진 가격(chk_price)">
 									</div> -->
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">전체 구 주소(chk_loc_full)</label> <input type="text" class="form-control" id="chk_loc_full" name="chk_loc_full" placeholder="주소 입력을 하시려면 클릭하세요" readonly>
@@ -220,13 +218,23 @@
 									<div class="form-group col-sm-12 col-xs-12"></div>
 
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">주관 업체(chk_mid_company)</label> <input type="text" class="form-control" name="chk_mid_company" placeholder="주관 업체(chk_mid_company)">
+										<label for="listingTitle">주관 업체(chk_mid_company)</label>
+										<div class="row">
+											<input type="text" class="form-control col-xs-8" style="width: 70%" id="chk_mid_company" name="chk_mid_company" placeholder="주관 업체(chk_mid_company)">
+											<button type="button" id="midCompanyModalBT" class="btn btn-primary col-xs-4" style="width: 25%; margin-left: 2%" data-toggle="modal" data-target="#midCompanyModal">주관업체검색</button>
+										</div>
+
+
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">주관 업체 전화(chk_mid_company_pnum)</label> <input type="text" class="form-control" name="chk_mid_company_pnum" placeholder="주관 업체 전화(chk_mid_company_pnum)">
+										<label for="listingTitle">주관 업체 전화(chk_mid_company_pnum)  *숫자만입력</label> <input type="text" class="form-control" id="chk_mid_company_pnum" name="chk_mid_company_pnum"
+											placeholder="주관 업체 전화(chk_mid_company_pnum)"
+										>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">주관 업체 링크(chk_mid_company_link)</label> <input type="text" class="form-control" name="chk_mid_company_link" placeholder="주관 업체 링크(chk_mid_company_link)">
+										<label for="listingTitle">주관 업체 링크(chk_mid_company_link)</label> <input type="text" class="form-control" id="chk_mid_company_link" name="chk_mid_company_link"
+											placeholder="주관 업체 링크(chk_mid_company_link)"
+										>
 									</div>
 
 									<div class="form-group col-sm-12 col-xs-12"></div>
@@ -359,7 +367,7 @@
 		<!-- FOOTER FILE INCLUDE  -->
 		<jsp:include page="footer.jsp"></jsp:include>
 
-		<!-- HIDDEN PART : HOSPITAL MODAL 부분 -->
+		<!-- HIDDEN PART : HOSPITAL MODAL 부분 시작 -->
 		<!-- Modal -->
 		<div id="hospitalModal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
@@ -380,6 +388,30 @@
 
 			</div>
 		</div>
+		<!-- HIDDEN PART : HOSPITAL MODAL 부분 끝 -->
+		<!-- HIDDEN PART : MidCompany MODAL 부분 시작 -->
+		<!-- Modal -->
+		<div id="midCompanyModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">주관 업체 검색</h4>
+					</div>
+					<div class="modal-body" id="searchCompanyModalContent">
+						<p>Some text in the modal.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary btn-md" style="width: 100px" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!-- HIDDEN PART : MidCompany MODAL 부분 끝 -->
+
 	</div>
 
 	<!-- JAVASCRIPTS -->
@@ -412,6 +444,8 @@
 		var rowCount = 0;
 		//전역변수, hospital data를 받아온다.
 		var searchHosInfoDataList;
+		//전역변수, company data를 받아온다.
+		var searchCompanyInfoDataList;
 		
 		// html dom 이 다 로딩된 후 실행된다. 
 		$(document).ready(function() {
@@ -435,24 +469,130 @@
 			clickXButtonOnPicture();
 			//insertForm을 제출하는 버튼을 눌렀을 경우
 			insertFormSubmit();
+			//중개업체 검색 MODAL setting
+			midCompanyModalSetting();
+			//병원전화번호 및 중개업체전화번호 형식 맞추기
+			phoneNumberSetting();
 			
 		});
+		function phoneNumberSetting(){
+			$("#chk_hos_pnum").keyup(function (){ 
+				var phoneNumberWithoutDash = $("#chk_hos_pnum").val();
+				//javascript 에서는 replaceAll에 해당하는 것이 밑의 정규식이다 
+				phoneNumberWithoutDash = phoneNumberWithoutDash.replace(/-/gi, ""); 
+				var phoneFormatter_Result = phoneFomatter(phoneNumberWithoutDash);
+				$("#chk_hos_pnum").val(phoneFormatter_Result);
+			});
+			$("#chk_mid_company_pnum").keyup(function (){ 
+				var phoneNumberWithoutDash = $("#chk_mid_company_pnum").val();
+				//javascript 에서는 replaceAll에 해당하는 것이 밑의 정규식이다 
+				phoneNumberWithoutDash = phoneNumberWithoutDash.replace(/-/gi, ""); 
+				var phoneFormatter_Result = phoneFomatter(phoneNumberWithoutDash);
+				$("#chk_mid_company_pnum").val(phoneFormatter_Result);
+			});
+			
+			
+		}
 		
+		
+		function phoneFomatter(num,type){
+		    
+		    var formatNum = '';
+		    
+		    if(num.length==11){
+		        if(type==0){
+		            formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-****-$3');
+		            
+		        }else{
+		            formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+		            console.log("this is phoneFormat 1");
+		        }
+		    }else if(num.length==8){
+		        formatNum = num.replace(/(\d{4})(\d{4})/, '$1-$2');
+		        console.log("this is phoneFormat 2");
+		    }else{
+		        if(num.indexOf('02')==0){
+		            if(type==0){
+		                formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-****-$3');
+		                
+		            }else{
+		                formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+		                console.log("this is phoneFormat 3");
+		            }
+		        }else{
+		            if(type==0){
+		                formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-***-$3');
+		            }else{
+		                formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+		                console.log("this is phoneFormat 4");
+		            }
+		        }
+		        console.log("this is phoneFormat 5");
+		    }
+		    return formatNum;
+		    
+		}
+
 
 		
+		function midCompanyModalSetting(){
+			$("#midCompanyModalBT").click(function(e){
+				console.log('this is midCompanyModalBT clicked');
+				var chk_mid_company = $('#chk_mid_company').val();
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/searchMidCompanyInfoFromDatabase",
+					data : {
+						"chk_mid_company" : chk_mid_company
+					},
+					success : function(data) {
+						var companySearchBodyHtml = "";
+						searchCompanyInfoDataList = data;
+						data = data["company_jsonlist"];
+						console.log("this is data:"+searchCompanyInfoDataList);
+						for(var i=0; i<data.length; i++){
+							companySearchBodyHtml = companySearchBodyHtml+"<div style =\"background:#eff0f2; margin:5px\"><a href=\"javascript:selectCompanyInfo("+i+");\"><p style =\"background:#eff0f2; margin:3px\">"+data[i].chk_mid_company+"</p><p style =\"background:#eff0f2; margin:3px\">업체 전화: "+data[i].chk_mid_company_pnum+"</p> <p style =\"background:#eff0f2; margin:3px\"> 업체홈페이지: "+data[i].chk_mid_company_link+"</p></a></div>";
+			            }
+						 $("#searchCompanyModalContent").html(companySearchBodyHtml);
+			                $("#midCompanyModal").modal('show');
+					},
+					error : function(e) {
+						console.log("searchMidCompany ajax 실패! ");
+						alert('오류가 발생했습니다. 아래 연락처로 문제 상황을 말씀해주시기 바랍니다: 010-7272-9771');
+					}
+				});
+			  });
+		}
+		function selectCompanyInfo(index){
+		
+			
+			//1. hospital MODAL 에서 병원을 선택했을때 input tag들에다 정보를 넣어준다.
+			$("#chk_mid_company").val(searchCompanyInfoDataList["company_jsonlist"][index].chk_mid_company);
+ 			$("#chk_mid_company_pnum").val(searchCompanyInfoDataList["company_jsonlist"][index].chk_mid_company_pnum);
+			$("#chk_mid_company_link").val(searchCompanyInfoDataList["company_jsonlist"][index].chk_mid_company_link); 
+			
+			   $("#midCompanyModal").modal('toggle');
+			   
+			 
+			   
+		}
 		
 		function insertFormSubmit(){
+		
+				
+			$("#insertHospitalForm").submit( function(e) {
+				  var jsonchange = new Object();
+					jsonchange.hospic_jsonlist = selectedHosPic_hospic_info;
+					var selected_hospic_info_json = JSON.stringify(jsonchange);
 			
-				$("#insertHospitalForm").submit( function(e) {
-				
-				//2. deleteHos 와 Serv 사진의 rcdno를 inputtag에 저장해서 넘겨준다.
-			      $('<input />').attr('type', 'hidden')
-		          .attr("name", "selectedHosPic_hospic_info")
-		          .attr('value', JSON.stringify(selectedHosPic_hospic_info))
-		          .appendTo('#insertHospitalForm');
-				
-		      return true;
+			//선택된 병원의 사진들을 hidden input tag를 사용하여서 넘겨준다. 
+   		   $('<input />').attr('type', 'hidden')
+   		  .attr("name", "selected_hospic_info_json")
+          .attr('value', selected_hospic_info_json)
+          .appendTo('#insertHospitalForm');
+   		   return true;
 		  });
+		
 			
 		}
 		
@@ -499,6 +639,8 @@
 					success : function(data) {
 						var hosSearchBodyHtml = "";
 						searchHosInfoDataList = data;
+						data = data["hospic_jsonlist"];
+						console.log("this is data:"+searchHosInfoDataList);
 						for(var i=0; i<data.length; i++){
 						
 							console.log("this is data's name");
@@ -520,28 +662,26 @@
 			//선택된 병원 사진의 hos_rcdno를 저장하는 배열을 초기화 시켜준다.
 			selectedHosPic_hospic_info ="";
 			//selectedHosPic_hosList 를 저장한다. 
-			selectedHosPic_hospic_info = searchHosInfoDataList[index].hosList;
-			console.log("this is selectedPicData :"+JSON.stringify(selectedHosPic_hospic_info));
+			selectedHosPic_hospic_info = searchHosInfoDataList["hospic_jsonlist"][index].hosList;
 		
 			
 			//1. hospital MODAL 에서 병원을 선택했을때 input tag들에다 정보를 넣어준다.
-			$("#chk_hos_name").val(searchHosInfoDataList[index].chk_hos_name);
-			$("#chk_hos_pnum").val(searchHosInfoDataList[index].chk_hos_pnum);
-			$("#chk_loc_full").val(searchHosInfoDataList[index].chk_loc_full);
-			$("#chk_loc_full_road").val(searchHosInfoDataList[index].chk_loc_full_road);
-			$("#chk_loc_sido").val(searchHosInfoDataList[index].chk_loc_sido);
-			$("#chk_loc_lat").val(searchHosInfoDataList[index].chk_loc_lat);
-			$("#chk_loc_lng").val(searchHosInfoDataList[index].chk_loc_lng);
+			$("#chk_hos_name").val(searchHosInfoDataList["hospic_jsonlist"][index].chk_hos_name);
+			$("#chk_hos_pnum").val(searchHosInfoDataList["hospic_jsonlist"][index].chk_hos_pnum);
+			$("#chk_loc_full").val(searchHosInfoDataList["hospic_jsonlist"][index].chk_loc_full);
+			$("#chk_loc_full_road").val(searchHosInfoDataList["hospic_jsonlist"][index].chk_loc_full_road);
+			$("#chk_loc_sido").val(searchHosInfoDataList["hospic_jsonlist"][index].chk_loc_sido);
+			$("#chk_loc_lat").val(searchHosInfoDataList["hospic_jsonlist"][index].chk_loc_lat);
+			$("#chk_loc_lng").val(searchHosInfoDataList["hospic_jsonlist"][index].chk_loc_lng);
 			
-			console.log("this is hosList:"+searchHosInfoDataList[index].hosList.length);
 			$( "#searchedHosPictures" ).empty();
-			for(var i =0; i<searchHosInfoDataList[index].hosList.length; i++ ){
-				var hosPictureDiv = "<div class=\"ImgsPreviewDiv hosPicPreviewDiv\" style = \"margin:5px\"><a href="+searchHosInfoDataList[index].hosList[i].hos_pic_link+" target=\"_blank\" hos_rcdno="+searchHosInfoDataList[index].hosList[i].hos_rcdno+"><img src="+searchHosInfoDataList[index].hosList[i].hos_pic_link+" class=\"img-rounded ImgsTag\" height=\"200\" width=\"200\" ><span class=\"glyphicon glyphicon-remove pic_removeBT\" id=\"pic_removeBT\" aria-hidden=\"true\"></span></a></div>";
+			for(var i =0; i<selectedHosPic_hospic_info.length; i++ ){
+				var hosPictureDiv = "<div class=\"ImgsPreviewDiv hosPicPreviewDiv\" style = \"margin:5px\"><a href="+selectedHosPic_hospic_info[i].hos_pic_link+" target=\"_blank\" hos_rcdno="+selectedHosPic_hospic_info[i].hos_rcdno+"><img src="+selectedHosPic_hospic_info[i].hos_pic_link+" class=\"img-rounded ImgsTag\" height=\"200\" width=\"200\" ><span class=\"glyphicon glyphicon-remove pic_removeBT\" id=\"pic_removeBT\" aria-hidden=\"true\"></span></a></div>";
 				$(hosPictureDiv).appendTo( $( "#searchedHosPictures" ) );
 			}
 			   $("#hospitalModal").modal('toggle');
 			   
-			   
+			 
 			   
 		}
 		

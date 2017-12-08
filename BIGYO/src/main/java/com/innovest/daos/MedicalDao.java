@@ -176,4 +176,10 @@ public class MedicalDao {
 		return result_list;
 	}
 	
+	public List<Chk_Hos_Serv_DTO> searchCompanyInfoFromDatabase(Map hashMap) {
+		IDao dao = sqlsession.getMapper(IDao.class);
+		List<Chk_Hos_Serv_DTO> result_list = dao.searchCompanyInfoFromDatabase(hashMap);
+		return result_list;
+	}
+	
 }

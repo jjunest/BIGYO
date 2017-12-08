@@ -64,4 +64,6 @@ public interface IDao {
 	
 	public List<Chk_Hos_Serv_DTO> searchHospitalInfoFromDatabase(Map hashMap);
 	
+	public List<Chk_Hos_Serv_DTO> searchCompanyInfoFromDatabase(Map hashMap);
+	
 }

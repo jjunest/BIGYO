@@ -168,7 +168,7 @@
 									</div>
 									-->
 
-									<!-- chk_rcdno, chk_hos_name, chk_hos_pnum, chk_price, chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, chk_target_age, chk_info_link, chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date -->
+									<!-- chk_rcdno, chk_hos_name, chk_hos_pnum, chk_loc_full_road, chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, chk_target_age, chk_info_link, chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date -->
 									<!-- hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<!--  hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<div class="form-group col-sm-6 col-xs-12">
@@ -178,7 +178,7 @@
 										<label for="listingTitle">병원 전화(chk_hos_pnum)</label> <input type="text" class="form-control" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)">
 									</div>
 									<!-- 	<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">검진 가격(chk_price)</label> <input type="text" class="form-control" name="chk_price" placeholder="검진 가격(chk_price)">
+										<label for="listingTitle">검진 가격(chk_loc_full_road)</label> <input type="text" class="form-control" name="chk_price" placeholder="검진 가격(chk_price)">
 									</div> -->
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">전체 구 주소(chk_loc_full)</label> <input type="text" class="form-control" id="chk_loc_full" name="chk_loc_full" placeholder="주소 입력을 하시려면 클릭하세요" readonly>

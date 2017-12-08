@@ -8,7 +8,7 @@ public class CheckUp_DTO {
 	Integer chk_rcdno;
 	String chk_hos_name;
 	String chk_hos_pnum;
-	String chk_price;
+	String chk_loc_full_road;
 	String chk_loc_sido;
 	String chk_loc_full;
 	String chk_loc_lat;
@@ -24,7 +24,7 @@ public class CheckUp_DTO {
 	Integer chk_click_number;
 		
 	
-	public CheckUp_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_price,
+	public CheckUp_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_loc_full_road,
 			String chk_loc_sido, String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age,
 			String chk_info_link, String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link,
 			Date chk_end_date, Timestamp chk_created_date, String chk_ifdeleted) {
@@ -32,7 +32,7 @@ public class CheckUp_DTO {
 		this.chk_rcdno = chk_rcdno;
 		this.chk_hos_name = chk_hos_name;
 		this.chk_hos_pnum = chk_hos_pnum;
-		this.chk_price = chk_price;
+		this.chk_loc_full_road = chk_loc_full_road;
 		this.chk_loc_sido = chk_loc_sido;
 		this.chk_loc_full = chk_loc_full;
 		this.chk_loc_lat = chk_loc_lat;
@@ -46,14 +46,14 @@ public class CheckUp_DTO {
 		this.chk_created_date = chk_created_date;
 		this.chk_ifdeleted = chk_ifdeleted;
 	}
-	public CheckUp_DTO(String chk_hos_name, String chk_hos_pnum, String chk_price, String chk_loc_sido,
+	public CheckUp_DTO(String chk_hos_name, String chk_hos_pnum, String chk_loc_full_road, String chk_loc_sido,
 			String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age, String chk_info_link,
 			String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link, Date chk_end_date,
 			Timestamp chk_created_date, String chk_ifdeleted) {
 		super();
 		this.chk_hos_name = chk_hos_name;
 		this.chk_hos_pnum = chk_hos_pnum;
-		this.chk_price = chk_price;
+		this.chk_loc_full_road = chk_loc_full_road;
 		this.chk_loc_sido = chk_loc_sido;
 		this.chk_loc_full = chk_loc_full;
 		this.chk_loc_lat = chk_loc_lat;
@@ -67,14 +67,14 @@ public class CheckUp_DTO {
 		this.chk_created_date = chk_created_date;
 		this.chk_ifdeleted = chk_ifdeleted;
 	}
-	public CheckUp_DTO(String chk_hos_name, String chk_hos_pnum, String chk_price, String chk_loc_sido,
+	public CheckUp_DTO(String chk_hos_name, String chk_hos_pnum, String chk_loc_full_road, String chk_loc_sido,
 			String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age, String chk_info_link,
 			String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link, Date chk_end_date,
 			Timestamp chk_created_date, String chk_ifdeleted, Integer chk_click_number) {
 		super();
 		this.chk_hos_name = chk_hos_name;
 		this.chk_hos_pnum = chk_hos_pnum;
-		this.chk_price = chk_price;
+		this.chk_loc_full_road = chk_loc_full_road;
 		this.chk_loc_sido = chk_loc_sido;
 		this.chk_loc_full = chk_loc_full;
 		this.chk_loc_lat = chk_loc_lat;
@@ -89,7 +89,7 @@ public class CheckUp_DTO {
 		this.chk_ifdeleted = chk_ifdeleted;
 		this.chk_click_number = chk_click_number;
 	}
-	public CheckUp_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_price,
+	public CheckUp_DTO(Integer chk_rcdno, String chk_hos_name, String chk_hos_pnum, String chk_loc_full_road,
 			String chk_loc_sido, String chk_loc_full, String chk_loc_lat, String chk_loc_lng, String chk_target_age,
 			String chk_info_link, String chk_mid_company, String chk_mid_company_pnum, String chk_mid_company_link,
 			Date chk_end_date, Timestamp chk_created_date, String chk_ifdeleted, Integer chk_click_number) {
@@ -97,7 +97,7 @@ public class CheckUp_DTO {
 		this.chk_rcdno = chk_rcdno;
 		this.chk_hos_name = chk_hos_name;
 		this.chk_hos_pnum = chk_hos_pnum;
-		this.chk_price = chk_price;
+		this.chk_loc_full_road = chk_loc_full_road;
 		this.chk_loc_sido = chk_loc_sido;
 		this.chk_loc_full = chk_loc_full;
 		this.chk_loc_lat = chk_loc_lat;
@@ -130,11 +130,11 @@ public class CheckUp_DTO {
 	public void setChk_hos_pnum(String chk_hos_pnum) {
 		this.chk_hos_pnum = chk_hos_pnum;
 	}
-	public String getChk_price() {
-		return chk_price;
+	public String getChk_loc_full_road() {
+		return chk_loc_full_road;
 	}
-	public void setChk_price(String chk_price) {
-		this.chk_price = chk_price;
+	public void setChk_loc_full_road(String chk_loc_full_road) {
+		this.chk_loc_full_road = chk_loc_full_road;
 	}
 	public String getChk_loc_sido() {
 		return chk_loc_sido;

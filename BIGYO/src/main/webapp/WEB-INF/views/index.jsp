@@ -86,20 +86,18 @@ h1 {
 	color: #2980bc;
 }
 
-
 .processText {
-	display: block;
-	margin-top: 100px;
-	font-size: 25px;
-	color: #3b291c;
-	font-weight: 600;
-	text-align: center;
+		position: absolute;
+	top: 70%;
+	right: 30%;
+	font-size:30px
 }
 
 .processImg {
-	text-align: center;
-	display: block;
-	margin-top: 55px;
+	position: absolute;
+	top: 20%;
+	right: 33%;
+
 }
 
 @media ( max-width :768px) {
@@ -154,8 +152,8 @@ h1 {
 			<div class="slide slide3" style="background-image: url(resources/img/index_imgs/jumbotron7black.png);">
 				<div class="container">
 					<div class="slide-inner3 common-inner">
-						<span class="h2 from-bottom" style="font-family: MyFont; color: #ffffff; font-size: 40px; ">이제 검진모아를 사용하고</span> <span class="h2 from-bottom"
-							style="font-family: MyFont; color: #ffffff; font-size: 40px; "
+						<span class="h2 from-bottom" style="font-family: MyFont; color: #ffffff; font-size: 40px;">이제 검진모아를 사용하고</span> <span class="h2 from-bottom"
+							style="font-family: MyFont; color: #ffffff; font-size: 40px;"
 						>합리적인 비용으로</span><br> <span class="h1 from-bottom" style="font-family: MyFont; color: #ffffff;"> 건강검진을 받으세요</span><br>
 					</div>
 				</div>
@@ -269,7 +267,7 @@ h1 {
 		</div>
 		</section>
 
-	<section> </section>
+		<section> </section>
 
 		<!-- CARS SECTION -->
 		<section class="clearfix filterProtfolio" style="background-color: #dddddd;">
@@ -399,19 +397,21 @@ h1 {
 		</section>
 
 		<!-- WORKS SECTION -->
-		<section class="clearfix howWorksSection" style = "margin-top:100px">
+		<section class="clearfix howWorksSection" style="margin-top:100px">
 		<div class="container process">
 			<div class="page-header text-center" style="margin: 30px 0 30px 0;">
 				<h1>검진모아의 프로세스</h1>
 			</div>
 			<div class="row" style="">
-				<div class="col-md-4 col-sm-12 pro_box" style="width: 300px; height: 340px; background: url(resources/img/index_imgs/process_bg.png) no-repeat; margin: 30px">
+				<div class="col-md-4 col-sm-12 pro_box"
+					style="display: inline-block; position: relative; width: 300px; height: 340px; background: url(resources/img/index_imgs/process_bg.png) no-repeat; margin: 30px"
+				>
 					<i class="fa fa-binoculars processImg" aria-hidden="true" style="color: #776b62"></i> <span class="processText" style="">1.정보수집</span>
 				</div>
-				<div class="col-md-4 col-sm-12 pro_box" style="width: 300px; height: 340px; background: url(resources/img/index_imgs/process_bg_on.png) no-repeat; margin: 30px">
-					<i class="fa fa-balance-scale processImg" aria-hidden="true" style="color: #ffffff"></i> <span class="processText"style="color: #ffffff">2.검색비교</span>
+				<div class="col-md-4 col-sm-12 pro_box" style=" display: inline-block; position: relative; width: 300px; height: 340px; background: url(resources/img/index_imgs/process_bg_on.png) no-repeat; margin: 30px">
+					<i class="fa fa-balance-scale processImg" aria-hidden="true" style="color: #ffffff"></i> <span class="processText" style="color: #ffffff">2.검색비교</span>
 				</div>
-				<div class="col-md-4 col-sm-12 pro_box" style="width: 300px; height: 340px; background: url(resources/img/index_imgs/process_bg.png) no-repeat; margin: 30px">
+				<div class="col-md-4 col-sm-12 pro_box" style=" display: inline-block; position: relative; width: 300px; height: 340px; background: url(resources/img/index_imgs/process_bg.png) no-repeat; margin: 30px">
 					<i class="fa fa-hospital-o processImg" aria-hidden="true" style="color: #776b62"></i> <span class="processText" style="">3.예약접수</span>
 				</div>
 			</div>

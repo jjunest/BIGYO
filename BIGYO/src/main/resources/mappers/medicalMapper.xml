@@ -9,7 +9,7 @@
 		<result property="chk_rcdno" column="chk_rcdno" />
 		<result property="chk_hos_name" column="chk_hos_name" />
 		<result property="chk_hos_pnum" column="chk_hos_pnum" />
-		<result property="chk_price" column="chk_price" />
+		<result property="chk_loc_full_road" column="chk_loc_full_road" />
 		<result property="chk_loc_sido" column="chk_loc_sido" />
 		<result property="chk_loc_full" column="chk_loc_full" />
 		<result property="chk_loc_lat" column="chk_loc_lat" />
@@ -139,7 +139,7 @@
 		SELECT
 		CHKT.chk_rcdno, CHKT.chk_hos_name,
 		CHKT.chk_hos_pnum,
-		CHKT.chk_price,
+		CHKT.chk_loc_full_road,
 		CHKT.chk_loc_sido, CHKT.chk_loc_full,
 		CHKT.chk_loc_lat,
 		CHKT.chk_loc_lng, CHKT.chk_target_age,
@@ -161,13 +161,13 @@
 		INSERT INTO checkup_info
 		(chk_hos_name,
 		chk_hos_pnum,
-		chk_price, chk_loc_sido, chk_loc_full, chk_loc_lat,
+		chk_loc_full_road, chk_loc_sido, chk_loc_full, chk_loc_lat,
 		chk_loc_lng,
 		chk_target_age, chk_info_link, chk_mid_company,
 		chk_mid_company_pnum,
 		chk_mid_company_link, chk_end_date, chk_created_date, chk_ifdeleted)
 		VALUES
-		(#{chk_hos_name},#{chk_hos_pnum},#{chk_price},#{chk_loc_sido},#{chk_loc_full},
+		(#{chk_hos_name},#{chk_hos_pnum},#{chk_loc_full_road},#{chk_loc_sido},#{chk_loc_full},
 		#{chk_loc_lat},#{chk_loc_lng},#{chk_target_age},#{chk_info_link},#{chk_mid_company},#{chk_mid_company_pnum},
 		#{chk_mid_company_link},#{chk_end_date}, #{chk_created_date},
 		#{chk_ifdeleted})
@@ -244,7 +244,7 @@
 		chk_hos_name =
 		#{chk_hos_name},
 		chk_hos_pnum= #{chk_hos_pnum},
-		chk_price= #{chk_price},
+		chk_loc_full_road= #{chk_loc_full_road},
 		chk_loc_sido= #{chk_loc_sido}, chk_loc_full= #{chk_loc_full},
 		chk_loc_lat= #{chk_loc_lat},
 		chk_loc_lng= #{chk_loc_lng},
@@ -307,6 +307,18 @@
 
 	</select>
 	<!-- searchHospitalInfoFromDatabase: 병원 검색을 위한 쿼리문 끝 -->
+	
+		<!-- searchCompanyInfoFromDatabase: 중개업체 검색을 위한 쿼리문 시작 -->
+	<select id="searchCompanyInfoFromDatabase" resultMap="Chk_Hos_Serv_resultMap"
+		parameterType="hashmap">
+		SELECT * FROM checkup_info WHERE
+		<foreach item="item" index="index" collection="company_search_array"
+			open="(" separator="OR" close=")">
+			chk_mid_company LIKE
+			CONCAT('%',#{item},'%')
+		</foreach>
+	</select>
+	<!-- searchCompanyInfoFromDatabase: 중개업체 검색을 위한 쿼리문 끝 -->
 
 </mapper>
 

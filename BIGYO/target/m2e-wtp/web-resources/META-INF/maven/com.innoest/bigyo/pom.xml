@@ -203,11 +203,16 @@
 		<!-- FILE UPLOAD 끝 -->
 
 
-		<!-- Ajax json 데이터 처리를 위한 jackson 라이브러리 시작 -->
+		<!-- Ajax json 데이터 처리를 위한 jackson &json-simple 라이브러리 시작 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1</version>
 		</dependency>
 		<!-- Ajax json 데이터 처리를 위한 jackson 라이브러리 끝 -->
 	</dependencies>

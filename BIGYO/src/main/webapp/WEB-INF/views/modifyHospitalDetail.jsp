@@ -190,17 +190,19 @@
 									</div>
 									-->
 
-									<!-- chk_rcdno, chk_hos_name, chk_hos_pnum, chk_price, chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, chk_target_age, chk_info_link, chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date -->
+									<!-- chk_rcdno, chk_hos_name, chk_hos_pnum, chk_loc_full_road, chk_loc_sido, chk_loc_full, chk_loc_lat, chk_loc_lng, chk_target_age, chk_info_link, chk_mid_company, chk_mid_company_pnum, chk_mid_company_link, chk_end_date -->
 									<!-- hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<!--  hos_rcdno, hos_chk_rcdno, hos_pic_link -->
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">병원 이름(chk_hos_name)</label> <input type="text" class="form-control" name="chk_hos_name" value="${chk_hos_serv_dto.chk_hos_name}">
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">병원 전화(chk_hos_pnum)</label> <input type="text" class="form-control" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)" value="${chk_hos_serv_dto.chk_hos_pnum}">
+										<label for="listingTitle">병원 전화(chk_hos_pnum) *숫자만입력</label> <input type="text" class="form-control" id="chk_hos_pnum" name="chk_hos_pnum" placeholder="병원 전화(chk_hos_pnum)"
+											value="${chk_hos_serv_dto.chk_hos_pnum}"
+										>
 									</div>
 									<!-- 	<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">검진 가격(chk_price)</label> <input type="text" class="form-control" name="chk_price" placeholder="검진 가격(chk_price)">
+										<label for="listingTitle">검진 가격(chk_loc_full_road)</label> <input type="text" class="form-control" name="chk_price" placeholder="검진 가격(chk_price)">
 									</div> -->
 									<div class="form-group col-sm-6 col-xs-12">
 										<label for="listingTitle">전체 구 주소(chk_loc_full)</label> <input type="text" class="form-control" id="chk_loc_full" name="chk_loc_full" placeholder="주소 입력을 하시려면 클릭하세요"
@@ -235,8 +237,8 @@
 										>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
-										<label for="listingTitle">주관 업체 전화(chk_mid_company_pnum)</label> <input type="text" class="form-control" name="chk_mid_company_pnum" value="${chk_hos_serv_dto.chk_mid_company_pnum}"
-											placeholder="주관 업체 전화(chk_mid_company_pnum)"
+										<label for="listingTitle">주관 업체 전화(chk_mid_company_pnum)  *숫자만입력</label> <input type="text" class="form-control" id="chk_mid_company_pnum" name="chk_mid_company_pnum"
+											value="${chk_hos_serv_dto.chk_mid_company_pnum}" placeholder="주관 업체 전화(chk_mid_company_pnum)"
 										>
 									</div>
 									<div class="form-group col-sm-6 col-xs-12">
@@ -459,9 +461,69 @@
 			//modify Form SUBMIT 시에, 1.chkrcdno를 넘겨주고, 2.삭제하고싶은 hos_rcdno 와, serv_rcdno를 숨겨진 inputTag에 담아서 보낸다.
 			modifyFormSubmit();
 			
-			
+			//병원전화번호 및 중개업체전화번호 형식 맞추기
+			phoneNumberSetting();
 			
 		});
+		function phoneNumberSetting(){
+			$("#chk_hos_pnum").keyup(function (){ 
+				var phoneNumberWithoutDash = $("#chk_hos_pnum").val();
+				//javascript 에서는 replaceAll에 해당하는 것이 밑의 정규식이다 
+				phoneNumberWithoutDash = phoneNumberWithoutDash.replace(/-/gi, ""); 
+				var phoneFormatter_Result = phoneFomatter(phoneNumberWithoutDash);
+				$("#chk_hos_pnum").val(phoneFormatter_Result);
+			});
+			$("#chk_mid_company_pnum").keyup(function (){ 
+				var phoneNumberWithoutDash = $("#chk_mid_company_pnum").val();
+				//javascript 에서는 replaceAll에 해당하는 것이 밑의 정규식이다 
+				phoneNumberWithoutDash = phoneNumberWithoutDash.replace(/-/gi, ""); 
+				var phoneFormatter_Result = phoneFomatter(phoneNumberWithoutDash);
+				$("#chk_mid_company_pnum").val(phoneFormatter_Result);
+			});
+			
+			
+		}
+		
+function phoneFomatter(num,type){
+		    
+		    var formatNum = '';
+		    
+		    if(num.length==11){
+		        if(type==0){
+		            formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-****-$3');
+		            
+		        }else{
+		            formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+		            console.log("this is phoneFormat 1");
+		        }
+		    }else if(num.length==8){
+		        formatNum = num.replace(/(\d{4})(\d{4})/, '$1-$2');
+		        console.log("this is phoneFormat 2");
+		    }else{
+		        if(num.indexOf('02')==0){
+		            if(type==0){
+		                formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-****-$3');
+		                
+		            }else{
+		                formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+		                console.log("this is phoneFormat 3");
+		            }
+		        }else{
+		            if(type==0){
+		                formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-***-$3');
+		            }else{
+		                formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+		                console.log("this is phoneFormat 4");
+		            }
+		        }
+		        console.log("this is phoneFormat 5");
+		    }
+		    return formatNum;
+		    
+		}
+		
+		
+		
 		function modifyFormSubmit(){
 			$("#modifyHospitalDetailForm").submit( function(e) {
 				

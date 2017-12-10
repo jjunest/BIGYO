@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.innovest</groupId>
-	<artifactId>hospitalCrawling2</artifactId>
-	<name>Template_hospitalInfoCrawling2</name>
+	<artifactId>hospitalCrawling4</artifactId>
+	<name>Template_hospitalInfoCrawling4</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
@@ -117,19 +117,13 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>2.44.0</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.codeborne/phantomjsdriver -->
 		<dependency>
 			<groupId>com.codeborne</groupId>
-			<artifactId>phantomjsdriver</artifactId>
-			<version>1.2.1</version>
+			<artifactId>selenide</artifactId>
+			<version>4.8</version>
 		</dependency>
+
+
 
 	</dependencies>
 	<build>

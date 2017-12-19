@@ -1,19 +1,11 @@
 package com.innovest.hospitalCrawling;
 
-import static com.codeborne.selenide.Selenide.open;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Date;
+
 import java.util.Locale;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
-import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.codeborne.selenide.Selenide;
+
 
 /**
  * Handles requests for the application home page.
@@ -39,6 +31,7 @@ public class HomeController {
 		System.setProperty("webdriver.gecko.driver", "C:\\Users\\Administrator\\Downloads\\dev\\geckodriver-v0.19.1-win64\\geckodriver.exe");
 		WebDriver driver = new FirefoxDriver();
 		driver.get("http://www.toolsqa.com");
+ 
  
 	
 		//driver.quit();

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.innovest.dao.IDao">
+
+	<insert id="insertCalendarByObj">
+		INSERT INTO coincalendar_db
+		(calendar_title, calendar_url,
+		calendar_start, calendar_end,calendar_etc1,calendar_etc2,calendar_etc3 )
+		VALUES
+		(#{calendar_title},#{calendar_url},#{calendar_start},#{calendar_end},#{calendar_etc1},#{calendar_etc2},#{calendar_etc3})
+	</insert>
+
+
+	<delete id="deleteCalendarByObj" parameterType="java.util.HashMap">
+		delete
+		from
+		coincalendar_db
+		where
+		calendar_rcdno = #{calendar_rcdno}
+	</delete>
+
+	<select id="selectAllCalendar" resultType="com.innovest.dto.calendarDTO">
+		SELECT * from coincalendar_db
+	</select>
+</mapper>
+

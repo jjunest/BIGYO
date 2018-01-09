@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.innovest.dao.IDao">
+	<select id="mysqlCheck" resultType="int">
+		SELECT count(*) from admin
+		where admin_id =#{use}
+	</select>
+
+	<select id="selectAllList" resultType="com.innovest.dto.MemberDto">
+		SELECT * from admin
+	</select>
+
+	<delete id="deleteDatabase">
+		DELETE FROM admin where cmd = #{cmd_num}
+	</delete>
+
+	<insert id="insertDatabaseByMap">
+		INSERT INTO admin (admin_id, cmd, admin_pw) VALUES
+		(#{id_bymap}, #{cmd_bymap} , #{pw_bymap})
+	</insert>
+
+	<insert id="insertDatabaseByObj">
+		INSERT INTO admin
+		(admin_id, cmd,
+		admin_pw)
+		VALUES
+		(#{admin_id},#{cmd},#{admin_pw})
+	</insert>
+
+	<update id="updateDatabase">
+		UPDATE admin set admin_id = {}, admin_pw = {} WHERE
+		cmd = {}
+	</update>
+
+	<select id = "duplicateIdCheck" resultType="int">
+		SELECT COUNT(*) from users where userid = #{user_inputId}
+	</select>
+
+	<insert id="insertNewUserIntoDatabaseByObj">
+		INSERT INTO users
+		(userid, password, enabled, real_name, phone_number, email_address)
+		VALUES
+		(#{userid},#{password},#{enabled},#{real_name},#{phone_number},#{email_address})
+	</insert>
+	
+	<insert id="insertUserRoleIntoDatabaseByMap">
+		INSERT INTO user_roles (userid, role) VALUES
+		(#{userid}, #{role})
+	</insert>
+
+	<select id="passwordCheck" resultType="com.innovest.dto.userDTO">
+		SELECT * from users where userid = #{userid}
+	</select>
+	
+</mapper>
+

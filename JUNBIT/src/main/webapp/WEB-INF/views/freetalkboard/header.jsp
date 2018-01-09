@@ -81,7 +81,7 @@ a {
 						<li class="disabled"><a href="#">주식 추천 (준비중)</a></li>
 					</ul></li> -->
 
-	<li class=""><a href="<%=cp%>/coinCalculator" style="font-family: NavFont" id="navmenu_coinCalendar">계산기</a></li>
+	<li class=""><a href="<%=cp%>/coinCalculator" style="font-family: NavFont" id="navmenu_coinCalendar">매도 계산기</a></li>
 
 
 				<li class=""><a href="<%=cp%>/coinCalendar" style="font-family: NavFont" id="navmenu_coinCalendar">코인 달력</a></li>

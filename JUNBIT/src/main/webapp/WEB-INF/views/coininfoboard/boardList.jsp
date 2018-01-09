@@ -95,7 +95,7 @@
 						<table width="1200px">
 
 						</table>
-						<table class="table table-hover table-striped table-bordered" border="1" width="1200px">
+						<table class="table table-striped table-bordered" border="1" width="1200px">
 							<tr>
 								<th width="3%" style="text-align: center;">No</th>
 								<th width="70%" style="text-align: center;">제목</th>

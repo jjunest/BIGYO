@@ -91,10 +91,7 @@
 				<div class="form-group col-sm-6 col-xs-12">
 					<p>
 						<label for="listingTitle">&nbsp 매수 가격</label> <span id="coin_buyPrice_show">- </span><input type="text" class="form-control" id="coin_buyPrice" class="" name="coin_buyPrice" placeholder="매수가격">
-
 					</p>
-
-
 				</div>
 				<div class="form-group col-sm-6 col-xs-12">
 					<p>
@@ -134,7 +131,7 @@
 					번에 걸쳐서 매도 할 것입니다.
 				</div>
 				<div class="form-group col-sm-12 col-xs-12">
-					<input type="text" class="form-control" id="coin_sellTotalQuantity" class="" name="coin_sellTotalQuantity" style="color: blue" placeholder="매도 총 수량" readOnly>
+					<input type="text" class="form-control" id="coin_sellTotalQuantity" class="" name="coin_sellTotalQuantity" style="color: green" placeholder="매도 총 수량" readOnly>
 				</div>
 
 
@@ -172,6 +169,7 @@
 						</div>
 					</div>
 					<div id="sellDetailSection_clone"></div>
+						<div id="sellDetailTotalPercent"></div>
 				</div>
 
 
@@ -237,14 +235,91 @@
 			//총 몇번에 나눠 팔지 결정을 하면 sellDetailSection을 추가
 			sellTotalNumberChangeSetting();
 			//sellDetailResult 부분 채워주기 
-		
-			
+			sellDetailResultSetting();
 		});
 		
-		//결과 세팅은, 1.매수가격이 변했을 경우, 2.매수 총금액이 변햇을 경우, 3.매수한 코인 중 x%변했을 경우, 4.총 매도 개수 변했을 경우, 5.세부 매도 목표의 input값 2가지가 변했을 경우 총 6가지에 실시간으로 일어난다.
-		function sellDetaiResultSetting(){
-			console.log("this is sellTotalQuantity:"+sellTotalQuantity);
+		function sellDetailTotalPercentSumSetting(){
 			
+			
+		}
+		
+		//결과 세팅은, 1.매수가격이 변했을 경우, 2.매수 총금액이 변햇을 경우, 3.매수한 코인 중 x%변했을 경우, 4.총 매도 개수 변했을 경우, 5.세부 매도 목표의 input값 2가지가 변했을 경우 총 6가지에 실시간으로 일어난다.
+
+		function sellDetailResultSetting(){
+			//1. 매수가격이 변했을 경우. 세부 결과값 변동
+			$("#coin_buyPrice").change(
+					function() {
+			
+			 	sellDetaiResultSetting();
+				});
+			
+			
+			// 2.매수 총금액이 변햇을 경우, 매수가격이 변했을 경우. 세부 결과값 변동
+			$("#coin_buyTotalMoney").change(
+					function() {
+			
+			 	sellDetaiResultSetting();
+				});
+			
+			//3.매수한 코인 중 x%변했을 경우, 매수가격이 변했을 경우. 세부 결과값 변동
+			$("#sellQuantityPercent").change(
+					function() {
+			
+			 	sellDetaiResultSetting();
+				});
+			
+			//4. 총 몇번에 걸쳐 팔지 변동했을 경우, 
+			$("#sellTotalNumber").change(
+					function() {
+			
+			 	sellDetaiResultSetting();
+				});
+			
+			//5.1 detail 이 변동할때 
+			$("#sellDetailPricePercent").change(
+					function() {
+			
+			 	sellDetaiResultSetting();
+				});
+			
+			//5.2 detail 이 변동할때 
+			$("#sellDetailQuantityPercent").change(
+					function() {
+			
+			 	sellDetaiResultSetting();
+				});
+			
+			$("#sellDetailPricePercent2").change(
+					function() {
+			
+			 	sellDetaiResultSetting();
+				});
+			
+			
+			
+			for(var i =2; i<6;i++){
+				var sellDetailPricePercentId = "#sellDetailPricePercent"+i;
+				var sellDetailQuantityPercentId = "#sellDetailQuantityPercent"+i;
+				//5.1 detail 이 변동할때 
+				$(sellDetailPricePercentId).change(
+						function() {
+				
+				 	sellDetaiResultSetting();
+					});
+				
+				$(sellDetailQuantityPercentId).change(
+						function() {
+				
+				 	sellDetaiResultSetting();
+					});
+				
+				
+			}
+			
+			
+		}
+		
+				function sellDetaiResultSetting(){
 			//1. 만약 총 매도수량이 저장되어 있지 않으면 , 아무런 행동도 취하지 않는다.
 			if(sellTotalQuantity==""||isNaN(sellTotalQuantity)){
 			
@@ -256,36 +331,42 @@
 					console.log("매수 가격이 없습니다");
 				}else{
 					coin_buyPrice = removeCommaFunction(coin_buyPrice);
-					var detailDivNumber = $(".sellDetailDiv").length;
-				
+					var sellTotalNumber = parseInt($("#sellTotalNumber").val());
+			     	console.log("sellTotalNumber:"+sellTotalNumber);
 					
 					coin_buyPrice = removeCommaFunction(coin_buyPrice);
-					for(var i=1;i<detailDivNumber+1;i++ ){
+					for(var i=1;i<sellTotalNumber+1;i++ ){
 						//첫 번쨰 detailDiv을 게산하자 
-						if(i==1){
+						if(i == 1){
+					
+							$("#coin_sellDetailInfoResult").val('');
+							console.log("this is lopp");
 							var goal_price_percent = $("#sellDetailPricePercent").val();
 							coin_buyPrice = parseFloat(coin_buyPrice);
 							goal_price_percent = parseFloat(goal_price_percent);
 							var goal_price = coin_buyPrice*(1+goal_price_percent*0.01);
 							var goal_quantity_percent = $("#sellDetailQuantityPercent").val();
 							var goal_quantity = sellTotalQuantity* goal_quantity_percent*0.01;
-							var goal_result_message =  "1차 목표 매도가: "+ goal_price+", 목표 매도 수량:"+goal_quantity+" 코인입니다";
+							var goal_result_message =  "1차 목표 매도가: "+ goal_price+" 원이고, 목표 매도 수량:"+goal_quantity+" 코인입니다";
 							console.log('this is goalmessage:'+goal_result_message);
 							$("#coin_sellDetailInfoResult").val(goal_result_message);
-						}
-				/* 		var detailClonePricePercentId = "sellDetailPricePercent"+i;
+						}else{
+				 		var detailClonePricePercentId = "#sellDetailPricePercent"+i;
 						var goal_price_percent = $(detailClonePricePercentId).val();
 						coin_buyPrice = parseFloat(coin_buyPrice);
 						goal_price_percent = parseFloat(goal_price_percent);
-						var goal_price = coin_buyPrice*goal_price_percent*0.01;
-						var detailCloneQuantityPercentId = "sellDetailQuantityPercent"+i;
+						var goal_price =  coin_buyPrice*(1+goal_price_percent*0.01);
+						var detailCloneQuantityPercentId = "#sellDetailQuantityPercent"+i;
 						var goal_quantity_percent = $(detailCloneQuantityPercentId).val();
 						var goal_quantity = sellTotalQuantity* goal_quantity_percent*0.01;
-						var goal_result_message =  "목표 매도가는"+ goal_price+"목표 수량은"+goal_quantity+"입니다";
-						console.log('this is goalmessage:'+goal_result_message); */
+						var goal_result_message =  i+"차 목표 매도가: "+ goal_price+" 원이고, 목표 매도 수량:"+goal_quantity+" 코인입니다";
+						console.log('this is goalmessage:'+i+"번쨰: "+goal_result_message); 
+						var coin_sellDetailInfoResultId = "#coin_sellDetailInfoResult"+i;
+						$(coin_sellDetailInfoResultId).val(goal_result_message);
+						}
 					}
 					
-					
+					sellDetailTotalPercentSumSetting();
 				}
 		
 				
@@ -296,25 +377,25 @@
 		function sellTotalNumberChangeSetting(){
 			$("#sellTotalNumber").change(
 					function() {
+						//기존에 있던 sellDetailInfoResult를 초기화 시켜준다.
+					 	$("#coin_sellDetailInfoResult").val('');
 						var sellTotalNumber = $("#sellTotalNumber").val();
 					
 						//sellDetailDiv를 복제본을 만들어준다.
 			sellTotalNumber = parseInt(sellTotalNumber);
 			$("#sellDetailSection_clone").empty();
 			 	for (i = 2; i < sellTotalNumber+1; i++) {
-			 	
+			 		//기존의 
+			
  var divClone =  $("#sellDetailDiv").clone();
  //clone된 것의 안에 아이디 바꾸기
  divClone.find("#sellDetailPricePercent").attr("id","sellDetailPricePercent"+i).attr("name","sellDetailPricePercent"+i);
  divClone.find("#sellDetailQuantityPercent").attr("id","sellDetailQuantityPercent"+i).attr("name","sellDetailQuantityPercent"+i);
  divClone.find("#coin_sellDetailInfoResult").attr("id","coin_sellDetailInfoResult"+i).attr("name","coin_sellDetailInfoResult"+i);
  $("#sellDetailSection_clone").append(divClone);
-sellDetaiResultSetting();
+ sellDetailResultSetting();
 
 }
-			
-						
-		
 				});
 			
 			

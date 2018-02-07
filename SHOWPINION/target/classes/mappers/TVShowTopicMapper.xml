@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.innovest.dao.IDao">
+	<insert id="insertTVShowTopic" parameterType="java.util.HashMap">
+		INSERT INTO sp_tvtopics
+		(sp_tvtopics_title, sp_tvtopics_writer, sp_tvtopics_tvshow_imgurl, sp_tvtopics_tvshow_imgbyte, sp_tvtopics_tvshow_name, sp_tvtopics_tvshow_date, sp_tvtopics_tvshow_desc,sp_tvtopics_situation_desc,sp_tvtopics_pro1,sp_tvtopics_pro2,sp_tvtopics_pro3,sp_tvtopics_con1,sp_tvtopics_con2,sp_tvtopics_con3)
+		VALUES
+		(#{tvtopic_name_input},#{writer_name},#{imageUrl},#{originalFileBytes},#{tvtopic_tvshow_name},#{tvtopic_tvshow_date},#{tvtopic_tvshow_desc},#{tvtopic_desc_content},#{tvtopic_pro1_input},#{tvtopic_pro2_input},#{tvtopic_pro3_input},#{tvtopic_con1_input},#{tvtopic_con2_input},#{tvtopic_con3_input})
+	</insert>
+	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE 시작 -->
+	<select id="selectAll_TVshow_TopicDTO" resultType="com.innovest.dto.tvTopic_DTO">
+		SELECT * FROM
+		sp_tvtopics
+	</select>
+
+	<select id="selectOne_TvTopic" resultType="com.innovest.dto.tvTopic_DTO">
+		SELECT * FROM
+		sp_tvtopics where sp_tvtopics_rcdno = #{topic_rcdno}
+	</select>
+</mapper>
+

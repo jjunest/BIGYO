@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.innovest.dao.IDao">
+	<select id="duplicateIdCheck" resultType="int">
+		SELECT COUNT(*) from sp_users where userid = #{user_inputId}
+	</select>
+	<insert id="insert_user_ByObj">
+		INSERT INTO sp_users
+		(userid, password, enabled, realname, nickname, openname, groupname, groupname_open,sns , sns_open)
+		VALUES
+		(#{userid},#{password},#{enabled},#{realname},#{nickname},#{openname},#{groupname},#{groupname_open},#{sns},#{sns_open})
+	</insert>
+
+	<insert id="insert_userrole_byMap">
+		INSERT INTO sp_user_roles (userid, role) VALUES
+		(#{userid}, #{role})
+	</insert>
+
+
+</mapper>
+

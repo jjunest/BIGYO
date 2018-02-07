@@ -23,7 +23,11 @@
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 
-	
+	<bean id="spdao" class="com.innovest.dao.SPDao">
+		<property name="sqlsession">
+			<ref bean="sqlSession" />
+		</property>
+	</bean>
 
 
 </beans>

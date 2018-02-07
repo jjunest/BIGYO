@@ -6,9 +6,10 @@
 
 	<security:http auto-config="true" use-expressions="true">
 		<security:intercept-url pattern="/login.html*" access="hasRole('ROLE_USER')" />
-		<security:intercept-url pattern="/questions" access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/all_TVshow_Topics" access="hasRole('ROLE_USER')" />
 		<security:intercept-url pattern="/welcome.html*" access="hasRole('ROLE_ADMIN')" />
-		<security:form-login login-page="/loginform_custom" default-target-url="/index" authentication-failure-url="/loginform_custom?ng" />
+		<security:intercept-url pattern="/admin_insert_TVTopic" access="hasRole('ROLE_USER')" />
+		<security:form-login login-page="/login_custom" default-target-url="/index" authentication-failure-url="/login_custom?ng" />
 		<security:access-denied-handler error-page="/accessdenial" />
 		<security:logout logout-url="/j_spring_security_logout" logout-success-url="/index" invalidate-session="true" />
 
@@ -16,8 +17,12 @@
 
 	<security:authentication-manager>
 		<security:authentication-provider>
-			<security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select userid,password,enabled from users where userid=?" authorities-by-username-query="select userid, role from user_roles where userid=? " />
+			<security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select userid,password,enabled from sp_users where userid=?" authorities-by-username-query="select userid, role from sp_user_roles where userid=? " />
+			<security:password-encoder ref="encoder" />
 		</security:authentication-provider>
 	</security:authentication-manager>
 
+	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<constructor-arg name="strength" value="10" />
+	</bean>
 </beans>

@@ -6,10 +6,12 @@
 <!-- Listsize를 위한 jstl태그라이브러리 설정 -->
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
-	/* contextpath cp : /bagyo */
 	String cp = request.getContextPath();
 %>
-
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.Collections"%>
+<%@ page import="com.innovest.dto.tvTopic_DTO"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="ko">
@@ -88,31 +90,32 @@
 		</ul>
 		<div class="row">
 			<div class="portfolio-box iso-call col-3-space">
+				<c:forEach var="listValue_tvtopic" items="${result_list_tvtopics}">
+					<!-- GALLERY ITEM START -->
+					<div class="project-post photography web-design">
+						<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_tvtopic.sp_tvtopics_rcdno}"><img
+							src="${pageContext.request.contextPath}/${listValue_tvtopic.sp_tvtopics_tvshow_imgurl}" alt="" class="img-responsive" style="border: 4px solid #59df57; border-radius: 5px;"> </a>
+						<div class="mas-blog-inner">
+							<h3>
+								<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_tvtopic.sp_tvtopics_rcdno}">${listValue_tvtopic.sp_tvtopics_title}</a>
+							</h3>
+							<ul class="list-inline post-detail">
+								<li><a href="#">${listValue_tvtopic.sp_tvtopics_tvshow_name}</a></li>
+								<li><i class="fa fa-calendar"> 방영일:</i>${listValue_tvtopic.sp_tvtopics_tvshow_date}</li>
+								<li><span>중립</span>우세</li>
+							</ul>
+							<p>${listValue_tvtopic.sp_tvtopics_situation_desc}</p>
+							<div class="progress">
+								<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
+								<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
+								<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
+							</div>
 
-				<!-- GALLERY ITEM START -->
-				<div class="project-post photography web-design">
-					<img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" alt="" class="img-responsive" style="border: 4px solid #59df57; border-radius: 5px;">
-					<div class="mas-blog-inner">
-						<h3>
-							<a href="#">금융실명제 도입이 필요한가?</a>
-						</h3>
-						<ul class="list-inline post-detail">
-							<li>방송국: <a href="#">JTBC</a></li>
-							<li><i class="fa fa-calendar"> 방송 날짜:</i> 2017-08-12</li>
-							<li>중립우세</li>
-						</ul>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.lley of type and scrambled it to make a type specimen book.</p>
-
-						<div class="progress">
-							<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
-							<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
-							<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
 						</div>
-
+						<!--blog inner-->
 					</div>
-					<!--blog inner-->
-				</div>
-				<!-- GALLERY ITEM END -->
+					<!-- GALLERY ITEM END -->
+				</c:forEach>
 			</div>
 		</div>
 	</div>

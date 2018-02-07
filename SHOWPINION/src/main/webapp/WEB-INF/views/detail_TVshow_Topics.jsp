@@ -53,6 +53,11 @@
         <![endif]-->
 
 
+<!-- bootstrap SLIDER 라이브러리 CSS 추가 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
+<!-- bootsstrap SELECT 라이브러리 CSS 추가 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
 <style>
 .mouseOverHighlight {
 	border-bottom: 1px solid blue;
@@ -106,7 +111,7 @@
 	<div class="container">
 
 		<div class="center-heading">
-			<h2>금융 실명제 도입이 필요한가?</h2>
+			<h2>${detail_tvTopic.sp_tvtopics_title }</h2>
 			<span class="center-line"></span>
 		</div>
 
@@ -115,39 +120,43 @@
 			<div class="col-md-8">
 				<div class="blog-post">
 					<ul class="list-inline post-detail">
-						<li><i class="fa fa-user"></i><a href="#" data-toggle="tooltip" data-placement="top" title="본 주제에 대하여 정리를 해주신 분입니다. 깊은 감사를 드립니다. "><span>작성자:</span>jjunest</a></li>
-						<li><i class="fa fa-calendar"></i><span>작성일:</span> 31st july 2014</li>
-						<li><i class="fa fa-users"></i> <a href="#"><span>조회수:</span>6</a></li>
+						<li><i class="fa fa-user"></i><a href="#" data-toggle="tooltip" data-placement="top" title="본 주제에 대하여 정리를 해주신 jjunest 님께 깊은 감사를 드립니다. "><span>작성자:</span>${detail_tvTopic.sp_tvtopics_writer }</a></li>
+						<li><i class="fa fa-calendar"></i><span>작성일:</span> ${detail_tvTopic.sp_tvtopics_write_date }</li>
+						<li><i class="fa fa-users"></i> <a href="#"><span>조회수:</span>${detail_tvTopic.sp_tvtopics_view }</a></li>
 						<li><i class="fa fa-comment"></i> <a href="#"><span>의견:</span>6</a>개</li>
 					</ul>
 					<div class="divide30"></div>
 					<h3 class="heading">문제 상황</h3>
-					<p>문재인 정부의 ‘탈원전’ 정책을 둘러싸고 공방이 뜨겁게 진행되고 있다. 지난 6월 19 일 우리나라 최초의 원자력발전소인 부산의 ‘고리 1호기’가 영구 정지되는 자리에서 문재인 대통령은 ‘탈원전 시대’를 선포하며 에너지정책 대전환을 예고했다. 더불어 신고리 5·6호기의 건설 여부를 놓고, 국민의 의견을 수렴하기 위한 공론조사가 현재
-						진행 중이다. 문재인 정부의 ‘탈원전’ 정책을 둘러싸고 공방이 뜨겁게 진행되고 있다. 지난 6월 19 일 우리나라 최초의 원자력발전소인 부산의 ‘고리 1호기’가 영구 정지되는 자리에서 문재인 대통령은 ‘탈원전 시대’를 선포하며 에너지정책 대전환을 예고했다. 더불어 신고리 5·6호기의 건설 여부를 놓고, 국민의 의견을 수렴하기 위한 공론조사가 현재
-						진행 중이다.</p>
+					<p>${detail_tvTopic.sp_tvtopics_situation_desc }</p>
 					<div class="divide50"></div>
 					<h3 class="heading">찬성 반대 근거</h3>
 					<div class="row">
 						<div class="col-sm-6 margin30">
 							<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="찬성측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
 								<h4>30자 찬성 측 주요 근거</h4>
-								<p>일일일일일이이이이이일일일일일이이이이이일일일일일이이이이이</p>
-								<p>일일일일일이이이이이일일일일일이이이이이일일일일일이이이이이</p>
-								<p>일일일일일이이이이이일일일일일이이이이이일일일일일이이이이이</p>
+								<p>${detail_tvTopic.sp_tvtopics_pro1 }</p>
+								<p>${detail_tvTopic.sp_tvtopics_pro2 }</p>
+								<p>${detail_tvTopic.sp_tvtopics_pro3 }</p>
 							</div>
 						</div>
 						<div class="col-sm-6 margin30">
 							<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="반대측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
 								<h4>30자 반대 측 주요 근거</h4>
-								<p>일일일일일이이이이이일일일일일이이이이이일일일일일이이이이이</p>
-								<p>일일일일일이이이이이일일일일일이이이이이일일일일일이이이이이</p>
-								<p>일일일일일이이이이이일일일일일이이이이이일일일일일이이이이이</p>
+								<p>${detail_tvTopic.sp_tvtopics_con1 }</p>
+								<p>${detail_tvTopic.sp_tvtopics_con2 }</p>
+								<p>${detail_tvTopic.sp_tvtopics_con3 }</p>
 							</div>
 						</div>
 
 					</div>
 					<div style="text-align: center">
-						<a href="#" class="btn btn-theme-bg btn-ico btn-lg" style="width: 100%;" data-toggle="modal" data-target="#myModal">의견 쓰기 <i class="fa fa-pencil-square-o"></i></a>
+						<a href="${pageContext.request.contextPath}/writeShowpinion?tvtopic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" class="btn btn-theme-bg btn-ico btn-lg" style="width: 90%; margin: 5px">의견 쓰기
+							<i class="fa fa-pencil-square-o"></i>
+						</a>
+					</div>
+					<div style="text-align: center">
+						<a href="${pageContext.request.contextPath}/writeShowpinion?tvtopic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" class="btn btn-fb-login btn-lg" style="width: 90%; margin: 5px"> SNS 주제 공유하기 <i
+							class="fa fa-facebook"></i></a>
 					</div>
 				</div>
 				<!--blog post-->
@@ -158,10 +167,10 @@
 				<div class="row">
 					<div class="col-md-12 margin20">
 						<div class="team-wrap">
-							<img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" class="img-responsive" alt="">
-							<h4>썰전</h4>
-							<span>방영 날짜: 2017-12-10</span>
-							<p>방송 설명: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lorem quam, adipiscing condimentum tristique vel, eleifend sed turpis</p>
+							<img src="${pageContext.request.contextPath}/${detail_tvTopic.sp_tvtopics_tvshow_imgurl}" class="img-responsive" alt="">
+							<h4>${detail_tvTopic.sp_tvtopics_tvshow_name }</h4>
+							<span>방영 날짜:${detail_tvTopic.sp_tvtopics_tvshow_date }</span>
+							<p>방송 설명: ${detail_tvTopic.sp_tvtopics_tvshow_desc }</p>
 						</div>
 						<!--team-wrap-->
 					</div>
@@ -242,17 +251,17 @@
 						</p>
 					</div>
 					<div class="col-md-6" style="">
-						<p>인정하는 반대편 근거</p>
+						<p>공감하는 반대편 근거</p>
 						<p>
-							<span class="label label-default">인정: <span>80</span>%
+							<span class="label label-default">공감: <span>80</span>%
 							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
 						</p>
 						<p>
-							<span class="label label-default">인정: <span>70</span>%
+							<span class="label label-default">공감: <span>70</span>%
 							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
 						</p>
 						<p>
-							<span class="label label-default">인정: <span>30</span>%
+							<span class="label label-default">공감: <span>30</span>%
 							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
 						</p>
 					</div>
@@ -267,10 +276,30 @@
 					</div>
 				</div>
 				<div class="row" style="text-align: right;">
-
 					<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
 						class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
 				</div>
+				<div class="row" style="margin-top: 5px">
+					<div class="col-md-10" style="">
+						<div>
+							댓글 1 JJUNEST <span>2017-05-27 시간</span>
+						</div>
+						내용 블라블라블라블라
+					</div>
+					<div class="col-md-10" style="">
+						<div>댓글 1 아이디</div>
+						댓글1내용 블라블라블라블라
+					</div>
+					<div class="col-md-10" style="">
+						<div>댓글 1 아이디</div>
+						댓글1내용 블라블라블라블라
+					</div>
+					<div class="col-md-10" style="">
+						<div>댓글 1 아이디</div>
+						댓글1내용 블라블라블라블라
+					</div>
+				</div>
+
 			</div>
 
 			<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
@@ -498,32 +527,116 @@
 
 	<jsp:include page="footer.jsp"></jsp:include>
 
-
-
 	<!-- 모달 및 숨겨져 있는 부분 -->
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
+			<div class="modal-dialog vertical-align-center  modal-lg">
 				<div class="modal-content">
-					<div class="modal-header">
+					<div class="modal-header" style="text-align: center;">
 						<button type="button" class="close" data-dismiss="modal">
 							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-
 						</button>
-						<h4 class="modal-title" id="myModalLabel">Modal title</h4>
-
+						<h4 class="modal-title" id="myModalLabel">금융 실명제 도입이 필요한가?</h4>
 					</div>
-					<div class="modal-body">...</div>
+					<div class="modal-body">
+						<div style="text-align: center;">
+
+							<div class="btn-group" data-toggle="buttons" style="width: 100%; margin-bottom: 5px">
+								<label class="btn btn-primary" style="width: 33%; border: solid 0.5 gray"> <input type="radio" name="options" id="option1" autocomplete="off"> 찬성
+								</label> <label class="btn btn-primary" style="width: 33%; border: solid 0.5 gray"> <input type="radio" name="options" id="option2" autocomplete="off"> 중립
+								</label> <label class="btn btn-primary" style="width: 33%; border: solid 0.5 gray"> <input type="radio" name="options" id="option3" autocomplete="off"> 반대
+								</label>
+							</div>
+						</div>
+						<div>
+							<div class="table-responsive">
+								<table class="table">
+									<tbody>
+										<tr>
+											<td style="width: 30%">1</td>
+											<td style="width: 70%">
+												<div>
+													<span class="label label-danger">결정적 이유</span> <select class="selectpicker">
+														<option>가나다라맙사아자차캍파하 가나달마바사아자차카타파하</option>
+														<option>Ketchup</option>
+														<option>Relish</option>
+													</select>
+												</div>
+											</td>
+
+										</tr>
+										<tr>
+											<td style="width: 30%">1</td>
+											<td style="widows: 70%">
+												<div>
+													<span class="label label-danger">결정적 이유</span> <select class="selectpicker">
+														<option>가나다라맙사아자차캍파하 가나달마바사아자차카타파하</option>
+														<option>Ketchup</option>
+														<option>Relish</option>
+													</select>
+												</div>
+											</td>
+
+										</tr>
+										<tr>
+											<td style="width: 30%">1</td>
+											<td style="widows: 70%">
+												<div>
+													<span class="label label-danger">결정적 이유</span> <select class="selectpicker">
+														<option>가나다라맙사아자차캍파하 가나달마바사아자차카타파하</option>
+														<option>Ketchup</option>
+														<option>Relish</option>
+													</select>
+												</div>
+											</td>
+
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+
+							<div class="row" style="background-color: yellow">
+								<div>나의 근거</div>
+								<div class="row">
+									<div class="col-md-3"></div>
+									<div class="col-md-8"></div>
+								</div>
+								<div class="row">
+									<div class="col-md-3">
+										<span class="label label-danger">결정적 이유</span>
+									</div>
+									<div class="col-md-8">ㅇㅇㅇㅇㅇㅇㅇ</div>
+								</div>
+								<div class="row">
+									<div class="col-md-3">
+										<span class="label label-danger">결정적 이유</span>
+									</div>
+									<div class="col-md-8">ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
+								</div>
+
+								<div>공감하는 상대편 근거</div>
+							</div>
+						</div>
+
+
+
+						<div style="text-align: center;">
+							<div>상세 의견</div>
+							<textarea rows="4" cols="90%"></textarea>
+						</div>
+					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary">일반 의견 등록하기</button>
+						<a href="#" class="btn btn-fb-login"><i class="fa fa-facebook"></i> FACEBOOK 에 등록하고 쇼피니언 되기</a>
+
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 
 	<!--scripts and plugins -->
 	<!--must need plugin jquery-->
@@ -556,32 +669,39 @@
 	<script src="${pageContext.request.contextPath}/resources/js/isotope-custom.js" type="text/javascript"></script>
 	<!-- 구글 차트를 위한 스크립트 추가 -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<!-- 부트스트랩 SLIDER SELECTOR를 위한 자바스크립트 추가  -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
+	<!-- 부트스트랩 CUSTOM-SELECTOR 를 위한 자바스크립트 추가  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+
+
 	<script type="text/javascript">
-		google.charts.load('current', {
-			'packages' : [ 'corechart' ]
+		$(document).ready(function() {
+			navMenuColorSetting();
+
+			google_chart_Setting();
+
 		});
-		google.charts.setOnLoadCallback(drawChart);
 
+		function google_chart_Setting() {
+			google.charts.load('current', {
+				'packages' : [ 'corechart' ]
+			});
+			google.charts.setOnLoadCallback(drawChart);
+		}
 		function drawChart() {
-
 			var data = google.visualization.arrayToDataTable([ [ 'Task', 'Hours per Day' ], [ '찬성', 110 ], [ '중립', 630 ], [ '반대', 22 ] ]);
-
 			var options = {
 				legend : 'bottom',
 				colors : [ '#e0440e', '#e6693e', '#ec8f6e' ],
 				is3D : true
 			};
-
 			var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
 			var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
 			chart1.draw(data, options);
 			chart2.draw(data, options);
 		}
-		$(document).ready(function() {
-			navMenuColorSetting();
-			
-		
-		});
 
 		function navMenuColorSetting() {
 			/* navigation menu 주소에 따라서 active 설정 시작 */

@@ -26,8 +26,26 @@
 			</div>
 			<div class="col-sm-7 text-right">
 				<ul class="list-inline top-dark-right">
-					<li><a href="${pageContext.request.contextPath}/login_custom"><i class="fa fa-lock"></i> 로그인</a></li>
-					<li><a href="${pageContext.request.contextPath}/login_custom"><i class="fa fa-user"></i> 회원 가입</a></li>
+
+
+					<!-- 페이지를 검색해보고, SECURITY LOGIN이 되어 있으면 로그아웃을 보여주고, 아니면 로그인 메뉴를 보여준다  -->
+					<c:set var="user" value="${pageContext.request.userPrincipal.name}" />
+					<c:choose>
+						<c:when test="${empty user}">
+							<li><a href="${pageContext.request.contextPath}/login_custom"><i class="fa fa-lock"></i> 로그인</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="<c:url value="/j_spring_security_logout" />"><i class="fa fa-lock"></i> 로그아웃</a></li>
+
+						</c:otherwise>
+
+
+
+					</c:choose>
+
+
+					<li><a href="${pageContext.request.contextPath}/sign_up"><i class="fa fa-user"></i> 회원 가입</a></li>
+					<li class=""><a href="${pageContext.request.contextPath}/admin">관리자 페이지 가기 </a></li>
 				</ul>
 				<div class="search">
 					<form role="form">
@@ -61,9 +79,9 @@
 				<li class=""><a href="${pageContext.request.contextPath}/thisWeekTopics">이번주 쇼피니언 주제 </a></li>
 				<li class=""><a href="${pageContext.request.contextPath}/all_TVshow_Topics">역대 TV토론 주제 </a></li>
 				<li class=""><a href="${pageContext.request.contextPath}/all_Showpinion_Topics">역대 쇼피니언 선정 주제 </a></li>
-				<li class=""><a href="#">랭킹 </a></li>
-				<li class=""><a href="#">FAQs </a></li>
-				<li class=""><a href="#">자유게시판 </a></li>
+				<li class=""><a href="${pageContext.request.contextPath}/rankings">랭킹 </a></li>
+				<li class=""><a href="${pageContext.request.contextPath}/userInfo">프로필 </a></li>
+				<li class=""><a href="${pageContext.request.contextPath}/writeTVTwopics">(관)TV토론 주제 </a></li>
 
 				<!--features-->
 				<!--menu Features li end here-->

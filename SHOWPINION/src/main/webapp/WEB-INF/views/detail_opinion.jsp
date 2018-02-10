@@ -73,7 +73,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-6">
-					<h4>NAME</h4>
+					<h4>상세 오피니언 의견</h4>
 				</div>
 				<div class="col-sm-6 hidden-xs text-right">
 					<ol class="breadcrumb">
@@ -87,7 +87,119 @@
 	<!--breadcrumbs-->
 	<div class="divide80"></div>
 	<div class="container">
-		<h4>Put you content here</h4>
+
+		<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
+			<div class="row">
+				<div class="col-md-2" style="text-align: center">
+					<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
+					<p style="margin: 2px">jjunest</p>
+					<p style="font-size: 80%; color: gray; margin: 2px">${opinion_DTO.sp_opinion_datetime }</p>
+				</div>
+				<div class="col-md-6" style="">
+
+					<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">
+						<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${opinion_DTO.sp_opinion_topicrcdno }">${opinion_DTO.sp_opinion_topictitle }</a>
+					</h4>
+				</div>
+				<div class="col-md-4">
+					<c:if test="${opinion_DTO.sp_opinion_side eq 'pro'}">
+						<div>찬성</div>
+					</c:if>
+					<c:if test="${opinion_DTO.sp_opinion_side eq 'con'}">
+						<div>반대</div>
+					</c:if>
+
+
+					<p>
+						<span>* 본 의견은 <c:if test="${opinion_DTO.sp_opinion_type eq 'normal'}">
+							'일반'
+						</c:if> <c:if test="${opinion_DTO.sp_opinion_type eq 'show'}">
+						'쇼피니언'
+						</c:if> 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
+					</p>
+				</div>
+
+			</div>
+
+			<div class="row" style="margin-top: 5px">
+				<div class="col-md-6" style="">
+					<p>
+						나의
+						<c:if test="${opinion_DTO.sp_opinion_side eq 'pro'}">
+							찬성
+						</c:if>
+						<c:if test="${opinion_DTO.sp_opinion_side eq 'con'}">
+						반대
+						</c:if>
+						근거
+					</p>
+					<p>
+						<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp ${opinion_DTO.sp_opinion_reason1 }
+					</p>
+					<p>
+						<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp ${opinion_DTO.sp_opinion_reason2 }
+					</p>
+					<p>
+						<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp ${opinion_DTO.sp_opinion_reason3 }
+					</p>
+				</div>
+				<div class="col-md-6" style="">
+					<p>공감하는 반대편 근거</p>
+					<p>
+						<span class="label label-warning">공감: <span>${opinion_DTO.sp_opinion_opreason1_agree }</span>%
+						</span>&nbsp ${opinion_DTO.sp_opinion_opreason1}
+					</p>
+					<p>
+						<span class="label label-warning">공감: <span>${opinion_DTO.sp_opinion_opreason2_agree }</span>%
+						</span>&nbsp ${opinion_DTO.sp_opinion_opreason2}
+					</p>
+					<p>
+						<span class="label label-warning">공감: <span>${opinion_DTO.sp_opinion_opreason3_agree }</span>%
+						</span>&nbsp ${opinion_DTO.sp_opinion_opreason3 }
+					</p>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 5px">
+
+				<div class="col-md-10" style="">
+					<div>상세 의견</div>
+
+					${opinion_DTO.sp_opinion_detail }
+				</div>
+			</div>
+			<div class="row" style="text-align: right;">
+				<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
+					class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
+			</div>
+			<div class="row" style="margin-top: 5px">
+				<div class="col-md-10" style="">
+					<div>
+						댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+					</div>
+
+				</div>
+				<div class="col-md-10" style="">
+					<div>
+						댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+					</div>
+
+				</div>
+				<div class="col-md-10" style="">
+					<div>
+						댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+					</div>
+
+				</div>
+				<div class="col-md-10" style="">
+					<div>
+						댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
 	</div>
 	<div class="divide60"></div>
 

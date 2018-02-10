@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.innovest.dao.IDao">
+	<insert id="insertOpinion" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="sp_opinion_rcdno">
+		INSERT INTO sp_opinion
+		(sp_opinion_topicrcdno, sp_opinion_topictitle, sp_opinion_writer, sp_opinion_side, sp_opinion_reason1, sp_opinion_reason2, sp_opinion_reason3, sp_opinion_opreason1, sp_opinion_opreason2, sp_opinion_opreason3, sp_opinion_opreason1_agree, sp_opinion_opreason2_agree, sp_opinion_opreason3_agree, sp_opinion_detail,sp_opinion_type)
+		VALUES
+		(#{sp_tvtopics_rcdno},#{sp_tvtopics_title},#{sp_tvtopics_writer},#{options_myside},#{myside_reason1},#{myside_reason2},#{myside_reason3},#{opside_reason1},#{opside_reason2},#{opside_reason3},#{opside_reason1_agree},#{opside_reason2_agree},#{opside_reason3_agree},#{opinion_detail},#{sp_tvtopics_type})
+	</insert>
+	<select id="selectOpinionDetail" resultType="com.innovest.dto.opinion_DTO">
+		SELECT * from sp_opinion where sp_opinion_rcdno = #{opinion_rcdno}
+	</select>
+	<select id="selectAll_opinion_normal" resultType="com.innovest.dto.opinion_DTO">
+		SELECT * FROM
+		sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = 'normal' ORDER BY sp_opinion_datetime DESC
+	</select>
+	<select id="selectAll_opinion_show" resultType="com.innovest.dto.opinion_DTO">
+		SELECT * FROM
+		sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = 'show' ORDER BY sp_opinion_datetime DESC
+	</select>
+
+
+</mapper>
+

@@ -17,5 +17,9 @@
 		SELECT * FROM
 		sp_tvtopics where sp_tvtopics_rcdno = #{topic_rcdno}
 	</select>
+
+	<update id="update_DetailViewNumber">
+		UPDATE sp_tvtopics SET sp_tvtopics_view = sp_tvtopics_view + 1 WHERE sp_tvtopics_rcdno = #{topic_rcdno}
+	</update>
 </mapper>
 

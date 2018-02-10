@@ -22,6 +22,7 @@
 		</security:authentication-provider>
 	</security:authentication-manager>
 
+	<!-- 비밀번호 암호화 처리를 위한 빈 생성 -->
 	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 		<constructor-arg name="strength" value="10" />
 	</bean>

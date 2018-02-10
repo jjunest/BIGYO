@@ -51,6 +51,10 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+<!-- bootstrap SLIDER 라이브러리 CSS 추가 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
+<!-- bootsstrap SELECT 라이브러리 CSS 추가 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
 
 
 <style>
@@ -89,7 +93,7 @@
 
 			<div class="center-heading" style="text-align: center">
 				<h2>
-					주제 제목 <input class="form-control" id="tvtopic_name_input"  placeholder = "TV토론 주제 제목" name="tvtopic_name_input" type="text" style="width: 80%; margin: 0 auto;">
+					주제 제목 <input class="form-control" id="tvtopic_name_input" placeholder="TV토론 주제 제목" name="tvtopic_name_input" type="text" style="width: 80%; margin: 0 auto;">
 				</h2>
 				<span class="center-line"></span>
 			</div>
@@ -101,10 +105,6 @@
 						<ul class="list-inline post-detail">
 							<li><i class="fa fa-user"></i><a href="#" data-toggle="tooltip" data-placement="top" title="본 주제에 대하여 정리를 해주신 jjunest 님께 깊은 감사를 드립니다. "><span>작성자:</span>${user}</a> <input type="hidden"
 								name="writer_name" value="${user}"></li>
-
-							<li><i class="fa fa-calendar"></i><span>작성일:</span> 31st july 2014</li>
-							<li><i class="fa fa-users"></i> <a href="#"><span>조회수:</span>6</a></li>
-							<li><i class="fa fa-comment"></i> <a href="#"><span>의견:</span>6</a>개</li>
 						</ul>
 						<div class="divide30"></div>
 						<h3 class="heading">문제 상황</h3>
@@ -118,13 +118,13 @@
 								<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="찬성측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
 									<h4>30자 찬성 측 주요 근거</h4>
 									<p>
-										찬성1.<input class="form-control" id="tvtopic_pro1_input" name="tvtopic_pro1_input"  placeholder = "찬성측 근거" type="text" maxlength="32">
+										찬성1.<input class="form-control" id="tvtopic_pro1_input" name="tvtopic_pro1_input" placeholder="찬성측 근거" type="text" maxlength="32">
 									</p>
 									<p>
-										찬성2.<input class="form-control" id="tvtopic_pro2_input" name="tvtopic_pro2_input" placeholder = "찬성측 근거"  type="text" maxlength="32">
+										찬성2.<input class="form-control" id="tvtopic_pro2_input" name="tvtopic_pro2_input" placeholder="찬성측 근거" type="text" maxlength="32">
 									</p>
 									<p>
-										찬성3.<input class="form-control" id="tvtopic_pro3_input" name="tvtopic_pro3_input"  placeholder = "찬성측 근거"  type="text" maxlength="32">
+										찬성3.<input class="form-control" id="tvtopic_pro3_input" name="tvtopic_pro3_input" placeholder="찬성측 근거" type="text" maxlength="32">
 									</p>
 								</div>
 							</div>
@@ -132,13 +132,13 @@
 								<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="반대측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
 									<h4>30자 반대 측 주요 근거</h4>
 									<p>
-										반대1.<input class="form-control" id="tvtopic_con1_input" name="tvtopic_con1_input"  placeholder = "반대측 근거"  type="text" maxlength="32">
+										반대1.<input class="form-control" id="tvtopic_con1_input" name="tvtopic_con1_input" placeholder="반대측 근거" type="text" maxlength="32">
 									</p>
 									<p>
-										반대2.<input class="form-control" id="tvtopic_con2_input" name="tvtopic_con2_input"  placeholder = "반대측 근거" type="text" maxlength="32">
+										반대2.<input class="form-control" id="tvtopic_con2_input" name="tvtopic_con2_input" placeholder="반대측 근거" type="text" maxlength="32">
 									</p>
 									<p>
-										반대3.<input class="form-control" id="tvtopic_con3_input" name="tvtopic_con3_input"  placeholder = "반대측 근거" type="text" maxlength="32">
+										반대3.<input class="form-control" id="tvtopic_con3_input" name="tvtopic_con3_input" placeholder="반대측 근거" type="text" maxlength="32">
 									</p>
 								</div>
 							</div>
@@ -160,7 +160,11 @@
 									<img id="preview_img" style="margin: 0 auto;" class="img-responsive">
 								</div>
 								<h4>
-									방송이름<input class="form-control" id="tvtopic_tvshow_name" name="tvtopic_tvshow_name" type="text" maxlength="32" style="width: 80%; margin: 0 auto;">
+									방송이름 <select class="selectpicker" data-width="100%" id="tvtopic_tvshow_name" name="tvtopic_tvshow_name" style="width: 80%">
+										<option value = "tvshowname_ssul">썰전</option>
+										<option value = "tvshowname_100min">100분 토론</option>
+										<option value = "tvshowname_gangJuk">강적들</option>
+									</select>
 								</h4>
 								<span>방영 날짜<input type="date" class="form-control" id="tvtopic_tvshow_date" name="tvtopic_tvshow_date" style="width: 80%; margin: 0 auto;"></span>
 								<p>방송 설명</p>
@@ -211,6 +215,11 @@
 	<script src="${pageContext.request.contextPath}/resources/ckeditor/ckeditor.js"></script>
 	<!-- multipart 폼을 AJAX로 처리하기 위한 제이ㅝ리 -->
 	<script src="http://malsup.github.com/jquery.form.js"></script>
+	<!-- 부트스트랩 SLIDER SELECTOR를 위한 자바스크립트 추가  -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
+	<!-- 부트스트랩 CUSTOM-SELECTOR 를 위한 자바스크립트 추가  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			navMenuColorSetting();

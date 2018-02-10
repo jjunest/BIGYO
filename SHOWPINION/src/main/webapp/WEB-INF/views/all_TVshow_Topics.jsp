@@ -83,16 +83,16 @@
 
 		<ul class="filter list-inline">
 			<li><a class="active" href="#" data-filter="*">모두보기</a></li>
-			<li><a href="#" data-filter=".photography">100분 토론</a></li>
-			<li><a href="#" data-filter=".illustration">썰전</a></li>
-			<li><a href="#" data-filter=".branding">강적들</a></li>
-			<li><a href="#" data-filter=".web-design">JTBC</a></li>
+			<li><a href="#" data-filter=".tvshowname_ssul">썰전</a></li>
+			<li><a href="#" data-filter=".tvshowname_100min">100분 토론</a></li>
+			<li><a href="#" data-filter=".tvshowname_gangJuk">강적들</a></li>
+
 		</ul>
 		<div class="row">
 			<div class="portfolio-box iso-call col-3-space">
 				<c:forEach var="listValue_tvtopic" items="${result_list_tvtopics}">
 					<!-- GALLERY ITEM START -->
-					<div class="project-post photography web-design">
+					<div class="project-post photography web-design ${listValue_tvtopic.sp_tvtopics_tvshow_name}">
 						<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_tvtopic.sp_tvtopics_rcdno}"><img
 							src="${pageContext.request.contextPath}/${listValue_tvtopic.sp_tvtopics_tvshow_imgurl}" alt="" class="img-responsive" style="border: 4px solid #59df57; border-radius: 5px;"> </a>
 						<div class="mas-blog-inner">
@@ -100,7 +100,7 @@
 								<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_tvtopic.sp_tvtopics_rcdno}">${listValue_tvtopic.sp_tvtopics_title}</a>
 							</h3>
 							<ul class="list-inline post-detail">
-								<li><a href="#">${listValue_tvtopic.sp_tvtopics_tvshow_name}</a></li>
+								<li><i class="fa fa-users"></i> <span>조회: </span> ${listValue_tvtopic.sp_tvtopics_view }</li>
 								<li><i class="fa fa-calendar"> 방영일:</i>${listValue_tvtopic.sp_tvtopics_tvshow_date}</li>
 								<li><span>중립</span>우세</li>
 							</ul>

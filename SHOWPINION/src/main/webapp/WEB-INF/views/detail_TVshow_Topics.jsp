@@ -122,7 +122,7 @@
 					<ul class="list-inline post-detail">
 						<li><i class="fa fa-user"></i><a href="#" data-toggle="tooltip" data-placement="top" title="본 주제에 대하여 정리를 해주신 jjunest 님께 깊은 감사를 드립니다. "><span>작성자:</span>${detail_tvTopic.sp_tvtopics_writer }</a></li>
 						<li><i class="fa fa-calendar"></i><span>작성일:</span> ${detail_tvTopic.sp_tvtopics_write_date }</li>
-						<li><i class="fa fa-users"></i> <a href="#"><span>조회수:</span>${detail_tvTopic.sp_tvtopics_view }</a></li>
+						<li><i class="fa fa-users"></i> <span>조회수:</span>${detail_tvTopic.sp_tvtopics_view }</li>
 						<li><i class="fa fa-comment"></i> <a href="#"><span>의견:</span>6</a>개</li>
 					</ul>
 					<div class="divide30"></div>
@@ -132,16 +132,16 @@
 					<h3 class="heading">찬성 반대 근거</h3>
 					<div class="row">
 						<div class="col-sm-6 margin30">
-							<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="찬성측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
-								<h4>30자 찬성 측 주요 근거</h4>
+							<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="찬성측  주요 30자 근거" style="border: 4px solid #59df57; border-radius: 5px;">
+								<h4>찬성 측 주요 근거</h4>
 								<p>${detail_tvTopic.sp_tvtopics_pro1 }</p>
 								<p>${detail_tvTopic.sp_tvtopics_pro2 }</p>
 								<p>${detail_tvTopic.sp_tvtopics_pro3 }</p>
 							</div>
 						</div>
 						<div class="col-sm-6 margin30">
-							<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="반대측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
-								<h4>30자 반대 측 주요 근거</h4>
+							<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="반대측  주요 30자 근거" style="border: 4px solid #df5759; border-radius: 5px;">
+								<h4>반대 측 주요 근거</h4>
 								<p>${detail_tvTopic.sp_tvtopics_con1 }</p>
 								<p>${detail_tvTopic.sp_tvtopics_con2 }</p>
 								<p>${detail_tvTopic.sp_tvtopics_con3 }</p>
@@ -150,12 +150,12 @@
 
 					</div>
 					<div style="text-align: center">
-						<a href="${pageContext.request.contextPath}/writeShowpinion?tvtopic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" class="btn btn-theme-bg btn-ico btn-lg" style="width: 90%; margin: 5px">의견 쓰기
-							<i class="fa fa-pencil-square-o"></i>
+						<a href="${pageContext.request.contextPath}/writeShowpinion?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" class="btn btn-theme-bg btn-ico btn-lg" style="width: 90%; margin: 5px">의견 쓰기 <i
+							class="fa fa-pencil-square-o"></i>
 						</a>
 					</div>
 					<div style="text-align: center">
-						<a href="${pageContext.request.contextPath}/writeShowpinion?tvtopic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" class="btn btn-fb-login btn-lg" style="width: 90%; margin: 5px"> SNS 주제 공유하기 <i
+						<a href="${pageContext.request.contextPath}/writeShowpinion?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" class="btn btn-fb-login btn-lg" style="width: 90%; margin: 5px"> SNS에 주제 공유하기 <i
 							class="fa fa-facebook"></i></a>
 					</div>
 				</div>
@@ -206,167 +206,153 @@
 			</h3>
 			<div class="dropdown" style="text-align: right">
 				<button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-					추천순 <span class="caret"></span>
+					최신순 <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1">
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">추천순</a></li>
 					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">최신순</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">추천순</a></li>
 					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">댓글순</a></li>
 				</ul>
 				<button type="button" class="btn btn-primary">의견쓰기</button>
 			</div>
 
 
-			<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
-				<div class="row">
-					<div class="col-md-2" style="text-align: center">
-						<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
-						<p style="margin: 2px">jjunest</p>
-						<p style="font-size: 80%; color: gray; margin: 2px">2017-07-28</p>
-					</div>
-					<div class="col-md-6" style="">
 
-						<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">금융 실명제 도입이 필요한가?</h4>
-					</div>
-					<div class="col-md-4">
-						<div style="width: 50px; height: 50px; border-radius: 50%; font-size: 50px; color: white; line-height: 500px; text-align: center; background: green;"></div>
-						<p>
-							<span>* 본 의견은 '쇼피니언' 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
-						</p>
-					</div>
+			<c:forEach var="listValue_opinion" items="${opinions_list_show}">
+				<!-- 찬성 반대에 따라 겉을 둘러싸는 색이 달라짐 설정하기 -->
+				<c:choose>
+					<c:when test="${listValue_opinion.sp_opinion_side  eq 'pro'}">
+						<c:set var="side_color" value="#59df57" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="side_color" value="#df5759" />
+					</c:otherwise>
+				</c:choose>
 
-				</div>
-
-				<div class="row" style="margin-top: 5px">
-					<div class="col-md-6" style="">
-						<p>나의 찬성 근거</p>
-						<p>
-							<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-						<p>
-							<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp 가나다라마바사아자차ㅋ타파
-						</p>
-						<p>
-							<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp 가나다라마바사아자차ㅋ타파
-						</p>
-					</div>
-					<div class="col-md-6" style="">
-						<p>공감하는 반대편 근거</p>
-						<p>
-							<span class="label label-default">공감: <span>80</span>%
-							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-						<p>
-							<span class="label label-default">공감: <span>70</span>%
-							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-						<p>
-							<span class="label label-default">공감: <span>30</span>%
-							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-					</div>
-				</div>
-				<div class="row" style="margin-top: 5px">
-
-					<div class="col-md-10" style="">
-						<div>상세 의견</div>
-
-						가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-						가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-					</div>
-				</div>
-				<div class="row" style="text-align: right;">
-					<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
-						class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
-				</div>
-				<div class="row" style="margin-top: 5px">
-					<div class="col-md-10" style="">
-						<div>
-							댓글 1 JJUNEST <span>2017-05-27 시간</span>
+				<div class="about-author" style="border-radius: 3%; border: 4px solid ${side_color}; border-radius: 5px;">
+					<div class="row">
+						<div class="col-md-2" style="text-align: center">
+							<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
+							<p style="margin: 2px">jjunest</p>
+							<p style="font-size: 80%; color: gray; margin: 2px">${listValue_opinion.sp_opinion_datetime }</p>
 						</div>
-						내용 블라블라블라블라
+						<div class="col-md-6" style="">
+
+							<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">
+								<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_opinion.sp_opinion_topicrcdno }">${listValue_opinion.sp_opinion_topictitle }</a>
+							</h4>
+						</div>
+						<div class="col-md-4">
+							<c:if test="${listValue_opinion.sp_opinion_side eq 'pro'}">
+								<div>찬성</div>
+							</c:if>
+							<c:if test="${listValue_opinion.sp_opinion_side eq 'con'}">
+								<div>반대</div>
+							</c:if>
+
+
+							<p>
+								<span>* 본 의견은 <c:if test="${listValue_opinion.sp_opinion_type eq 'normal'}">
+							'일반'
+						</c:if> <c:if test="${listValue_opinion.sp_opinion_type eq 'show'}">
+						'쇼피니언'
+						</c:if> 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
+							</p>
+						</div>
+
 					</div>
-					<div class="col-md-10" style="">
-						<div>댓글 1 아이디</div>
-						댓글1내용 블라블라블라블라
+
+					<div class="row" style="margin-top: 5px">
+						<div class="col-md-6" style="">
+							<p>
+								나의
+								<c:if test="${listValue_opinion.sp_opinion_side eq 'pro'}">
+							찬성
+						</c:if>
+								<c:if test="${listValue_opinion.sp_opinion_side eq 'con'}">
+						반대
+						</c:if>
+								근거
+							</p>
+							<p>
+								<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp ${listValue_opinion.sp_opinion_reason1 }
+							</p>
+							<p>
+								<c:if test="${listValue_opinion.sp_opinion_reason2 ne '0'}">
+									<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp ${listValue_opinion.sp_opinion_reason2 }
+							</c:if>
+
+							</p>
+							<p>
+								<c:if test="${listValue_opinion.sp_opinion_reason3 ne '0'}">
+									<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp ${listValue_opinion.sp_opinion_reason3 }
+							</c:if>
+							</p>
+						</div>
+						<div class="col-md-6" style="">
+							<p>공감하는 반대편 근거</p>
+							<p>
+								<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason1_agree }</span>%
+								</span>&nbsp ${listValue_opinion.sp_opinion_opreason1}
+							</p>
+							<p>
+								<c:if test="${listValue_opinion.sp_opinion_opreason2 ne '0'}">
+									<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason2_agree }</span>%
+									</span>&nbsp ${listValue_opinion.sp_opinion_opreason2}
+									</c:if>
+
+
+							</p>
+							<p>
+								<c:if test="${listValue_opinion.sp_opinion_opreason3 ne '0'}">
+									<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason3_agree }</span>%
+									</span>&nbsp ${listValue_opinion.sp_opinion_opreason3}
+									</c:if>
+							</p>
+						</div>
 					</div>
-					<div class="col-md-10" style="">
-						<div>댓글 1 아이디</div>
-						댓글1내용 블라블라블라블라
+					<div class="row" style="margin-top: 5px">
+
+						<div class="col-md-10" style="">
+							<div>상세 의견</div>
+
+							${listValue_opinion.sp_opinion_detail }
+						</div>
 					</div>
-					<div class="col-md-10" style="">
-						<div>댓글 1 아이디</div>
-						댓글1내용 블라블라블라블라
+					<div class="row" style="text-align: right;">
+						<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
+							class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
 					</div>
+					<div class="row" style="margin-top: 5px">
+						<div class="col-md-10" style="">
+							<div>
+								댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+							</div>
+
+						</div>
+						<div class="col-md-10" style="">
+							<div>
+								댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+							</div>
+
+						</div>
+						<div class="col-md-10" style="">
+							<div>
+								댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+							</div>
+
+						</div>
+						<div class="col-md-10" style="">
+							<div>
+								댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+							</div>
+
+						</div>
+					</div>
+
 				</div>
-
-			</div>
-
-			<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
-				<div class="row">
-					<div class="col-md-2" style="text-align: center">
-						<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
-						<p style="margin: 2px">jjunest</p>
-						<p style="font-size: 80%; color: gray; margin: 2px">2017-07-28</p>
-					</div>
-					<div class="col-md-6" style="">
-
-						<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">금융 실명제 도입이 필요한가?</h4>
-					</div>
-					<div class="col-md-4">
-						<div style="width: 50px; height: 50px; border-radius: 50%; font-size: 50px; color: white; line-height: 500px; text-align: center; background: green;"></div>
-						<p>
-							<span>* 본 의견은 '쇼피니언' 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
-						</p>
-					</div>
-
-				</div>
-
-				<div class="row" style="margin-top: 5px">
-					<div class="col-md-6" style="">
-						<p>나의 찬성 근거</p>
-						<p>
-							<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-						<p>
-							<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp 가나다라마바사아자차ㅋ타파
-						</p>
-						<p>
-							<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp 가나다라마바사아자차ㅋ타파
-						</p>
-					</div>
-					<div class="col-md-6" style="">
-						<p>인정하는 반대편 근거</p>
-						<p>
-							<span class="label label-default">인정: <span>80</span>%
-							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-						<p>
-							<span class="label label-default">인정: <span>70</span>%
-							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-						<p>
-							<span class="label label-default">인정: <span>30</span>%
-							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-					</div>
-				</div>
-				<div class="row" style="margin-top: 5px">
-
-					<div class="col-md-10" style="">
-						<div>상세 의견</div>
-
-						가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-						가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-					</div>
-				</div>
-				<div class="row" style="text-align: right;">
-
-					<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
-						class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
-				</div>
-			</div>
-			<!--container-->
+				<!-- GALLERY ITEM END -->
+			</c:forEach>
 
 			<ul class="pager">
 				<li class=""><a href="#" style="width: 100%">쇼피니언 의견 더보기 <span>&nbsp &nbsp&nbsp<i class="fa fa-commenting-o" aria-hidden="true"></i> 6개의 의견이 더 존재합니다
@@ -383,81 +369,140 @@
 			</h3>
 			<div class="dropdown" style="text-align: right">
 				<button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-					추천순 <span class="caret"></span>
+					최신순 <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1">
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">추천순</a></li>
 					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">최신순</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">추천순</a></li>
 					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">댓글순</a></li>
 				</ul>
 				<button type="button" class="btn btn-primary">의견 쓰기</button>
 			</div>
+			<c:forEach var="listValue_opinion" items="${opinions_list_normal}">
+				<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
+					<div class="row">
+						<div class="col-md-2" style="text-align: center">
+							<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
+							<p style="margin: 2px">jjunest</p>
+							<p style="font-size: 80%; color: gray; margin: 2px">${listValue_opinion.sp_opinion_datetime }</p>
+						</div>
+						<div class="col-md-6" style="">
+
+							<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">
+								<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_opinion.sp_opinion_topicrcdno }">${listValue_opinion.sp_opinion_topictitle }</a>
+							</h4>
+						</div>
+						<div class="col-md-4">
+							<c:if test="${listValue_opinion.sp_opinion_side eq 'pro'}">
+								<div>찬성</div>
+							</c:if>
+							<c:if test="${listValue_opinion.sp_opinion_side eq 'con'}">
+								<div>반대</div>
+							</c:if>
 
 
-			<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
-				<div class="row">
-					<div class="col-md-2" style="text-align: center">
-						<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
-						<p style="margin: 2px">jjunest</p>
-						<p style="font-size: 80%; color: gray; margin: 2px">2017-07-28</p>
+							<p>
+								<span>* 본 의견은 <c:if test="${listValue_opinion.sp_opinion_type eq 'normal'}">
+							'일반'
+						</c:if> <c:if test="${listValue_opinion.sp_opinion_type eq 'show'}">
+						'쇼피니언'
+						</c:if> 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
+							</p>
+						</div>
+
 					</div>
-					<div class="col-md-6" style="">
 
-						<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">금융 실명제 도입이 필요한가?</h4>
+					<div class="row" style="margin-top: 5px">
+						<div class="col-md-6" style="">
+							<p>
+								나의
+								<c:if test="${listValue_opinion.sp_opinion_side eq 'pro'}">
+							찬성
+						</c:if>
+								<c:if test="${listValue_opinion.sp_opinion_side eq 'con'}">
+						반대
+						</c:if>
+								근거
+							</p>
+							<p>
+								<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp ${listValue_opinion.sp_opinion_reason1 }
+							</p>
+							<p>
+								<c:if test="${listValue_opinion.sp_opinion_reason2 ne '0'}">
+									<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp ${listValue_opinion.sp_opinion_reason2 }
+							</c:if>
+
+							</p>
+							<p>
+								<c:if test="${listValue_opinion.sp_opinion_reason3 ne '0'}">
+									<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp ${listValue_opinion.sp_opinion_reason3 }
+							</c:if>
+							</p>
+						</div>
+						<div class="col-md-6" style="">
+							<p>공감하는 반대편 근거</p>
+							<p>
+								<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason1_agree }</span>%
+								</span>&nbsp ${listValue_opinion.sp_opinion_opreason1}
+							</p>
+							<p>
+								<c:if test="${listValue_opinion.sp_opinion_opreason2 ne '0'}">
+									<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason2_agree }</span>%
+									</span>&nbsp ${listValue_opinion.sp_opinion_opreason2}
+									</c:if>
+
+
+							</p>
+							<p>
+								<c:if test="${listValue_opinion.sp_opinion_opreason3 ne '0'}">
+									<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason3_agree }</span>%
+									</span>&nbsp ${listValue_opinion.sp_opinion_opreason3}
+									</c:if>
+							</p>
+						</div>
 					</div>
-					<div class="col-md-4">
-						<div style="width: 50px; height: 50px; border-radius: 50%; font-size: 50px; color: white; line-height: 500px; text-align: center; background: green;"></div>
-						<p>
-							<span>* 본 의견은 '일반' 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
-						</p>
+					<div class="row" style="margin-top: 5px">
+
+						<div class="col-md-10" style="">
+							<div>상세 의견</div>
+
+							${listValue_opinion.sp_opinion_detail }
+						</div>
+					</div>
+					<div class="row" style="text-align: right;">
+						<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
+							class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
+					</div>
+					<div class="row" style="margin-top: 5px">
+						<div class="col-md-10" style="">
+							<div>
+								댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+							</div>
+
+						</div>
+						<div class="col-md-10" style="">
+							<div>
+								댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+							</div>
+
+						</div>
+						<div class="col-md-10" style="">
+							<div>
+								댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+							</div>
+
+						</div>
+						<div class="col-md-10" style="">
+							<div>
+								댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
+							</div>
+
+						</div>
 					</div>
 
 				</div>
-
-				<div class="row" style="margin-top: 5px">
-					<div class="col-md-6" style="">
-						<p>나의 찬성 근거</p>
-						<p>
-							<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-						<p>
-							<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp 가나다라마바사아자차ㅋ타파
-						</p>
-						<p>
-							<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp 가나다라마바사아자차ㅋ타파
-						</p>
-					</div>
-					<div class="col-md-6" style="">
-						<p>인정하는 반대편 근거</p>
-						<p>
-							<span class="label label-default">인정: <span>40</span>%
-							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-						<p>
-							<span class="label label-default">인정: <span>20</span>%
-							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-						<p>
-							<span class="label label-default">인정: <span>80</span>%
-							</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-						</p>
-					</div>
-				</div>
-				<div class="row" style="margin-top: 5px">
-
-					<div class="col-md-10" style="">
-						<div>상세 의견</div>
-
-						가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-						가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-					</div>
-				</div>
-				<div class="row" style="text-align: right;">
-
-					<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
-						class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
-				</div>
-			</div>
+				<!-- GALLERY ITEM END -->
+			</c:forEach>
 
 			<ul class="pager">
 				<li class=""><a href="#" style="width: 100%">일반 의견 더보기 <span>&nbsp &nbsp&nbsp<i class="fa fa-commenting-o" aria-hidden="true"></i> 6개의 의견이 더 존재합니다

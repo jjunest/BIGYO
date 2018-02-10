@@ -13,6 +13,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.innovest.dao.SPDao;
+import com.innovest.dto.opinion_DTO;
 import com.innovest.dto.tvTopic_DTO;
 import com.innovest.dto.userDTO;
 
@@ -110,12 +112,36 @@ public class HomeController {
 		String topic_rcdno = httpServletRequest.getParameter("topic_rcdno");
 		HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
 		sqlParameterHashMap.put("topic_rcdno", topic_rcdno);
-		
+		// 조회수 +1 해주기.
+		int result = spdao.update_DetailViewNumber(sqlParameterHashMap);
+		// tvtopic_DTO 구하기
 		tvTopic_DTO detail_tvTopic = spdao.selectOne_TvTopic(sqlParameterHashMap);
 		model.addAttribute("detail_tvTopic", detail_tvTopic);
 
+		
+		//쇼피니언 의견 모두 LIST로 뽑기
+		List<opinion_DTO> opinions_list_show = spdao.selectAll_opinion_show(sqlParameterHashMap);
+		model.addAttribute("opinions_list_show", opinions_list_show);
+		
+		//일반 의견 모두 LIST로 뽑기
+		List<opinion_DTO> opinions_list_normal = spdao.selectAll_opinion_normal(sqlParameterHashMap);
+		model.addAttribute("opinions_list_normal", opinions_list_normal);
+		
+		
+		
 		return "detail_TVshow_Topics";
 	}
+	
+	@RequestMapping("/detail_opinion")
+	public String detail_opinion(Model model , @RequestParam Map<String, Object> paramMap) {
+		System.out.println("this is detail_opinion");
+		// 글 쓴 날짜는 default로 현재시각으로 저장이 된다.
+		opinion_DTO opinion_DTO = spdao.selectOpinionDetail(paramMap);
+		model.addAttribute("opinion_DTO", opinion_DTO);
+		return "detail_opinion";
+	}
+	
+	
 
 	@RequestMapping("/rankings")
 	public String rankings(Model model) {
@@ -132,9 +158,13 @@ public class HomeController {
 	}
 
 	@RequestMapping("/writeShowpinion")
-	public String writeShowpinion(Model model) {
+	public String writeShowpinion(HttpServletRequest httpServletRequest, Model model) {
 		System.out.println("this is writeShowpinion");
-
+		String topic_rcdno = httpServletRequest.getParameter("topic_rcdno");
+		HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
+		sqlParameterHashMap.put("topic_rcdno", topic_rcdno);
+		tvTopic_DTO detail_tvTopic = spdao.selectOne_TvTopic(sqlParameterHashMap);
+		model.addAttribute("detail_tvTopic", detail_tvTopic);
 		return "writeShowpinion";
 	}
 
@@ -239,10 +269,12 @@ public class HomeController {
 	}
 
 	@RequestMapping("/admin_insert_TVTopic")
-	public String admin_insert_TVTopic(Model model) {
+	public String admin_insert_TVTopic(Model model, @RequestParam Map<String, Object> paramMap) {
 		System.out.println("this is admin_insert_TVTopic");
 		return "admin_insert_TVTopic";
 	}
+
+
 
 	@RequestMapping(value = "/tvshowtopic_insert_process", method = RequestMethod.POST)
 	@ResponseBody
@@ -314,7 +346,7 @@ public class HomeController {
 		if (httpServletRequest.getParameter("tvtopic_tvshow_date") == null
 				|| httpServletRequest.getParameter("tvtopic_tvshow_date").equals("")) {
 			System.out.println("this is null or equal null");
-			String tvtopic_tvshow_date = "9999-99-99";
+			String tvtopic_tvshow_date = "0000-01-01";
 			paramMap.put("tvtopic_tvshow_date", tvtopic_tvshow_date);
 		}
 		// 추가적으로 paramMap에서 알아야할 정보들, writer아이디,이미지 이름, 이미지 url,
@@ -323,7 +355,75 @@ public class HomeController {
 		// 글 쓴 날짜는 default로 현재시각으로 저장이 된다.
 		int result = spdao.insertTVShowTopic(paramMap);
 
-		return "success";
+		// DBinsert 결과 확인하기
+		if (result == 1) {
+			aJaxResult = "success";
+		}
+
+		return aJaxResult;
+	}
+
+	@RequestMapping(value = "/opinion_insert_process", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject opinion_insert_process(Locale locale, Model model,
+			HttpServletRequest httpServletRequest, @RequestParam Map<String, Object> paramMap,
+			HttpSession session) {
+		String aJaxResult = "fail";
+		try {
+			httpServletRequest.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String options_myside = httpServletRequest.getParameter("options_myside");
+		System.out.println("this is options_myside : " + options_myside);
+		String sp_tvtopics_rcdno = httpServletRequest.getParameter("sp_tvtopics_rcdno");
+		System.out.println("this is sp_tvtopics_rcdno : " + sp_tvtopics_rcdno);
+		String sp_tvtopics_title = httpServletRequest.getParameter("sp_tvtopics_title");
+		System.out.println("this is sp_tvtopics_title : " + sp_tvtopics_title);
+		String sp_tvtopics_writer = httpServletRequest.getParameter("sp_tvtopics_writer");
+		System.out.println("this is sp_tvtopics_writer : " + sp_tvtopics_writer);
+		String type = httpServletRequest.getParameter("type");
+		System.out.println("this is type : " + type);
+		// 이유가 직접입력이면, 직접입력값을
+		for (int i = 1; i < 4; i++) {
+			String myside_reason = httpServletRequest.getParameter("myside_reason" + i);
+			if (myside_reason.equals("1")) {
+				System.out.println("this is my self :" + i);
+				String myside_reason_self = httpServletRequest
+						.getParameter("myside_reason" + i + "_self");
+				System.out.println("this is myside_reason_self :" + myside_reason_self);
+				paramMap.put("myside_reason" + i, myside_reason_self);
+			}
+			String opside_reason = httpServletRequest.getParameter("opside_reason" + i);
+			if (opside_reason.equals("1")) {
+				System.out.println("this is op self :" + i);
+				String opside_reason_self = httpServletRequest
+						.getParameter("opside_reason" + i + "_self");
+				paramMap.put("opside_reason" + i, opside_reason_self);
+			}
+
+		}
+
+		// 추가적으로 paramMap에서 알아야할 정보들, writer아이디,이미지 이름, 이미지 url,
+		paramMap.put("sp_tvtopics_rcdno", sp_tvtopics_rcdno);
+		paramMap.put("sp_tvtopics_title", sp_tvtopics_title);
+		paramMap.put("sp_tvtopics_writer", sp_tvtopics_writer);
+		paramMap.put("sp_tvtopics_type", type);
+		// 글 쓴 날짜는 default로 현재시각으로 저장이 된다.
+		int result = spdao.insertOpinion(paramMap);
+		Long sp_opinion_rcdno = (Long) paramMap.get("sp_opinion_rcdno");
+		// DBinsert 결과 확인하기
+		JSONObject company_jsonlist = new JSONObject();
+		if (result == 1) {
+			aJaxResult = "success";
+			// 명확한 jsonObject로 만들어서 결과값을 보내준다.
+			company_jsonlist.put("sp_opinion_rcdno", sp_opinion_rcdno);
+		}
+		company_jsonlist.put("aJaxResult", aJaxResult);
+
+		return company_jsonlist;
 	}
 
 	/**

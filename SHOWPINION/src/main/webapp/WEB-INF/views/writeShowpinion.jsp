@@ -64,6 +64,10 @@
 	color: blue;
 	pointer-events: auto;
 }
+
+.reason_self_input {
+	display: none;
+}
 </style>
 </head>
 <body class="body-wrapper">
@@ -86,170 +90,199 @@
 	</div>
 	<!--breadcrumbs-->
 	<div class="divide80"></div>
+	<form role="form" id="opinion_form" method="post" enctype="multipart/form-data" action="opinion_insert_process">
 
-	<div class="container">
+		<!-- 숨겨진 부분에 같이 보내야할 정보들: tv쇼 주제 rcdno, tv쇼 타이틀, 작가 아이디,  -->
+		<input type="hidden" name="sp_tvtopics_rcdno" value="${detail_tvTopic.sp_tvtopics_rcdno }"> <input type="hidden" name="sp_tvtopics_title" value="${detail_tvTopic.sp_tvtopics_title }">
+		<input type="hidden" name="sp_tvtopics_writer" value="${detail_tvTopic.sp_tvtopics_writer }">
 
-		<div class="center-heading">
-			<h2>금융 실명제 도입이 필요한가?</h2>
-			<span class="center-line"></span>
-		</div>
+		<div class="container">
+
+			<div class="center-heading">
+				<h2>${detail_tvTopic.sp_tvtopics_title }</h2>
+				<span class="center-line"></span>
+			</div>
 
 
-		<div class="row">
-			<div class="col-md-8">
-				<div class="blog-post">
-					<ul class="list-inline post-detail">
-						<li><i class="fa fa-user"></i><a href="#" data-toggle="tooltip" data-placement="top" title="본 주제에 대하여 정리를 해주신 jjunest 님께 깊은 감사를 드립니다. "><span>작성자:</span>jjunest</a></li>
-						<li><i class="fa fa-calendar"></i><span>작성일:</span> 31st july 2014</li>
-						<li><i class="fa fa-users"></i> <a href="#"><span>조회수:</span>6</a></li>
-						<li><i class="fa fa-comment"></i> <a href="#"><span>의견:</span>6</a>개</li>
-					</ul>
-					<div class="divide30"></div>
-					<h3 class="heading">의견 남기기</h3>
-					<div style="text-align: center;">
-						<div class="btn-group" data-toggle="buttons" style="width: 100%; margin-bottom: 5px">
-							<label class="btn btn-primary" style="width: 33%; border: solid 0.5 gray;"> <input type="radio" name="options" id="option1" autocomplete="off"> 찬성
-							</label> <label class="btn btn-primary" style="width: 33%; border: solid 0.5 gray; "> <input type="radio" name="options" id="option2" autocomplete="off"> 중립
-							</label> <label class="btn btn-primary" style="width: 33%; border: solid 0.5 gray; "> <input type="radio" name="options" id="option3" autocomplete="off"> 반대
-							</label>
-						</div>
-					</div>
-					<div class="row" style="border-bottom: 1px solid gray; margin-top: 20px">
-						<div class="col-md-3" style="display: flex; align-items: center;">내가 선택한 근거</div>
-						<div class="col-md-9" style="text-align: left;">
-							<div class="row" style="margin: 10px">
-								<p style="margin: 2px">
-									<span class="label label-danger" style="margin-right: 10px">결정적</span>
-								</p>
-								<select class="selectpicker" data-width="100%">
-									<option>가나다라마바사아자차,가나다라마바사아자차가나다라마바사아자차</option>
-									<option>Ketchup</option>
-									<option>Relish</option>
-								</select>
-							</div>
-							<div class="row" style="margin: 10px">
-								<p style="margin: 2px">
-									<span class="label label-danger" style="margin-right: 10px">2순위</span>
-								</p>
-								<select class="selectpicker" data-width="100%">
-									<option>가나다라마바사아자차,가나다라마바사아자차가나다라마바사아자차</option>
-									<option>Ketchup</option>
-									<option>Relish</option>
-								</select>
-							</div>
-							<div class="row" style="margin: 10px">
-								<p style="margin: 2px">
-									<span class="label label-danger" style="margin-right: 10px">3순위</span>
-								</p>
-								<select class="selectpicker" data-width="100%">
-									<option>가나다라마바사아자차,가나다라마바사아자차가나다라마바사아자차</option>
-									<option>Ketchup</option>
-									<option>Relish</option>
-								</select>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="blog-post">
+						<ul class="list-inline post-detail">
+							<li><i class="fa fa-user"></i><a href="#" data-toggle="tooltip" data-placement="top" title="본 주제에 대하여 정리를 해주신 jjunest 님께 깊은 감사를 드립니다. "><span>작성자:</span>${detail_tvTopic.sp_tvtopics_writer }</a></li>
+							<li><i class="fa fa-calendar"></i><span>작성일:</span> ${detail_tvTopic.sp_tvtopics_write_date }</li>
+							<li><i class="fa fa-users"></i> <a href="#"><span>조회수:</span>${detail_tvTopic.sp_tvtopics_view }</a></li>
+							<li><i class="fa fa-comment"></i> <a href="#"><span>의견:</span>6</a>개</li>
+						</ul>
+						<div class="divide30"></div>
+						<h3 class="heading">의견 남기기</h3>
+						<div style="text-align: center;">
+							<div class="btn-group" data-toggle="buttons" style="width: 100%; margin-bottom: 5px">
+								<label class="btn btn-primary" style="width: 50%; border: solid 0.5 gray;"> <input type="radio" name="options_myside" id="options_myside1" autocomplete="off" value="pro"> 찬성
+								</label> <label class="btn btn-primary" style="width: 50%; border: solid 0.5 gray;"> <input type="radio" name="options_myside" id="options_myside2" autocomplete="off" value='con'> 반대
+								</label>
 							</div>
 						</div>
-					</div>
-					<div class="row" style="margin-top: 20px">
-						<div class="col-md-3" style="display: flex; align-items: center;">공감하는 반대편 근거</div>
-						<div class="col-md-9" style="text-align: left;">
-							<div class="row" style="margin: 10px">
-								<p style="margin: 2px">
-									<span class="label label-success" style="margin-right: 10px">1순위</span>
-								</p>
-								<select class="selectpicker" data-width="100%">
-									<option>가나다라마바사아자차,가나다라마바사아자차가나다라마바사아자차</option>
-									<option>Ketchup</option>
-									<option>Relish</option>
-								</select>
-								<p>
-									<input id="ex6-1" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="50" /> <span id="ex6CurrentSliderValLabel"> &nbsp &nbsp 의견 공감 지수: <span
-										id="ex6SliderVal1">50</span>%
-									</span>
-								</p>
+						<div class="row" style="border-bottom: 1px solid gray; margin-top: 20px">
+							<div class="col-md-3" style="display: flex; align-items: center;">내가 선택한 근거</div>
+							<div class="col-md-9" style="text-align: left;">
+								<div class="row" style="margin: 10px">
+									<p style="margin: 2px">
+										<span class="label label-danger" style="margin-right: 10px">결정적</span>
+									</p>
+									<select class="selectpicker reason_selector myside_reason" data-width="100%" id="myside_reason1" name="myside_reason1">
+										<option value="0">찬성 근거 선택 안함</option>
+										<option value="${detail_tvTopic.sp_tvtopics_pro1 }">${detail_tvTopic.sp_tvtopics_pro1 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_pro2 }">${detail_tvTopic.sp_tvtopics_pro2 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_pro3 }">${detail_tvTopic.sp_tvtopics_pro3 }</option>
+										<option value="1">직접입력</option>
+
+									</select> <input class="form-control reason_self_input" id="myside_reason1_self" name="myside_reason1_self" placeholder="자신이 생각한 근거를 30자로 축약해 직접 입력 하세요" type="text" maxlength="32">
+
+								</div>
+								<div class="row" style="margin: 10px">
+									<p style="margin: 2px">
+										<span class="label label-danger" style="margin-right: 10px">2순위</span>
+									</p>
+									<select class="selectpicker reason_selector myside_reason" data-width="100%" id="myside_reason2" name="myside_reason2">
+										<option value="0">찬성 근거 선택 안함</option>
+										<option value="${detail_tvTopic.sp_tvtopics_pro1 }">${detail_tvTopic.sp_tvtopics_pro1 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_pro2 }">${detail_tvTopic.sp_tvtopics_pro2 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_pro3 }">${detail_tvTopic.sp_tvtopics_pro3 }</option>
+										<option value="1">직접입력</option>
+
+									</select> <input class="form-control reason_self_input" id="myside_reason2_self" name="myside_reason2_self" placeholder="자신이 생각한 근거를 30자로 축약해 직접 입력 하세요" type="text" maxlength="32">
+
+								</div>
+								<div class="row" style="margin: 10px">
+									<p style="margin: 2px">
+										<span class="label label-danger" style="margin-right: 10px">3순위</span>
+									</p>
+									<select class="selectpicker reason_selector myside_reason" data-width="100%" id="myside_reason3" name="myside_reason3">
+										<option value="0">찬성 근거 선택 안함</option>
+										<option value="${detail_tvTopic.sp_tvtopics_pro1 }">${detail_tvTopic.sp_tvtopics_pro1 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_pro2 }">${detail_tvTopic.sp_tvtopics_pro2 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_pro3 }">${detail_tvTopic.sp_tvtopics_pro3 }</option>
+										<option value="1">직접입력</option>
+
+									</select><input class="form-control reason_self_input" id="myside_reason3_self" name="myside_reason3_self" placeholder="자신이 생각한 근거를 30자로 축약해 직접 입력 하세요" type="text" maxlength="32">
+
+								</div>
 							</div>
-							<div class="row" style="margin: 10px">
-								<p style="margin: 2px">
-									<span class="label label-success" style="margin-right: 10px">1순위</span>
-								</p>
-								<select class="selectpicker" data-width="100%">
-									<option>가나다라마바사아자차,가나다라마바사아자차가나다라마바사아자차</option>
-									<option>Ketchup</option>
-									<option>Relish</option>
-								</select>
-								<p>
-									<input id="ex6-2" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="50" /> <span id="ex6CurrentSliderValLabel"> &nbsp &nbsp 의견 공감 지수: <span
-										id="ex6SliderVal2">50</span>%
-									</span>
-								</p>
+						</div>
+						<div class="row" style="margin-top: 20px">
+							<div class="col-md-3" style="display: flex; align-items: center;">공감하는 상대측 근거</div>
+							<div class="col-md-9" style="text-align: left;">
+								<div class="row" style="margin: 10px">
+									<p style="margin: 2px">
+										<span class="label label-success" style="margin-right: 10px">1순위</span>
+									</p>
+									<select class="selectpicker reason_selector opside_reason" data-width="100%" id="opside_reason1" name="opside_reason1">
+										<option value="0">반대 근거 선택 안함</option>
+										<option value="${detail_tvTopic.sp_tvtopics_con1 }">${detail_tvTopic.sp_tvtopics_con1 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_con2 }">${detail_tvTopic.sp_tvtopics_con2 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_con3 }">${detail_tvTopic.sp_tvtopics_con3 }</option>
+										<option value="1">직접입력</option>
+
+									</select><input class="form-control reason_self_input" id="opside_reason1_self" name="opside_reason1_self" placeholder="자신이 생각한 근거를 30자로 축약해 직접 입력 하세요" type="text" maxlength="32">
+
+									<p>
+										<input id="opside_reason1_agree" name="opside_reason1_agree" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="50" /> <span
+											id="ex6CurrentSliderValLabel"> &nbsp &nbsp 의견 공감 지수: <span id="ex6SliderVal1">50</span>%
+										</span>
+									</p>
+								</div>
+								<div class="row" style="margin: 10px">
+									<p style="margin: 2px">
+										<span class="label label-success" style="margin-right: 10px">2순위</span>
+									</p>
+									<select class="selectpicker reason_selector opside_reason" data-width="100%" id="opside_reason2" name="opside_reason2">
+										<option value="0">반대 근거 선택 안함</option>
+										<option value="${detail_tvTopic.sp_tvtopics_con1 }">${detail_tvTopic.sp_tvtopics_con1 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_con2 }">${detail_tvTopic.sp_tvtopics_con2 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_con3 }">${detail_tvTopic.sp_tvtopics_con3 }</option>
+										<option value="1">직접입력</option>
+
+									</select><input class="form-control reason_self_input" id="opside_reason2_self" name="opside_reason2_self" placeholder="자신이 생각한 근거를 30자로 축약해 직접 입력 하세요" type="text" maxlength="32">
+
+									<p>
+										<input id="opside_reason2_agree" name="opside_reason2_agree" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="50" /> <span
+											id="ex6CurrentSliderValLabel"> &nbsp &nbsp 의견 공감 지수: <span id="ex6SliderVal2">50</span>%
+										</span>
+									</p>
+								</div>
+								<div class="row" style="margin: 10px">
+									<p style="margin: 2px">
+										<span class="label label-success" style="margin-right: 10px">3순위</span>
+									</p>
+									<select class="selectpicker reason_selector opside_reason" data-width="100%" id="opside_reason3" name="opside_reason3">
+										<option value="0">반대 근거 선택 안함</option>
+										<option value="${detail_tvTopic.sp_tvtopics_con1 }">${detail_tvTopic.sp_tvtopics_con1 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_con2 }">${detail_tvTopic.sp_tvtopics_con2 }</option>
+										<option value="${detail_tvTopic.sp_tvtopics_con3 }">${detail_tvTopic.sp_tvtopics_con3 }</option>
+										<option value="1">직접입력</option>
+									</select><input class="form-control reason_self_input" id="opside_reason3_self" name="myside_reason3_self" placeholder="자신이 생각한 근거를 30자로 축약해 직접 입력 하세요" type="text" maxlength="32">
+									<p>
+										<input id="opside_reason3_agree" name="opside_reason3_agree" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="50" /> <span
+											id="ex6CurrentSliderValLabel"> &nbsp &nbsp 의견 공감 지수: <span id="ex6SliderVal3">50</span>%
+										</span>
+									</p>
+								</div>
 							</div>
-							<div class="row" style="margin: 10px">
-								<p style="margin: 2px">
-									<span class="label label-success" style="margin-right: 10px">1순위</span>
-								</p>
-								<select class="selectpicker" data-width="100%">
-									<option>가나다라마바사아자차,가나다라마바사아자차가나다라마바사아자차</option>
-									<option>Ketchup</option>
-									<option>Relish</option>
-								</select>
-								<p>
-									<input id="ex6-3" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="50" /> <span id="ex6CurrentSliderValLabel"> &nbsp &nbsp 의견 공감 지수: <span
-										id="ex6SliderVal3">50</span>%
-									</span>
-								</p>
+						</div>
+
+						<h3 class="heading" style="margin-top: 5px">상세 의견</h3>
+						<div style="text-align: center;">
+							<textarea rows="4" cols="100%" id="opinion_detail" name="opinion_detail"></textarea>
+						</div>
+						<h3 class="heading" style="margin-top: 5px"></h3>
+						<div>
+							<div style="margin: 20px">
+								<button type="button" class="btn btn-primary" id="submit_normal">일반 의견으로 등록하기</button>
+								<button type="button" class="btn btn-fb-login" style="width: 70%" id="submit_show">
+									<i class="fa fa-facebook"></i> FACEBOOK 에 등록하고 쇼피니언 되기
+								</button>
+
 							</div>
 						</div>
 					</div>
+					<!--blog post-->
 
-					<h3 class="heading" style="margin-top: 5px">상세 의견</h3>
-					<div style="text-align: center;">
-						<textarea rows="4" cols="100%"></textarea>
-					</div>
-					<h3 class="heading" style="margin-top: 5px"></h3>
-					<div>
-						<div style="margin: 20px">
-							<button type="button" class="btn btn-primary">일반 의견으로 등록하기</button>
-							<a href="#" class="btn btn-fb-login" style="width: 70%"><i class="fa fa-facebook"></i> FACEBOOK 에 등록하고 쇼피니언 되기</a>
-
+				</div>
+				<!--col-->
+				<div class="col-md-3 col-md-offset-1">
+					<div class="row">
+						<div class="col-md-12 margin20">
+							<div class="team-wrap">
+								<img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" class="img-responsive" alt="">
+								<h4>썰전</h4>
+								<span>방영 날짜: 2017-12-10</span>
+								<p>방송 설명: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lorem quam, adipiscing condimentum tristique vel, eleifend sed turpis</p>
+							</div>
+							<!--team-wrap-->
 						</div>
+						<!--team col-->
+						<div class="col-md-12 margin20">
+							<div class="team-wrap" style="border: 4px solid #59df57; border-radius: 5px;">
+								<h4>쇼피니언 지수</h4>
+								<div id="piechart1"></div>
+							</div>
+							<!--team-wrap-->
+						</div>
+						<!--team col-->
+						<div class="col-md-12 margin20">
+							<div class="team-wrap" style="border: 4px solid #59df57; border-radius: 5px;">
+								<h4>일반 의견 지수</h4>
+								<div id="piechart2"></div>
+							</div>
+							<!--team-wrap-->
+						</div>
+						<!--team col-->
 					</div>
 				</div>
-				<!--blog post-->
-
+				<!--row for blog post-->
 			</div>
-			<!--col-->
-			<div class="col-md-3 col-md-offset-1">
-				<div class="row">
-					<div class="col-md-12 margin20">
-						<div class="team-wrap">
-							<img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" class="img-responsive" alt="">
-							<h4>썰전</h4>
-							<span>방영 날짜: 2017-12-10</span>
-							<p>방송 설명: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lorem quam, adipiscing condimentum tristique vel, eleifend sed turpis</p>
-						</div>
-						<!--team-wrap-->
-					</div>
-					<!--team col-->
-					<div class="col-md-12 margin20">
-						<div class="team-wrap" style="border: 4px solid #59df57; border-radius: 5px;">
-							<h4>쇼피니언 지수</h4>
-							<div id="piechart1"></div>
-						</div>
-						<!--team-wrap-->
-					</div>
-					<!--team col-->
-					<div class="col-md-12 margin20">
-						<div class="team-wrap" style="border: 4px solid #59df57; border-radius: 5px;">
-							<h4>일반 의견 지수</h4>
-							<div id="piechart2"></div>
-						</div>
-						<!--team-wrap-->
-					</div>
-					<!--team col-->
-				</div>
-			</div>
-			<!--row for blog post-->
 		</div>
-	</div>
+	</form>
 	<!--blog full main container-->
 	<div class="divide60"></div>
 
@@ -291,35 +324,199 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
 	<!-- 부트스트랩 CUSTOM-SELECTOR 를 위한 자바스크립트 추가  -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-
+	<!-- multipart 폼을 AJAX로 처리하기 위한 제이ㅝ리 -->
+	<script src="http://malsup.github.com/jquery.form.js"></script>
 
 
 	<script type="text/javascript">
 		$(document).ready(function() {
 			navMenuColorSetting();
-
+			//쇼피니언 차트 및 일반 차트 지수 보기
 			google_chart_Setting();
 
+			//상대편 의견 동의 지수 퍼센트 구하는 슬라이더
+			slider_for_agree_precentage();
+
+			//내가 찬성, 반대 변경했을 시에, selector 의 option들의 내용 변환
+			//기본적으로 찬성 쪽에 선택을 하자. 
+			$("#options_myside1").trigger("click");
+			myside_change_Setting();
+
+			//일반 의견으로 등록하기 버튼 클릭시
+			submitNormalButtonClick();
+			//찬성이유 및 반대이유 직접 입력부분
+			reason_self_Setting();
+		});
+
+		function reason_self_Setting() {
+
+			for (var i = 1; i < 4; i++) {
+
+				$("#myside_reason" + i).change(function() {
+					$(this).each(function() {
+						if ($(this).val() == 1) {
+							var thisid = $(this).attr('id');
+							$("#" + thisid + "_self").show();
+						} else {
+							var thisid = $(this).attr('id');
+							$("#" + thisid + "_self").hide();
+						}
+					});
+				});
+
+				$("#opside_reason" + i).change(function() {
+					$(this).each(function() {
+						if ($(this).val() == 1) {
+							var thisid = $(this).attr('id');
+							$("#" + thisid + "_self").show();
+						} else {
+							var thisid = $(this).attr('id');
+							$("#" + thisid + "_self").hide();
+						}
+					});
+				});
+
+			}
+
+		}
+
+		function submitNormalButtonClick() {
+			$("#submit_normal").click(function(event) {
+				console.log('this is normalSubmit BT');
+				//1. 필수 입력부분 empty 인지 확인하기
+				var checkingInputOk = inputTagsCheckingOk();
+
+				if (checkingInputOk) {
+					//에디터 내용 가져옴
+					// If you want to add an extra field for the FormData
+
+					$('#opinion_form').ajaxForm({
+						url : "${pageContext.request.contextPath}/opinion_insert_process?type=normal",
+						enctype : "multipart/form-data", // 여기에 url과 enctype은 꼭 지정해주어야 하는 부분이며 multipart로 지정해주지 않으면 controller로 파일을 보낼 수 없음
+						data : {},
+						processData : false,
+						contentType : false,
+						success : function(data) {
+							var aJaxResult = data["aJaxResult"];
+							if (aJaxResult == "success") {
+								alert('성공');
+								var sp_opinion_rcdno = data["sp_opinion_rcdno"];
+								location.href = "${pageContext.request.contextPath}/detail_opinion?opinion_rcdno=" + sp_opinion_rcdno;
+
+							} else {
+
+								alert('실패');
+							}
+
+						}
+
+					}).submit();
+
+				}
+
+			});
+
+			$("#submit_show").click(function(event) {
+				console.log('this is submit_show BT');
+				//1. 필수 입력부분 empty 인지 확인하기
+				var checkingInputOk = inputTagsCheckingOk();
+
+				if (checkingInputOk) {
+					//에디터 내용 가져옴
+					// If you want to add an extra field for the FormData
+
+					$('#opinion_form').ajaxForm({
+						url : "${pageContext.request.contextPath}/opinion_insert_process?type=show",
+						enctype : "multipart/form-data", // 여기에 url과 enctype은 꼭 지정해주어야 하는 부분이며 multipart로 지정해주지 않으면 controller로 파일을 보낼 수 없음
+						data : {},
+						processData : false,
+						contentType : false,
+						success : function(data) {
+							var aJaxResult = data["aJaxResult"];
+							if (aJaxResult == "success") {
+								alert('성공');
+								var sp_opinion_rcdno = data["sp_opinion_rcdno"];
+								location.href = "${pageContext.request.contextPath}/detail_opinion?opinion_rcdno=" + sp_opinion_rcdno;
+
+							} else {
+
+								alert('실패');
+							}
+
+						}
+
+					}).submit();
+
+				}
+
+			});
+
+		}
+
+		function inputTagsCheckingOk() {
+			//1. 필수입력 inputtag들이 전부 입력되 있나 확인
+			if ($("#myside_reason1").val().trim() == "" || $("#myside_reason1").val().trim() == 0) {
+				alert("내가 선택한 근거 중 첫 번째인 결정적 이유는 반드시 선택 해야 합니다.");
+				$("#myside_reason1").focus();
+				return false;
+			}
+			if ($("#opside_reason1").val().trim() == "" || $("#opside_reason1").val().trim() == 0) {
+				alert("내가 반대편 근거 중 첫 번째인 1순위 이유는 반드시 선택 해야 합니다.");
+				$("#opside_reason1").focus();
+				return false;
+			}
+			return true;
+		}
+
+		function myside_change_Setting() {
+			var pro_options = '<option value="0">찬성 주장 근거 선택안함</option><option value="${detail_tvTopic.sp_tvtopics_pro1 }">${detail_tvTopic.sp_tvtopics_pro1 }</option><option value="${detail_tvTopic.sp_tvtopics_pro2 }">${detail_tvTopic.sp_tvtopics_pro2 }</option><option value="${detail_tvTopic.sp_tvtopics_pro3 }">${detail_tvTopic.sp_tvtopics_pro3 }</option><option value="1">직접입력</option>';
+			var con_options = '<option value="0">반대 주장 근거 선택안함</option><option value="${detail_tvTopic.sp_tvtopics_con1 }">${detail_tvTopic.sp_tvtopics_con1 }</option><option value="${detail_tvTopic.sp_tvtopics_con2 }">${detail_tvTopic.sp_tvtopics_con2 }</option><option value="${detail_tvTopic.sp_tvtopics_con3 }">${detail_tvTopic.sp_tvtopics_con3 }</option><option value="1">직접입력</option>';
+			$('input[type=radio][name=options_myside]').change(function() {
+				if (this.value == 'pro') {
+					//찬성으로 선택했을 시에, 내가 선택한 근거의 option을 pro_options 로바꾸어준다.
+					for (var i = 1; i < 4; i++) {
+						$("select[name='myside_reason" + i + "'] option").remove();
+						$("select[name='opside_reason" + i + "'] option").remove();
+						$("#myside_reason" + i + "").html(pro_options);
+						$("#opside_reason" + i + "").html(con_options);
+					}
+					$('.selectpicker').selectpicker('refresh');
+
+				} else if (this.value == 'con') {
+					//찬성으로 선택했을 시에, 내가 선택한 근거의 option을 con_options 로바꾸어준다.
+					for (var i = 1; i < 4; i++) {
+						$("select[name='myside_reason" + i + "'] option").remove();
+						$("select[name='opside_reason" + i + "'] option").remove();
+						$("#myside_reason" + i + "").html(con_options);
+						$("#opside_reason" + i + "").html(pro_options);
+					}
+
+					$('.selectpicker').selectpicker('refresh');
+
+				}
+			});
+
+		}
+		function slider_for_agree_precentage() {
 			// With JQuery
-			$("#ex6-1").slider();
-			$("#ex6-1").on("slide", function(slideEvt) {
+			$("#opside_reason1_agree").slider();
+			$("#opside_reason1_agree").on("slide", function(slideEvt) {
 				$("#ex6SliderVal1").text(slideEvt.value);
 			});
-			
+
 			// With JQuery
-			$("#ex6-2").slider();
-			$("#ex6-2").on("slide", function(slideEvt) {
+			$("#opside_reason2_agree").slider();
+			$("#opside_reason2_agree").on("slide", function(slideEvt) {
 				$("#ex6SliderVal2").text(slideEvt.value);
 			});
-			
+
 			// With JQuery
-			$("#ex6-3").slider();
-			$("#ex6-3").on("slide", function(slideEvt) {
+			$("#opside_reason3_agree").slider();
+			$("#opside_reason3_agree").on("slide", function(slideEvt) {
 				$("#ex6SliderVal3").text(slideEvt.value);
 			});
 
-		});
-
+		}
 		function google_chart_Setting() {
 			google.charts.load('current', {
 				'packages' : [ 'corechart' ]

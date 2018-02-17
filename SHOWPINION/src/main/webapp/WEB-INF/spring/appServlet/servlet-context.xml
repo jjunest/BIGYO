@@ -24,6 +24,7 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.innovest.showpinion" />
+	<context:component-scan base-package="com.innovest.utils" />
 	
 	
 		<!-- FILE UPLOAD를 위한 Multipart 리졸버 BEAN 추가 -->

@@ -55,6 +55,8 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
 <!-- bootsstrap SELECT 라이브러리 CSS 추가 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<!-- 내가 만든 custom css 파일 첨부 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jjunest.css">
 
 
 <style>
@@ -133,7 +135,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 	<!-- multipart 폼을 AJAX로 처리하기 위한 제이ㅝ리 -->
 	<script src="http://malsup.github.com/jquery.form.js"></script>
-
+	<!-- fa class 추가  -->
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {

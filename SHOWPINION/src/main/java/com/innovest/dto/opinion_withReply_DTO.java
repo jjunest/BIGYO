@@ -1,8 +1,9 @@
 package com.innovest.dto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
-public class opinion_DTO {
+public class opinion_withReply_DTO {
 	Integer sp_opinion_rcdno;
 	Integer sp_opinion_topicrcdno;
 	String sp_opinion_topictitle;
@@ -24,10 +25,11 @@ public class opinion_DTO {
 	String sp_opinion_type;
 	String sp_opinion_etc2;
 	String sp_opinion_etc3;
+	List<opinionReply_DTO> opinionReplys;
 	
 	
 	
-	public opinion_DTO(Integer sp_opinion_rcdno, Integer sp_opinion_topicrcdno,
+	public opinion_withReply_DTO(Integer sp_opinion_rcdno, Integer sp_opinion_topicrcdno,
 			String sp_opinion_topictitle, Timestamp sp_opinion_datetime, String sp_opinion_writer,
 			String sp_opinion_side, String sp_opinion_reason1, String sp_opinion_reason2,
 			String sp_opinion_reason3, String sp_opinion_opreason1,
@@ -58,6 +60,39 @@ public class opinion_DTO {
 		this.sp_opinion_type = sp_opinion_type;
 		this.sp_opinion_etc2 = sp_opinion_etc2;
 		this.sp_opinion_etc3 = sp_opinion_etc3;
+	}
+	public opinion_withReply_DTO(Integer sp_opinion_rcdno, Integer sp_opinion_topicrcdno,
+			String sp_opinion_topictitle, Timestamp sp_opinion_datetime, String sp_opinion_writer,
+			String sp_opinion_side, String sp_opinion_reason1, String sp_opinion_reason2,
+			String sp_opinion_reason3, String sp_opinion_opreason1,
+			Integer sp_opinion_opreason1_agree, String sp_opinion_opreason2,
+			Integer sp_opinion_opreason2_agree, String sp_opinion_opreason3,
+			Integer sp_opinion_opreason3_agree, String sp_opinion_detail,
+			Integer sp_opinion_warning, Integer sp_opinion_thumbup, String sp_opinion_type,
+			String sp_opinion_etc2, String sp_opinion_etc3, List<opinionReply_DTO> opinionReplys) {
+		super();
+		this.sp_opinion_rcdno = sp_opinion_rcdno;
+		this.sp_opinion_topicrcdno = sp_opinion_topicrcdno;
+		this.sp_opinion_topictitle = sp_opinion_topictitle;
+		this.sp_opinion_datetime = sp_opinion_datetime;
+		this.sp_opinion_writer = sp_opinion_writer;
+		this.sp_opinion_side = sp_opinion_side;
+		this.sp_opinion_reason1 = sp_opinion_reason1;
+		this.sp_opinion_reason2 = sp_opinion_reason2;
+		this.sp_opinion_reason3 = sp_opinion_reason3;
+		this.sp_opinion_opreason1 = sp_opinion_opreason1;
+		this.sp_opinion_opreason1_agree = sp_opinion_opreason1_agree;
+		this.sp_opinion_opreason2 = sp_opinion_opreason2;
+		this.sp_opinion_opreason2_agree = sp_opinion_opreason2_agree;
+		this.sp_opinion_opreason3 = sp_opinion_opreason3;
+		this.sp_opinion_opreason3_agree = sp_opinion_opreason3_agree;
+		this.sp_opinion_detail = sp_opinion_detail;
+		this.sp_opinion_warning = sp_opinion_warning;
+		this.sp_opinion_thumbup = sp_opinion_thumbup;
+		this.sp_opinion_type = sp_opinion_type;
+		this.sp_opinion_etc2 = sp_opinion_etc2;
+		this.sp_opinion_etc3 = sp_opinion_etc3;
+		this.opinionReplys = opinionReplys;
 	}
 	public Integer getSp_opinion_rcdno() {
 		return sp_opinion_rcdno;
@@ -185,7 +220,12 @@ public class opinion_DTO {
 	public void setSp_opinion_etc3(String sp_opinion_etc3) {
 		this.sp_opinion_etc3 = sp_opinion_etc3;
 	}
-	
+	public List<opinionReply_DTO> getOpinionReplys() {
+		return opinionReplys;
+	}
+	public void setOpinionReplys(List<opinionReply_DTO> opinionReplys) {
+		this.opinionReplys = opinionReplys;
+	}
 
 
 }

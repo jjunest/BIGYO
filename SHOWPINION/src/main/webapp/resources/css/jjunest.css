@@ -1,0 +1,45 @@
+.margin_auto_center {
+	margin: 0 auto;
+}
+
+.text_align_right {
+	text-align: right;
+}
+.text_align_center {
+	text-align: center;
+}
+.reply {
+	border-top: 0.5px double #ddd;
+	margin-top: 30px;
+	padding-top: 30px;
+}
+
+.re_reply {
+	display : none;
+	margin-top: 30px;
+	padding-top: 30px;
+	padding-left: 50px;
+	width: 100%;
+}
+
+a{
+	cursor: pointer;
+}
+
+.text_color_blue{
+	color: #286090;
+	
+}
+
+.color_pro{
+	color: #59df57;
+	
+}
+.color_con{
+	color:#df5759;
+	
+}
+.color_neu{
+	color:#df5759;
+	
+}

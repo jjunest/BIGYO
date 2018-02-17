@@ -1,112 +1,220 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.innovest.dao.IDao">
-   <insert id="insertContent" parameterType="java.util.HashMap">
-        insert into board(
-        	id,
-			subject,
-			content,
-			writer,
-			password
-		)values(
-			#{id},
-			#{subject},
-			#{content},
-			#{writer},
-			#{password}
-		)on duplicate key update
-			subject = #{subject},
-			content = #{content},
-			writer = #{writer},
-			password = #{password}
-    </insert>
-    <select id="selectContentCnt" resultType="int" parameterType="java.util.HashMap">
-    	select
-    		count(id)
-    	from
-    		board
-    </select>
-    <select id="selectContent" resultType="com.innovest.dto.Board" parameterType="java.util.HashMap">
-    	select
-    		id,
-			subject,
-			content,
-			writer,
-			date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
-    	from
-    		board
-    	order by id
-        limit #{start}, #{end}
-    </select>
-    <select id="selectContentView" resultType="com.innovest.dto.Board" parameterType="java.util.HashMap">
-    	select
-    		id,
-			subject,
-			content,
-			writer,
-			date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
-    	from
-    		board
-    	where
-    		id = #{id}
-    </select>
-    <insert id="insertBoardReply" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="reply_id">
-        insert into board_reply(
-        	board_id,
-			parent_id,
-			depth,
-			reply_content,
-			reply_writer,
-			reply_password
-		)values(
-			#{board_id},
-			#{parent_id},
-			#{depth},
-			#{reply_content},
-			#{reply_writer},
-			#{reply_password}
+<mapper namespace="com.innovest.dao.I_Reply_Dao">
+	<!-- 주제 댓글 입력하기 쿼리 -->
+	<insert id="topic_reply_save" parameterType="java.util.HashMap">
+		INSERT INTO sp_topic_replyboard(
+		sp_topic_reply_topicRcdno,
+		sp_topic_reply_parentRcdno,
+		sp_topic_reply_depth,
+		sp_topic_reply_content,
+		sp_topic_reply_writer
+		) VALUES (
+		#{tvtopic_rcdno},
+		#{parent_rcdno},
+		#{depth},
+		#{content},
+		#{writer}
 		)
-    </insert>
-    <select id="selectBoardReplyList" resultType="com.innovest.dto.BoardReply" parameterType="java.util.HashMap">
-    	select
-			reply_id,
-			board_id,
-			parent_id,
-			depth,
-			reply_content,
-			reply_writer,
-			reply_password
+	</insert>
+	<!-- 주제댓글 추천 및 신고 쿼리 -->
+	<insert id="topic_reply_recommend_process" parameterType="java.util.HashMap">
+		INSERT INTO sp_topic_replyboard_recommend(
+		topic_replyboard_recom_replyRcdno,
+		topic_replyboard_recom_type,
+		topic_replyboard_recom_bywhom
+		) VALUES (
+		#{sp_topic_reply_rcdno},
+		#{recom_type},
+		#{bywhom}
+		)
+	</insert>
+
+	<!-- 주제댓글 추천 및 신고 쿼리 -->
+	<insert id="opinion_reply_recommend_process" parameterType="java.util.HashMap">
+		INSERT INTO sp_opinion_replyboard_recommend(
+		opinion_replyboard_recom_replyRcdno,
+		opinion_replyboard_recom_type,
+		opinion_replyboard_recom_bywhom
+		) VALUES (
+		#{opinion_reply_rcdno},
+		#{recom_type},
+		#{bywhom}
+		)
+	</insert>
+
+
+	<select id="counting_thumbup_topicReply" resultType="int">
+		SELECT
+		count(topic_replyboard_recom_rcdno)
+		FROM
+		sp_topic_replyboard_recommend
+		WHERE
+		topic_replyboard_recom_type = 'thumbup' AND
+		topic_replyboard_recom_replyRcdno = #{reply_rcdno}
+	</select>
+	<select id="counting_warning_topicReply" resultType="int">
+		SELECT
+		count(topic_replyboard_recom_rcdno)
+		FROM
+		sp_topic_replyboard_recommend
+		WHERE
+		topic_replyboard_recom_type = 'warning' AND
+		topic_replyboard_recom_replyRcdno = #{reply_rcdno}
+	</select>
+	<!-- 주제 댓글 추천 및 신고 후 업데이트 -->
+	<update id="update_topicReply_recommend" parameterType="java.util.HashMap">
+		UPDATE sp_topic_replyboard SET
+		sp_topic_reply_warning =
+		#{warning_total},
+		sp_topic_reply_thumbup= #{thumbup_total}
+		WHERE
+		sp_topic_reply_rcdno=#{reply_rcdno}
+	</update>
+
+	<!-- 주제 댓글 추천 및 신고 후 업데이트 -->
+	<update id="update_opinionReply_recommend" parameterType="java.util.HashMap">
+		UPDATE sp_opinion_replyboard SET
+		sp_opinion_reply_warning =
+		#{warning_total},
+		sp_opinion_reply_thumbup= #{thumbup_total}
+		WHERE
+		sp_opinion_reply_rcdno=#{reply_rcdno}
+	</update>
+
+
+	
+
+	<select id="get_All_topic_reply" resultType="com.innovest.dto.tvTopicReply_DTO" parameterType="java.util.HashMap">
+		SELECT
+		*
+		FROM
+		sp_topic_replyboard WHERE sp_topic_reply_topicRcdno = #{topic_rcdno} ORDER BY sp_topic_reply_rcdno desc
+	</select>
+
+
+	<select id="selectContentCnt" resultType="int" parameterType="java.util.HashMap">
+		select
+		count(id)
 		from
-			board_reply
+		board
+	</select>
+	<select id="selectContent" resultType="com.innovest.dto.tvTopicReply_DTO" parameterType="java.util.HashMap">
+		select
+		id,
+		subject,
+		content,
+		writer,
+		date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
+		from
+		board
+		order by id
+		limit #{start}, #{end}
+	</select>
+	<select id="selectContentView" resultType="com.innovest.dto.tvTopicReply_DTO" parameterType="java.util.HashMap">
+		select
+		id,
+		subject,
+		content,
+		writer,
+		date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
+		from
+		board
 		where
-			board_id = #{id}
+		id = #{id}
+	</select>
+	<insert id="insertBoardReply" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="reply_id">
+		insert into board_reply(
+		board_id,
+		parent_id,
+		depth,
+		reply_content,
+		reply_writer,
+		reply_password
+		)values(
+		#{board_id},
+		#{parent_id},
+		#{depth},
+		#{reply_content},
+		#{reply_writer},
+		#{reply_password}
+		)
+	</insert>
+	<select id="selectBoardReplyList" resultType="com.innovest.dto.BoardReply" parameterType="java.util.HashMap">
+		select
+		reply_id,
+		board_id,
+		parent_id,
+		depth,
+		reply_content,
+		reply_writer,
+		reply_password
+		from
+		board_reply
+		where
+		board_id = #{id}
 		order by reply_id asc
-    </select>
-    <delete id="deleteBoardReply" parameterType="java.util.HashMap">
-    	delete
-    	from
-    		board_reply
-    	where
-    		reply_id = #{reply_id}
-    		and reply_password = #{reply_password}
-    </delete>
-    <select id="selectBoardCnt" resultType="int" parameterType="java.util.HashMap">
-    	select
-    		count(id)
-    	from
-    		board
-    	where
-    		id = #{id}
-    		and password = #{password}
-    </select>
-    <delete id="deleteBoard" parameterType="java.util.HashMap">
-        delete
-        from
-        	board
-        where
-        	id = #{id}
-        	and password = #{password}
-    </delete>
+	</select>
+	<delete id="deleteBoardReply" parameterType="java.util.HashMap">
+		delete
+		from
+		board_reply
+		where
+		reply_id = #{reply_id}
+		and reply_password = #{reply_password}
+	</delete>
+	<select id="selectBoardCnt" resultType="int" parameterType="java.util.HashMap">
+		select
+		count(id)
+		from
+		board
+		where
+		id = #{id}
+		and password = #{password}
+	</select>
+	<delete id="deleteBoard" parameterType="java.util.HashMap">
+		delete
+		from
+		board
+		where
+		id = #{id}
+		and password = #{password}
+	</delete>
+	<!-- 의견_추천 및 세기 -->
+	<select id="counting_thumbup_opinionReply" resultType="int">
+		SELECT
+		count(opinion_replyboard_recom_rcdno)
+		FROM
+		sp_opinion_replyboard_recommend
+		WHERE
+		opinion_replyboard_recom_type = 'thumbup' AND
+		opinion_replyboard_recom_replyRcdno = #{opinion_reply_rcdno}
+	</select>
+	<select id="counting_warning_opinionReply" resultType="int">
+		SELECT
+		count(opinion_replyboard_recom_rcdno)
+		FROM
+		sp_opinion_replyboard_recommend
+		WHERE
+		opinion_replyboard_recom_type = 'warning' AND
+		opinion_replyboard_recom_replyRcdno = #{opinion_reply_rcdno}
+	</select>
+	<!-- 의견_ 댓글 입력하기 쿼리 -->
+	<insert id="opinion_reply_save" parameterType="java.util.HashMap">
+		INSERT INTO sp_opinion_replyboard(
+		sp_opinion_reply_opinionRcdno,
+		sp_opinion_reply_parentRcdno,
+		sp_opinion_reply_depth,
+		sp_opinion_reply_content,
+		sp_opinion_reply_writer
+		) VALUES (
+		#{opinion_rcdno},
+		#{parent_rcdno},
+		#{depth},
+		#{content},
+		#{writer}
+		)
+	</insert>
 
 </mapper>
 

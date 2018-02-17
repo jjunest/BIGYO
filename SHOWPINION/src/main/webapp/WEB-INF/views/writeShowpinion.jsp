@@ -135,6 +135,7 @@
 										<option value="${detail_tvTopic.sp_tvtopics_pro2 }">${detail_tvTopic.sp_tvtopics_pro2 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro3 }">${detail_tvTopic.sp_tvtopics_pro3 }</option>
 										<option value="1">직접입력</option>
+									
 
 									</select> <input class="form-control reason_self_input" id="myside_reason1_self" name="myside_reason1_self" placeholder="자신이 생각한 근거를 30자로 축약해 직접 입력 하세요" type="text" maxlength="32">
 

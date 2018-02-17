@@ -104,11 +104,10 @@
 								<li><i class="fa fa-calendar"> 방영일:</i>${listValue_tvtopic.sp_tvtopics_tvshow_date}</li>
 								<li><span>중립</span>우세</li>
 							</ul>
-							<p>${listValue_tvtopic.sp_tvtopics_situation_desc}</p>
+							<p style="font-weight: bold">실시간 쇼피니언지수</p>
 							<div class="progress">
-								<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
-								<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
-								<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
+								<div class="progress-bar " style="width: 40%; background-color: #59df57" role="progressbar">찬성</div>
+								<div class="progress-bar " style="width: 60%; background-color: #df5759" role="progressbar">반대</div>
 							</div>
 
 						</div>
@@ -120,12 +119,12 @@
 		</div>
 	</div>
 	<!--container-->
-	<div class="container">
+<!-- 	<div class="container">
 
 		<ul class="pager">
 			<li class=""><a href="#" style="width: 100%">더보기</a></li>
 		</ul>
-	</div>
+	</div> -->
 	<div class="divide60"></div>
 
 	<jsp:include page="footer.jsp"></jsp:include>

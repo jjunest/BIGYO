@@ -6,13 +6,12 @@
 
 	<security:http auto-config="true" use-expressions="true">
 		<security:intercept-url pattern="/login.html*" access="hasRole('ROLE_USER')" />
-		<security:intercept-url pattern="/all_TVshow_Topics" access="hasRole('ROLE_USER')" />
+	<!-- 	<security:intercept-url pattern="/all_TVshow_Topics" access="hasRole('ROLE_USER')" /> -->
 		<security:intercept-url pattern="/welcome.html*" access="hasRole('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/admin_insert_TVTopic" access="hasRole('ROLE_USER')" />
-		<security:form-login login-page="/login_custom" default-target-url="/index" authentication-failure-url="/login_custom?ng" />
+		<security:form-login login-page="/login_custom" default-target-url="/index" authentication-failure-url="/login_custom?ng" authentication-success-handler-ref="AuthenticationSuccessHandlerImpl" />
 		<security:access-denied-handler error-page="/accessdenial" />
 		<security:logout logout-url="/j_spring_security_logout" logout-success-url="/index" invalidate-session="true" />
-
 	</security:http>
 
 	<security:authentication-manager>

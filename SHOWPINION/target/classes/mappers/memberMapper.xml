@@ -4,7 +4,7 @@
 	<select id="duplicateIdCheck" resultType="int">
 		SELECT COUNT(*) from sp_users where userid = #{user_inputId}
 	</select>
-	<insert id="insert_user_ByObj">
+	<insert id="insert_user_ByMap">
 		INSERT INTO sp_users
 		(userid, password, enabled, realname, nickname, openname, groupname, groupname_open,sns , sns_open)
 		VALUES
@@ -15,6 +15,11 @@
 		INSERT INTO sp_user_roles (userid, role) VALUES
 		(#{userid}, #{role})
 	</insert>
+
+	<select id="get_userDTO" resultType="com.innovest.dto.userDTO">
+		SELECT * from sp_users where userid = #{user_email_id}
+	</select>
+
 
 
 </mapper>

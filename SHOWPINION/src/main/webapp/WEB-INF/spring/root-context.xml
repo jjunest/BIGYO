@@ -30,4 +30,18 @@
 	</bean>
 
 
+	<bean id="topic_reply_dao" class="com.innovest.dao.Reply_Dao">
+		<property name="sqlsession">
+			<ref bean="sqlSession" />
+		</property>
+	</bean>
+
+	<bean id="AuthenticationSuccessHandlerImpl" class="com.innovest.utils.AuthenticationSuccessHandlerImpl">
+		<property name="spdao">
+			<ref bean="spdao" />
+		</property>
+	</bean>
+
+
+
 </beans>

@@ -29,7 +29,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.innovest.dao.SPDao;
+import com.innovest.dao.Reply_Dao;
 import com.innovest.dto.opinion_DTO;
+import com.innovest.dto.opinion_withReply_DTO;
+import com.innovest.dto.tvTopicReply_DTO;
 import com.innovest.dto.tvTopic_DTO;
 import com.innovest.dto.userDTO;
 
@@ -40,6 +43,9 @@ import com.innovest.dto.userDTO;
 public class HomeController {
 	@Autowired
 	SPDao spdao;
+	@Autowired
+	Reply_Dao topic_reply_dao;
+
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
 
@@ -70,8 +76,12 @@ public class HomeController {
 	}
 
 	@RequestMapping("/login_custom")
-	public String login_custom(Model model) {
+	public String login_custom(Model model,HttpServletRequest request) {
 		System.out.println("this is login_custom");
+
+		//로그인 성공 후 이전페이지로 이동하기 위한 설정..
+		String referrer = request.getHeader("Referer");
+		request.getSession().setAttribute("prevPage", referrer);
 
 		return "login_custom";
 	}
@@ -88,6 +98,26 @@ public class HomeController {
 		System.out.println("this is all_TVshow_Topics");
 		List<tvTopic_DTO> result_list = spdao.selectAll_TVshow_TopicDTO();
 		model.addAttribute("result_list_tvtopics", result_list);
+
+		// 쇼피니언 지수를 구하기 위해서 주제를 뽑고, 찬성 반대 지수 수치를 넘겨준다.
+		HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
+		// 쇼피니언 의견 모두 LIST로 뽑기
+		sqlParameterHashMap.put("opinion_type", "show");
+		List<opinion_withReply_DTO> opinions_list_show = spdao
+				.selectAll_opinion_show(sqlParameterHashMap);
+		model.addAttribute("opinions_list_show", opinions_list_show);
+		// 쇼피니언 지수 구하기 위한 찬성, 반대 개수 구하기
+		int showpinion_graph_pro_total = 0;
+		int showpinion_graph_con_total = 0;
+		for (int i = 0; i < opinions_list_show.size(); i++) {
+			if (opinions_list_show.get(i).getSp_opinion_side().equals("pro")) {
+				showpinion_graph_pro_total++;
+			} else if (opinions_list_show.get(i).getSp_opinion_side().equals("con")) {
+				showpinion_graph_con_total++;
+			}
+		}
+		model.addAttribute("showpinion_graph_pro_total", showpinion_graph_pro_total);
+		model.addAttribute("showpinion_graph_con_total", showpinion_graph_con_total);
 
 		return "all_TVshow_Topics";
 	}
@@ -108,7 +138,20 @@ public class HomeController {
 
 	@RequestMapping("/detail_TVshow_Topics")
 	public String detail_TVshow_Topics(HttpServletRequest httpServletRequest, Model model) {
-		System.out.println("this is detail_TVshow_Topics");
+
+		// order순서 정하기. sp_order, normal_order, reply_order
+		String opinion_order = httpServletRequest.getParameter("opinion_order");
+		// 디폴트는 최신순이다.
+		if (opinion_order == null || opinion_order.equals("")) {
+			opinion_order = "recent";
+		}
+		if (opinion_order.equals("thumbup")) {
+			opinion_order = "sp_opinion_thumbup";
+		} else if (opinion_order.equals("recent")) {
+			opinion_order = "sp_opinion_datetime";
+		}
+
+		System.out.println("this is detail_TVshow_Topics111");
 		String topic_rcdno = httpServletRequest.getParameter("topic_rcdno");
 		HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
 		sqlParameterHashMap.put("topic_rcdno", topic_rcdno);
@@ -118,30 +161,78 @@ public class HomeController {
 		tvTopic_DTO detail_tvTopic = spdao.selectOne_TvTopic(sqlParameterHashMap);
 		model.addAttribute("detail_tvTopic", detail_tvTopic);
 
-		
-		//쇼피니언 의견 모두 LIST로 뽑기
-		List<opinion_DTO> opinions_list_show = spdao.selectAll_opinion_show(sqlParameterHashMap);
+		// 쇼피니언 의견 모두 LIST로 뽑기
+		sqlParameterHashMap.put("opinion_type", "show");
+		sqlParameterHashMap.put("list_order", opinion_order);
+		List<opinion_withReply_DTO> opinions_list_show = spdao
+				.selectAll_opinion_show(sqlParameterHashMap);
 		model.addAttribute("opinions_list_show", opinions_list_show);
 		
-		//일반 의견 모두 LIST로 뽑기
-		List<opinion_DTO> opinions_list_normal = spdao.selectAll_opinion_normal(sqlParameterHashMap);
+		
+		
+		
+		
+		
+		
+		// 쇼피니언 지수 구하기 위한 찬성, 반대 개수 구하기
+		int showpinion_graph_pro_total = 0;
+		int showpinion_graph_con_total = 0;
+		for (int i = 0; i < opinions_list_show.size(); i++) {
+			if (opinions_list_show.get(i).getSp_opinion_side().equals("pro")) {
+				showpinion_graph_pro_total++;
+			} else if (opinions_list_show.get(i).getSp_opinion_side().equals("con")) {
+				showpinion_graph_con_total++;
+			}
+		}
+		model.addAttribute("showpinion_graph_pro_total", showpinion_graph_pro_total);
+		model.addAttribute("showpinion_graph_con_total", showpinion_graph_con_total);
+
+		// 일반 의견 모두 LIST로 뽑기
+		sqlParameterHashMap.put("opinion_type", "normal");
+		List<opinion_withReply_DTO> opinions_list_normal = spdao
+				.selectAll_opinion_show(sqlParameterHashMap);
 		model.addAttribute("opinions_list_normal", opinions_list_normal);
-		
-		
-		
+
+		// 일반 지수 구하기 위한 찬성, 반대 개수 구하기
+		int normal_graph_pro_total = 0;
+		int normal_graph_con_total = 0;
+		for (int i = 0; i < opinions_list_normal.size(); i++) {
+			if (opinions_list_normal.get(i).getSp_opinion_side().equals("pro")) {
+				normal_graph_pro_total++;
+			} else if (opinions_list_show.get(i).getSp_opinion_side().equals("con")) {
+				normal_graph_con_total++;
+			}
+		}
+		model.addAttribute("normal_graph_pro_total", normal_graph_pro_total);
+		model.addAttribute("normal_graph_con_total", normal_graph_con_total);
+
+		// 주제_댓글 모두 LIST로 뽑기
+		List<tvTopicReply_DTO> topic_reply_list = topic_reply_dao
+				.get_All_topic_reply(sqlParameterHashMap);
+		model.addAttribute("topic_reply_list", topic_reply_list);
+
+		// 주제_댓글 중 부모인 갯수 구하기
+		int topic_reply_total = 0;
+		for (int i = 0; i < topic_reply_list.size(); i++) {
+			if (topic_reply_list.get(i).getSp_topic_reply_depth() == 0) {
+				topic_reply_total++;
+			}
+			;
+		}
+
+		model.addAttribute("topic_reply_total", topic_reply_total);
+
 		return "detail_TVshow_Topics";
 	}
-	
+
 	@RequestMapping("/detail_opinion")
-	public String detail_opinion(Model model , @RequestParam Map<String, Object> paramMap) {
+	public String detail_opinion(Model model, @RequestParam Map<String, Object> paramMap) {
 		System.out.println("this is detail_opinion");
 		// 글 쓴 날짜는 default로 현재시각으로 저장이 된다.
 		opinion_DTO opinion_DTO = spdao.selectOpinionDetail(paramMap);
 		model.addAttribute("opinion_DTO", opinion_DTO);
 		return "detail_opinion";
 	}
-	
-	
 
 	@RequestMapping("/rankings")
 	public String rankings(Model model) {
@@ -163,6 +254,7 @@ public class HomeController {
 		String topic_rcdno = httpServletRequest.getParameter("topic_rcdno");
 		HashMap<String, Object> sqlParameterHashMap = new HashMap<String, Object>();
 		sqlParameterHashMap.put("topic_rcdno", topic_rcdno);
+
 		tvTopic_DTO detail_tvTopic = spdao.selectOne_TvTopic(sqlParameterHashMap);
 		model.addAttribute("detail_tvTopic", detail_tvTopic);
 		return "writeShowpinion";
@@ -209,7 +301,7 @@ public class HomeController {
 	@RequestMapping("/signup_process")
 	@ResponseBody
 	public String signup_process(Locale locale, Model model,
-			HttpServletRequest httpServletRequest) {
+			HttpServletRequest httpServletRequest, @RequestParam Map<String, Object> paramMap) {
 		System.out.println("this is signup_process");
 		String aJaxResult = "fail";
 		try {
@@ -218,31 +310,34 @@ public class HomeController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		String email_dup_check_id = httpServletRequest.getParameter("email_dup_check_id");
-		System.out.println("this is email_dup_check_id : " + email_dup_check_id);
-		String signup_realname = httpServletRequest.getParameter("signup_realname");
-		System.out.println("this is signup_realname : " + signup_realname);
-		String signup_nickname = httpServletRequest.getParameter("signup_nickname");
-		System.out.println("this is signup_nickname : " + signup_nickname);
-		String open_name = httpServletRequest.getParameter("open_name");
-		System.out.println("this is open_name :  " + open_name);
-		String signup_group = httpServletRequest.getParameter("signup_group");
-		System.out.println("this is signup_group : " + signup_group);
-		String signup_group_open = httpServletRequest.getParameter("signup_group_open");
-		System.out.println("this is signup_group_open : " + signup_group_open);
-		String signup_sns = httpServletRequest.getParameter("signup_sns");
-		System.out.println("this is signup_sns : " + signup_sns);
-		String signup_sns_open = httpServletRequest.getParameter("signup_sns_open");
-		System.out.println("this is signup_sns_open : " + signup_sns_open);
 		String signup_password = httpServletRequest.getParameter("signup_password");
-		System.out.println("this is signup_realname : " + signup_password);
 		// 비밀번호 인코딩해서 저장하기
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String hashedPassword = passwordEncoder.encode(signup_password.trim());
-		userDTO newUserDTO = new userDTO(email_dup_check_id, hashedPassword, 1, signup_realname,
-				signup_nickname, open_name, signup_group, signup_group_open, signup_sns,
-				signup_sns_open);
-		int insert_result = spdao.insert_user_ByObj(newUserDTO);
+		paramMap.put("userid",email_dup_check_id);
+		paramMap.put("password",hashedPassword);
+		paramMap.put("enabled",1);
+		paramMap.put("realname",httpServletRequest.getParameter("signup_realname"));
+		paramMap.put("nickname",httpServletRequest.getParameter("signup_nickname"));
+		paramMap.put("openname",httpServletRequest.getParameter("open_name"));
+		paramMap.put("groupname",httpServletRequest.getParameter("signup_group"));
+		if(httpServletRequest.getParameter("signup_group_open")==null) {
+			paramMap.put("groupname_open","off");
+		}else {
+			paramMap.put("groupname_open",httpServletRequest.getParameter("signup_group_open"));
+		}
+		paramMap.put("sns",httpServletRequest.getParameter("signup_sns"));
+		if(httpServletRequest.getParameter("sns_open")==null) {
+			paramMap.put("sns_open","off");
+		}else {
+			paramMap.put("sns_open",httpServletRequest.getParameter("off"));
+		}
+		
+		
+		
+		int insert_result = spdao.insert_user_ByMap(paramMap);
 		if (insert_result == 0) {
 			System.out.println("this is insertresult ==0");
 			// 새로운 user database 삽입 실패시
@@ -273,8 +368,6 @@ public class HomeController {
 		System.out.println("this is admin_insert_TVTopic");
 		return "admin_insert_TVTopic";
 	}
-
-
 
 	@RequestMapping(value = "/tvshowtopic_insert_process", method = RequestMethod.POST)
 	@ResponseBody
@@ -352,6 +445,7 @@ public class HomeController {
 		// 추가적으로 paramMap에서 알아야할 정보들, writer아이디,이미지 이름, 이미지 url,
 		paramMap.put("originalFileBytes", originalFileBytes);
 		paramMap.put("imageUrl", imageUrl);
+
 		// 글 쓴 날짜는 default로 현재시각으로 저장이 된다.
 		int result = spdao.insertTVShowTopic(paramMap);
 
@@ -413,6 +507,7 @@ public class HomeController {
 		paramMap.put("sp_tvtopics_type", type);
 		// 글 쓴 날짜는 default로 현재시각으로 저장이 된다.
 		int result = spdao.insertOpinion(paramMap);
+		// 데이터 베이스에 입력 후 값을 파라미터를 통해 가져올 수 있다.
 		Long sp_opinion_rcdno = (Long) paramMap.get("sp_opinion_rcdno");
 		// DBinsert 결과 확인하기
 		JSONObject company_jsonlist = new JSONObject();
@@ -424,6 +519,49 @@ public class HomeController {
 		company_jsonlist.put("aJaxResult", aJaxResult);
 
 		return company_jsonlist;
+	}
+
+	// 의견에 대한 추천 및 신고 프로세스
+	@RequestMapping(value = "/opinion_recommend_process", method = RequestMethod.POST)
+	@ResponseBody
+	public Object opinion_recommend_process(@RequestParam Map<String, Object> paramMap) {
+		// ���ϰ�
+		Map<String, Object> retVal = new HashMap<String, Object>();
+		// �����Է�
+
+		String recom_type = (String) paramMap.get("recom_type");
+		Integer opinion_rcdno = Integer.parseInt(((String) paramMap.get("opinion_rcdno")));
+		// 추천 및 신고를 누르면 recommend에 기록을 남겨주고
+		int recom_result = spdao.opinion_recommend_process(paramMap);
+		System.out.println("this is opinion_recommend_process:" + recom_result);
+		// 그 후에 replyDTO에 업데이트를 해준다. 몇 개의 추천이 현재 들어가 있는지, 이때 replyRCD를 통해서 그 부분만 업데이트
+		// 해준다.
+		// 1. 현재 replyrcdno에 있는 추천과 신고 개수를 받는다.
+		int thumbup_total = spdao.counting_thumbup_opinion(opinion_rcdno);
+		System.out.println("this is thumbup_total:" + thumbup_total);
+		int warning_total = spdao.counting_warning_opinion(opinion_rcdno);
+		System.out.println("this is warning_total:" + warning_total);
+		// 2. 그 후 replyRCDno에 있는 thumbupTotal과 warningTotal을 업데이트 해준다.
+
+		Map<String, Object> update_param = new HashMap<String, Object>();
+		update_param.put("thumbup_total", thumbup_total);
+		update_param.put("warning_total", warning_total);
+		update_param.put("opinion_rcdno", opinion_rcdno);
+		int update_result = spdao.update_opinion_recommend(update_param);
+
+		if (update_result > 0) {
+			retVal.put("code", "OK");
+			if (recom_type.equals("thumbup")) {
+				retVal.put("message", "정상적으로 추천되었습니다 ");
+			} else if (recom_type.equals("warning")) {
+				retVal.put("message", "정상적으로 신고되었습니다 ");
+			}
+
+		} else {
+			retVal.put("code", "FAIL");
+			retVal.put("message", "글 등록에 실패하였습니다.");
+		}
+		return retVal;
 	}
 
 	/**

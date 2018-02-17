@@ -86,8 +86,8 @@
 	</div>
 	<!--breadcrumbs-->
 	<div class="divide80"></div>
+	<!--  의견 부분입니다 -->
 	<div class="container">
-
 		<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
 			<div class="row">
 				<div class="col-md-2" style="text-align: center">
@@ -108,8 +108,6 @@
 					<c:if test="${opinion_DTO.sp_opinion_side eq 'con'}">
 						<div>반대</div>
 					</c:if>
-
-
 					<p>
 						<span>* 본 의견은 <c:if test="${opinion_DTO.sp_opinion_type eq 'normal'}">
 							'일반'
@@ -118,9 +116,7 @@
 						</c:if> 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
 					</p>
 				</div>
-
 			</div>
-
 			<div class="row" style="margin-top: 5px">
 				<div class="col-md-6" style="">
 					<p>
@@ -160,10 +156,8 @@
 				</div>
 			</div>
 			<div class="row" style="margin-top: 5px">
-
 				<div class="col-md-10" style="">
 					<div>상세 의견</div>
-
 					${opinion_DTO.sp_opinion_detail }
 				</div>
 			</div>
@@ -176,7 +170,6 @@
 					<div>
 						댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
 					</div>
-
 				</div>
 				<div class="col-md-10" style="">
 					<div>
@@ -188,13 +181,11 @@
 					<div>
 						댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
 					</div>
-
 				</div>
 				<div class="col-md-10" style="">
 					<div>
 						댓글 1 JJUNEST <span>2017-05-27 시간</span> 내용 블라블라블라블라
 					</div>
-
 				</div>
 			</div>
 

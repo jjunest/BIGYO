@@ -67,6 +67,7 @@
 </style>
 </head>
 <body class="body-wrapper">
+	<!-- 현재 접속해 있는 user ID 저장 -->
 	<c:set var="user" value="${pageContext.request.userPrincipal.name}" />
 
 	<!-- HEADER FILE INCLUDE  -->
@@ -161,9 +162,9 @@
 								</div>
 								<h4>
 									방송이름 <select class="selectpicker" data-width="100%" id="tvtopic_tvshow_name" name="tvtopic_tvshow_name" style="width: 80%">
-										<option value = "tvshowname_ssul">썰전</option>
-										<option value = "tvshowname_100min">100분 토론</option>
-										<option value = "tvshowname_gangJuk">강적들</option>
+										<option value="tvshowname_ssul">썰전</option>
+										<option value="tvshowname_100min">100분 토론</option>
+										<option value="tvshowname_gangJuk">강적들</option>
 									</select>
 								</h4>
 								<span>방영 날짜<input type="date" class="form-control" id="tvtopic_tvshow_date" name="tvtopic_tvshow_date" style="width: 80%; margin: 0 auto;"></span>
@@ -241,9 +242,13 @@
 				if (checkingInputOk) {
 					//에디터 내용 가져옴
 					var tvtopic_desc_content = CKEDITOR.instances.tvtopic_situation_desc.getData();
+					//textarea부분의 엔터 처리를 해줘야 한다.
+					var tvtopic_tvshow_desc_content = $("#tvtopic_tvshow_desc").val();
+					tvtopic_tvshow_desc_content = tvtopic_tvshow_desc_content.replace(/(?:\r\n|\r|\n)/g, '<br />');
+					$("#tvtopic_tvshow_desc").val(tvtopic_tvshow_desc_content);
+					
+					
 					// If you want to add an extra field for the FormData
-					console.log('this is submit BT3');
-
 					$('#tvtopic_insert_form').ajaxForm({
 						url : "${pageContext.request.contextPath}/tvshowtopic_insert_process",
 						enctype : "multipart/form-data", // 여기에 url과 enctype은 꼭 지정해주어야 하는 부분이며 multipart로 지정해주지 않으면 controller로 파일을 보낼 수 없음
@@ -262,26 +267,6 @@
 						}
 
 					}).submit();
-					/* $("#tvtopic_insert_form").submit();
-
-					$.ajax({
-						type : "POST",
-						enctype : "multipart/form-data",
-						url : "${pageContext.request.contextPath}/tvshowtopic_insert_process",
-						processData : false,
-						contentType : false,
-						cache : false,
-						success : function(data) {
-							if (data == "success") {
-								alert('성공적으로 글이 등록 되었습니다.');
-							} else {
-								alert('토론주제 등록 실패하였습니다. 지속적으로 문제 발생 시 연락부탁드립니다. 010-7272-9771');
-							}
-						},
-						error : function(e) {
-							alert('오류가 발생했습니다. 문제 상황 지속 시 연락 부탁드립니다. 010-7272-9771');
-						}
-					}); */
 				}
 
 			});

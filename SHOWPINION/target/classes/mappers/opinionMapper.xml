@@ -14,11 +14,88 @@
 		SELECT * FROM
 		sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = 'normal' ORDER BY sp_opinion_datetime DESC
 	</select>
-	<select id="selectAll_opinion_show" resultType="com.innovest.dto.opinion_DTO">
+	<!-- <select id="selectAll_opinion_show" resultType="com.innovest.dto.opinion_DTO"> SELECT * FROM sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = 'show' ORDER BY sp_opinion_datetime DESC </select> -->
+	<resultMap type="com.innovest.dto.opinion_withReply_DTO" id="opinion_withReply_ResultMap">
+		<result property="sp_opinion_rcdno" column="sp_opinion_rcdno" />
+		<result property="sp_opinion_topicrcdno" column="sp_opinion_topicrcdno" />
+		<result property="sp_opinion_topictitle" column="sp_opinion_topictitle" />
+		<result property="sp_opinion_datetime" column="sp_opinion_datetime" />
+		<result property="sp_opinion_writer" column="sp_opinion_writer" />
+		<result property="sp_opinion_side" column="sp_opinion_side" />
+		<result property="sp_opinion_reason1" column="sp_opinion_reason1" />
+		<result property="sp_opinion_reason2" column="sp_opinion_reason2" />
+		<result property="sp_opinion_reason3" column="sp_opinion_reason3" />
+		<result property="sp_opinion_opreason1" column="sp_opinion_opreason1" />
+		<result property="sp_opinion_opreason1_agree" column="sp_opinion_opreason1_agree" />
+		<result property="sp_opinion_opreason2" column="sp_opinion_opreason2" />
+		<result property="sp_opinion_opreason2_agree" column="sp_opinion_opreason2_agree" />
+		<result property="sp_opinion_opreason3" column="sp_opinion_opreason3" />
+		<result property="sp_opinion_opreason3_agree" column="sp_opinion_opreason3_agree" />
+		<result property="sp_opinion_detail" column="sp_opinion_detail" />
+		<result property="sp_opinion_warning" column="sp_opinion_warning" />
+		<result property="sp_opinion_good" column="sp_opinion_good" />
+		<result property="sp_opinion_type" column="sp_opinion_type" />
+		<result property="sp_opinion_type" column="sp_opinion_etc2" />
+		<result property="sp_opinion_type" column="sp_opinion_etc3" />
+		<collection property="opinionReplys" javaType="java.util.ArrayList" column="sp_opinion_rcdno" ofType="com.innovest.dto.opinionReply_DTO" select="get_opinionReplys" />
+	</resultMap>
+	<select id="get_opinionReplys" resultType="com.innovest.dto.opinionReply_DTO">
 		SELECT * FROM
-		sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = 'show' ORDER BY sp_opinion_datetime DESC
+		sp_opinion_replyboard WHERE sp_opinion_reply_opinionRcdno = #{sp_opinion_rcdno}
+	</select>
+	<!-- 쇼피니언의견 -->
+	<select id="selectAll_opinion_show" resultMap="opinion_withReply_ResultMap">
+		SELECT * FROM
+		sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = #{opinion_type} 
+			<if test = "list_order==null or list_order.equals('sp_opinion_datetime')">ORDER BY sp_opinion_datetime	
+		DESC</if> 
+		<if test = "list_order!=null and list_order.equals('sp_opinion_thumbup')">ORDER BY sp_opinion_thumbup 	
+		DESC</if> 
+		
+	
 	</select>
 
+	
+	<!-- 의견 추천 및 신고 쿼리 -->
+	<insert id="opinion_recommend_process" parameterType="java.util.HashMap">
+		INSERT INTO sp_opinion_recommend(
+		sp_opinion_recommend_opinionRcdno,
+		sp_opinion_recommend_recom_type,
+		sp_opinion_recommend_bywhom
+		) VALUES (
+		#{opinion_rcdno},
+		#{recom_type},
+		#{bywhom}
+		)
+	</insert>
+	<!-- 의견 추천 및 신고 세기 -->
+	<select id="counting_thumbup_opinion" resultType="int">
+		SELECT
+		count(sp_opinion_recommend_rcdno)
+		FROM
+		sp_opinion_recommend
+		WHERE
+		sp_opinion_recommend_recom_type = 'thumbup' AND
+		sp_opinion_recommend_opinionRcdno = #{opinion_rcdno}
+	</select>
+	<select id="counting_warning_opinion" resultType="int">
+		SELECT
+		count(sp_opinion_recommend_rcdno)
+		FROM
+		sp_opinion_recommend
+		WHERE
+		sp_opinion_recommend_recom_type = 'warning' AND
+		sp_opinion_recommend_opinionRcdno = #{opinion_rcdno}
+	</select>
+	<!-- 주제_추천 및 신고 후 업데이트 -->
+	<update id="update_opinion_recommend" parameterType="java.util.HashMap">
+		UPDATE sp_opinion SET
+		sp_opinion_warning =
+		#{warning_total},
+		sp_opinion_thumbup= #{thumbup_total}
+		WHERE
+		sp_opinion_rcdno=#{opinion_rcdno}
+	</update>
 
 </mapper>
 

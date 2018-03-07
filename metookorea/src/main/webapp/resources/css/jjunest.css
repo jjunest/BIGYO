@@ -1,0 +1,108 @@
+.margin_auto_center {
+	margin: 0 auto;
+}
+
+.text_align_right {
+	text-align: right;
+}
+
+.text_align_center {
+	text-align: center;
+}
+
+.reply {
+	border-top: 0.5px double #ddd;
+	margin-top: 30px;
+	padding-top: 30px;
+}
+
+.re_reply {
+	display: none;
+	margin-top: 30px;
+	padding-top: 30px;
+	padding-left: 50px;
+	width: 100%;
+}
+
+a {
+	cursor: pointer;
+}
+
+.text_color_blue {
+	color: #286090;
+}
+
+.color_pro {
+	color: #59df57;
+}
+
+.color_con {
+	color: #df5759;
+}
+
+.color_neu {
+	color: #df5759;
+}
+
+/* input 태크 글릭 시 placeholder 없어지게 하는 css 시작 */
+input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholder { /* WebKit browsers */
+	color: transparent;
+}
+
+input:focus:-moz-placeholder, textarea:focus:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	color: transparent;
+}
+
+input:focus::-moz-placeholder, textarea:focus::-moz-placeholder { /* Mozilla Firefox 19+ */
+	color: transparent;
+}
+
+input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder { /* Internet Explorer 10+ */
+	color: transparent;
+}
+/* input 태크 글릭 시 placeholder 없어지게 하는 css 끝 */
+
+/* MODAL 창 중간으로 띄우기, 시작 */
+.modal {
+	text-align: center;
+	padding: 0 !important;
+}
+
+.modal:before {
+	content: '';
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+	margin-right: -4px;
+}
+
+.modal-dialog {
+	display: inline-block;
+	text-align: left;
+	vertical-align: middle;
+}
+/* MODAL 창 중간으로 띄우기, 끝 */
+.white_space {
+	white-space: pre-wrap; ! important;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+	word-break: break-all;
+	white-space: pre;
+	white-space: -hp-pre-wrap;
+	white-space: pre-line;
+}
+
+.txt_post {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: box;
+	margin-top: 1px;
+	max-height: 80px;
+	overflow: hidden;
+	vertical-align: top;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3
+}

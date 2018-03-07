@@ -10,17 +10,71 @@
 		VALUES
 		(#{userid},#{password},#{enabled},#{realname},#{nickname},#{openname},#{groupname},#{groupname_open},#{sns},#{sns_open})
 	</insert>
-
 	<insert id="insert_userrole_byMap">
 		INSERT INTO sp_user_roles (userid, role) VALUES
 		(#{userid}, #{role})
 	</insert>
-
 	<select id="get_userDTO" resultType="com.innovest.dto.userDTO">
 		SELECT * from sp_users where userid = #{user_email_id}
 	</select>
-
-
-
+	<select id="get_userDTO_byRcdno" resultType="com.innovest.dto.userDTO">
+		SELECT * from sp_users where rcdno = #{user_rcdno}
+	</select>
+	<update id="update_userProfile_byMap">
+		UPDATE sp_users SET password=#{edit_password}, nickname=#{edit_nickname}, openname=#{edit_open_name}, groupname=#{edit_group},
+		groupname_open=#{edit_group_open}, sns=#{edit_sns}, sns_open=#{edit_sns_open}, user_self_intro=#{edit_user_self_intro},sp_user_picUrl=#{imageUrl},
+		sp_user_picOriname=#{originFileName}, sp_user_picByte=#{originalFileBytes} where rcdno = #{user_rcdno}
+	</update>
+	<select id="ranking_popular_already" resultType="int">
+		SELECT
+		count(sp_user_popular_rcdno)
+		FROM
+		sp_user_popular WHERE sp_user_popular_userRcdno = #{user_rcdno}
+		AND sp_user_popular_bywhom = #{bywhom}
+	</select>
+	<insert id="ranking_popular_process" parameterType="java.util.HashMap">
+		INSERT INTO sp_user_popular(
+		sp_user_popular_userRcdno,
+		sp_user_popular_bywhom
+		) VALUES (
+		#{user_rcdno},
+		#{bywhom}
+		)
+	</insert>
+	<update id="ranking_popular_update_userInfo">
+		UPDATE sp_users SET ranking_user_like=ranking_user_like+1 WHERE rcdno = #{user_rcdno}
+	</update>
+	<select id="user_ranking_list" resultType="com.innovest.dto.userDTO">
+		SELECT
+		*
+		FROM
+		sp_users
+		<if test="user_order==null or user_order.equals('ranking_thumbup_total')">
+			ORDER BY ranking_thumbup_total DESC LIMIT 100
+		</if>
+		<if test="user_order!=null and user_order.equals('ranking_user_like')">
+			ORDER BY ranking_user_like DESC LIMIT 100
+		</if>
+		<if test="user_order!=null and user_order.equals('ranking_opinion_show_total')">
+			ORDER BY ranking_opinion_show_total DESC LIMIT 100
+		</if>
+		<if test="user_order!=null and user_order.equals('ranking_opinion_normal_total')">
+			ORDER BY ranking_opinion_normal_total DESC LIMIT 100
+		</if>
+	</select>
+	<select id="group_ranking_list" resultType="com.innovest.dto.ranking_group_DTO">
+		<if test="user_order==null or user_order.equals('ranking_thumbup_total')">
+			SELECT groupname, sum(ranking_user_like), sum(ranking_opinion_show_total), sum(ranking_opinion_normal_total), sum(ranking_thumbup_total) As ranking FROM sp_users GROUP BY groupname ORDER BY ranking DESC LIMIT 100
+		</if>
+		<if test="user_order!=null and user_order.equals('ranking_user_like')">
+			SELECT groupname, sum(ranking_user_like) As ranking, sum(ranking_opinion_show_total), sum(ranking_opinion_normal_total), sum(ranking_thumbup_total) FROM sp_users GROUP BY groupname ORDER BY ranking DESC LIMIT 100
+		</if>
+		<if test="user_order!=null and user_order.equals('ranking_opinion_show_total')">
+			SELECT groupname, sum(ranking_user_like), sum(ranking_opinion_show_total) As ranking, sum(ranking_opinion_normal_total), sum(ranking_thumbup_total) FROM sp_users GROUP BY groupname ORDER BY ranking DESC LIMIT 100
+		</if>
+		<if test="user_order!=null and user_order.equals('ranking_opinion_normal_total')">
+			SELECT groupname, sum(ranking_user_like), sum(ranking_opinion_show_total), sum(ranking_opinion_normal_total) As ranking, sum(ranking_thumbup_total) As ranking FROM sp_users GROUP BY groupname ORDER BY ranking DESC LIMIT 100
+		</if>
+	</select>
 </mapper>
 

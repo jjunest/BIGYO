@@ -71,6 +71,33 @@ public class TopicReplyController {
 		return retVal;
 	}
 
+	// 주제_댓글 삭제 과정
+	@RequestMapping("/topicReply_delete_process")
+	@ResponseBody
+	public String topicReply_delete_process(Locale locale, Model model,
+			HttpServletRequest httpServletRequest, @RequestParam Map<String, Object> paramMap,
+			HttpSession session) {
+		System.out.println("this is topicReply_delete_process");
+		String aJaxResult = "fail";
+		try {
+			httpServletRequest.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// 추가적으로 paramMap에서 알아야할 정보들, writer아이디,이미지 이름, 이미지 url,
+
+		int result = topic_reply_dao.topicReply_delete(paramMap);
+		System.out.println("this is result" + paramMap.get("opinion_rcdno"));
+		if (result == 0) {
+			// 새로운 user database 삽입 실패시
+			return "fail";
+		} else if (result == 1) {
+			return "success";
+		}
+		return "fail";
+	}
 	// AJAX 토론주제_추천 및 신고
 	@RequestMapping(value = "/topic_reply_recommend_process", method = RequestMethod.POST)
 	@ResponseBody
@@ -81,6 +108,17 @@ public class TopicReplyController {
 
 		String recom_type = (String) paramMap.get("recom_type");
 		Integer reply_rcdno = Integer.parseInt(((String)paramMap.get("sp_topic_reply_rcdno")));
+		
+		//기존에 사용자가 해당 의견에 추천을 했는지 체크해준다.
+		int already_recom = topic_reply_dao.topic_reply_recommend_already(paramMap);
+		if(already_recom!=0) {
+			//만약 이미 등록이 되어 있다면...
+			retVal.put("code", "FAIL");
+			retVal.put("message", "중복 추천이나 중복 신고입니다.");
+			return retVal;
+		}
+		
+		
 		// 추천 및 신고를 누르면 recommend에 기록을 남겨주고
 		int result = topic_reply_dao.topic_reply_recommend_process(paramMap);
 		// 그 후에 replyDTO에 업데이트를 해준다. 몇 개의 추천이 현재 들어가 있는지, 이때 replyRCD를 통해서 그 부분만 업데이트
@@ -115,253 +153,7 @@ public class TopicReplyController {
 		return retVal;
 	}
 
-	@RequestMapping(value = "/boardList")
-	public String boardList(@RequestParam Map<String, Object> paramMap, Model model) {
-
-		// ��ȸ �Ϸ��� ������
-		int startPage = (paramMap.get("startPage") != null
-				? Integer.parseInt(paramMap.get("startPage").toString())
-				: 1);
-		// ���������� ������ ����Ʈ ��
-		int visiblePages = (paramMap.get("visiblePages") != null
-				? Integer.parseInt(paramMap.get("visiblePages").toString())
-				: 10);
-		// �ϴ� ��ü �Ǽ��� �����´�.
-		int totalCnt = topic_reply_dao.getContentCnt(paramMap);
-
-		// �Ʒ� 1,2�� ���� ���߿����� class�� ���ش�. (���⼭�� ���ظ� ���� ���� ����)
-		// 1.�ϴ� ������ �׺���̼ǿ��� ������ ����Ʈ ���� ���Ѵ�.
-		BigDecimal decimal1 = new BigDecimal(totalCnt);
-		BigDecimal decimal2 = new BigDecimal(visiblePages);
-		BigDecimal totalPage = decimal1.divide(decimal2, 0, BigDecimal.ROUND_UP);
-
-		int startLimitPage = 0;
-		// 2.mysql limit ������ ���ϱ� ���� ���
-		if (startPage == 1) {
-			startLimitPage = 0;
-		} else {
-			startLimitPage = (startPage - 1) * visiblePages;
-		}
-
-		paramMap.put("start", startLimitPage);
-		paramMap.put("end", visiblePages);
-
-		// jsp ���� ������ ���� ����
-		model.addAttribute("startPage", startPage + "");// ���� ������
-		model.addAttribute("totalCnt", totalCnt);// ��ü �Խù���
-		model.addAttribute("totalPage", totalPage);// ������ �׺���̼ǿ� ������ ����Ʈ ��
-		model.addAttribute("boardList", topic_reply_dao.getContentList(paramMap));// �˻�
-
-		return "boardList";
-
-	}
-
-	// �Խñ� �� ����
-	@RequestMapping(value = "/boardView")
-	public String boardView(@RequestParam Map<String, Object> paramMap, Model model) {
-
-		model.addAttribute("replyList", topic_reply_dao.getReplyList(paramMap));
-		model.addAttribute("boardView", topic_reply_dao.getContentView(paramMap));
-
-		return "boardView";
-
-	}
-
-	// �Խñ� ��� �� ����
-	@RequestMapping(value = "/boardEdit")
-	public String boardEdit(HttpServletRequest request, @RequestParam Map<String, Object> paramMap,
-			Model model) {
-
-		// Referer �˻�
-		String Referer = request.getHeader("referer");
-
-		if (Referer != null) {// URL�� ���� ���� �Ұ�
-			if (paramMap.get("id") != null) { // �Խñ� ����
-				if (Referer.indexOf("/boardView") > -1) {
-
-					// ������ �����´�.
-					model.addAttribute("boardView", topic_reply_dao.getContentView(paramMap));
-					return "boardEdit";
-				} else {
-					return "redirect:/boardList";
-				}
-			} else { // �Խñ� ���
-				if (Referer.indexOf("/boardList") > -1) {
-					return "boardEdit";
-				} else {
-					return "redirect:/boardList";
-				}
-			}
-		} else {
-			return "redirect:/boardList";
-		}
-
-	}
-
-	// AJAX ȣ�� (�Խñ� ����)
-	@RequestMapping(value = "/boardDel", method = RequestMethod.POST)
-	@ResponseBody
-	public Object boardDel(@RequestParam Map<String, Object> paramMap) {
-
-		// ���ϰ�
-		Map<String, Object> retVal = new HashMap<String, Object>();
-
-		// �н����� ��ȣȭ
-		ShaPasswordEncoder encoder = new ShaPasswordEncoder(256);
-		String password = encoder.encodePassword(paramMap.get("password").toString(), null);
-		paramMap.put("password", password);
-
-		// �����Է�
-		int result = topic_reply_dao.delBoard(paramMap);
-
-		if (result > 0) {
-			retVal.put("code", "OK");
-		} else {
-			retVal.put("code", "FAIL");
-			retVal.put("message", "�н����带 Ȯ�����ּ���.");
-		}
-
-		return retVal;
-
-	}
-
-	// AJAX ȣ�� (�Խñ� �н����� Ȯ��)
-	@RequestMapping(value = "/boardCheck", method = RequestMethod.POST)
-	@ResponseBody
-	public Object boardCheck(@RequestParam Map<String, Object> paramMap) {
-
-		// ���ϰ�
-		Map<String, Object> retVal = new HashMap<String, Object>();
-
-		// �н����� ��ȣȭ
-		ShaPasswordEncoder encoder = new ShaPasswordEncoder(256);
-		String password = encoder.encodePassword(paramMap.get("password").toString(), null);
-		paramMap.put("password", password);
-
-		// �����Է�
-		int result = topic_reply_dao.getBoardCheck(paramMap);
-
-		if (result > 0) {
-			System.out.println("this is success result");
-			retVal.put("code", "OK");
-		} else {
-			System.out.println("this is fail result");
-			retVal.put("code", "FAIL");
-			retVal.put("message", "�н����带 Ȯ�����ּ���.");
-		}
-
-		return retVal;
-
-	}
-
-	// AJAX ȣ�� (��� ���)
-	@RequestMapping(value = "/boardReply_save", method = RequestMethod.POST)
-	@ResponseBody
-	public Object boardReplySave(@RequestParam Map<String, Object> paramMap) {
-
-		// ���ϰ�
-		Map<String, Object> retVal = new HashMap<String, Object>();
-
-		// �н����� ��ȣȭ
-		ShaPasswordEncoder encoder = new ShaPasswordEncoder(256);
-		String password = encoder.encodePassword(paramMap.get("reply_password").toString(), null);
-		paramMap.put("reply_password", password);
-
-		// �����Է�
-		int result = topic_reply_dao.regReply(paramMap);
-
-		if (result > 0) {
-			retVal.put("code", "OK");
-			retVal.put("reply_id", paramMap.get("reply_id"));
-			retVal.put("message", "��Ͽ� ���� �Ͽ����ϴ�.");
-		} else {
-			retVal.put("code", "FAIL");
-			retVal.put("message", "��Ͽ� ���� �Ͽ����ϴ�.");
-		}
-
-		return retVal;
-
-	}
-
-	// AJAX ȣ�� (��� ����)
-	@RequestMapping(value = "/boardReply_del", method = RequestMethod.POST)
-	@ResponseBody
-	public Object boardReplyDel(@RequestParam Map<String, Object> paramMap) {
-
-		// ���ϰ�
-		Map<String, Object> retVal = new HashMap<String, Object>();
-
-		// �н����� ��ȣȭ
-		ShaPasswordEncoder encoder = new ShaPasswordEncoder(256);
-		String password = encoder.encodePassword(paramMap.get("reply_password").toString(), null);
-		paramMap.put("reply_password", password);
-
-		// �����Է�
-		int result = topic_reply_dao.delReply(paramMap);
-
-		if (result > 0) {
-			retVal.put("code", "OK");
-		} else {
-			retVal.put("code", "FAIL");
-			retVal.put("message", "������ �����߽��ϴ�. �н����带 Ȯ�����ּ���.");
-		}
-
-		return retVal;
-
-	}
-
-	@RequestMapping(value = "/boardImageUpload", method = RequestMethod.POST)
-	public void communityImageUpload(HttpServletRequest request, HttpServletResponse response,
-			HttpSession session, @RequestParam MultipartFile upload) {
-
-		OutputStream out = null;
-		PrintWriter printWriter = null;
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=utf-8");
-
-		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-
-		// 파일 이름 유일하게 만들기 및 저장 전에 필요한 정보들 얻어오기
-		String randId = UUID.randomUUID().toString();
-		MultipartFile multipartFile = upload;
-		String originalFilename = multipartFile.getOriginalFilename(); // 파일명
-		// 만약 파일이 없으면, DB에 넣지 않아도 된다.
-		if (originalFilename.equals("")) {
-
-		} else {
-			System.out.println("this is originalfile name2:" + originalFilename);
-			Integer originalFileBytes = new Integer((int) multipartFile.getSize());
-			String storedFileName = randId + "." + getExtension(originalFilename);
-			String uploadResourcesPath = session.getServletContext()
-					.getRealPath("/resources/upload_imagefile/");
-			// 로컬에서 돌아가는 업로드 경로
-			String uploadFullPath = uploadResourcesPath + "\\" + storedFileName;
-			// 서버에서 돌아가는 업로드 경로
-			// String uploadFullPath = uploadResourcesPath + storedFileName;
-
-			String imageUrl = "resources/upload_imagefile/" + storedFileName;
-			System.out.println("this is imageUrl2:" + imageUrl);
-			try {
-				// 파일 서버에 저장
-				multipartFile.transferTo(new File(uploadFullPath)); // 파일저장 실제로는 service에서 처리
-
-				String callback = request.getParameter("CKEditorFuncNum");
-				System.out.println("this is call Back:" + callback);
-				printWriter = response.getWriter();
-				String fileUrl = imageUrl;// url경로
-				System.out.println("this is fileUrl :" + fileUrl);
-				printWriter.println(
-						"<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction("
-								+ callback + ",'" + fileUrl + "','이미지를 업로드 하였습니다.'" + ")</script>");
-				printWriter.flush();
-
-			} catch (Exception e) {
-				System.out.println("postTempFile_ERROR===s===>" + uploadFullPath);
-				e.printStackTrace();
-			}
-		}
-		return;
-	}
+	
 
 	/**
 	 * 파일이름으로부터 확장자를 반환하는 메서드 파일이름에 확장자 구분을 위한 . 문자가 없거나. 가장 끝에 있는 경우는 빈문자열 ""을 리턴

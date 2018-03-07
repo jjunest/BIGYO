@@ -1,5 +1,7 @@
 package com.innovest.dto;
 
+import java.sql.Timestamp;
+
 public class userDTO {
 	public Integer rcdno;
 	public String userid;
@@ -17,16 +19,24 @@ public class userDTO {
 	Integer ranking_opinion_normal_total;
 	Integer ranking_thumbup_total;
 	Integer ranking_reply_total;
+	String sp_user_picUrl;
 	String user_self_intro;
+	String sp_user_picOriname;
+	Integer sp_user_picByte;
 	String sp_users_etc1;
 	String sp_users_etc2;
 	String sp_users_etc3;
+	Timestamp sp_users_date;
+	
+	
+	
 	public userDTO(Integer rcdno, String userid, String password, Integer enabled, String realname,
 			String nickname, String openname, String groupname, String groupname_open, String sns,
 			String sns_open, Integer ranking_user_like, Integer ranking_opinion_show_total,
 			Integer ranking_opinion_normal_total, Integer ranking_thumbup_total,
-			Integer ranking_reply_total, String user_self_intro, String sp_users_etc1,
-			String sp_users_etc2, String sp_users_etc3) {
+			Integer ranking_reply_total, String sp_user_picUrl, String user_self_intro,
+			String sp_user_picOriname, Integer sp_user_picByte, String sp_users_etc1,
+			String sp_users_etc2, String sp_users_etc3, Timestamp sp_users_date) {
 		super();
 		this.rcdno = rcdno;
 		this.userid = userid;
@@ -44,12 +54,15 @@ public class userDTO {
 		this.ranking_opinion_normal_total = ranking_opinion_normal_total;
 		this.ranking_thumbup_total = ranking_thumbup_total;
 		this.ranking_reply_total = ranking_reply_total;
+		this.sp_user_picUrl = sp_user_picUrl;
 		this.user_self_intro = user_self_intro;
+		this.sp_user_picOriname = sp_user_picOriname;
+		this.sp_user_picByte = sp_user_picByte;
 		this.sp_users_etc1 = sp_users_etc1;
 		this.sp_users_etc2 = sp_users_etc2;
 		this.sp_users_etc3 = sp_users_etc3;
+		this.sp_users_date = sp_users_date;
 	}
-	
 	public Integer getRcdno() {
 		return rcdno;
 	}
@@ -146,11 +159,29 @@ public class userDTO {
 	public void setRanking_reply_total(Integer ranking_reply_total) {
 		this.ranking_reply_total = ranking_reply_total;
 	}
+	public String getSp_user_picUrl() {
+		return sp_user_picUrl;
+	}
+	public void setSp_user_picUrl(String sp_user_picUrl) {
+		this.sp_user_picUrl = sp_user_picUrl;
+	}
 	public String getUser_self_intro() {
 		return user_self_intro;
 	}
 	public void setUser_self_intro(String user_self_intro) {
 		this.user_self_intro = user_self_intro;
+	}
+	public String getSp_user_picOriname() {
+		return sp_user_picOriname;
+	}
+	public void setSp_user_picOriname(String sp_user_picOriname) {
+		this.sp_user_picOriname = sp_user_picOriname;
+	}
+	public Integer getSp_user_picByte() {
+		return sp_user_picByte;
+	}
+	public void setSp_user_picByte(Integer sp_user_picByte) {
+		this.sp_user_picByte = sp_user_picByte;
 	}
 	public String getSp_users_etc1() {
 		return sp_users_etc1;
@@ -170,6 +201,15 @@ public class userDTO {
 	public void setSp_users_etc3(String sp_users_etc3) {
 		this.sp_users_etc3 = sp_users_etc3;
 	}
-
+	public Timestamp getSp_users_date() {
+		return sp_users_date;
+	}
+	public void setSp_users_date(Timestamp sp_users_date) {
+		this.sp_users_date = sp_users_date;
+	}
+	
+	
+	
+	
 
 }

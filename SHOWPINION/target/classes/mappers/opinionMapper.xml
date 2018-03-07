@@ -1,61 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.innovest.dao.IDao">
+
 	<insert id="insertOpinion" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="sp_opinion_rcdno">
 		INSERT INTO sp_opinion
 		(sp_opinion_topicrcdno, sp_opinion_topictitle, sp_opinion_writer, sp_opinion_side, sp_opinion_reason1, sp_opinion_reason2, sp_opinion_reason3, sp_opinion_opreason1, sp_opinion_opreason2, sp_opinion_opreason3, sp_opinion_opreason1_agree, sp_opinion_opreason2_agree, sp_opinion_opreason3_agree, sp_opinion_detail,sp_opinion_type)
 		VALUES
 		(#{sp_tvtopics_rcdno},#{sp_tvtopics_title},#{sp_tvtopics_writer},#{options_myside},#{myside_reason1},#{myside_reason2},#{myside_reason3},#{opside_reason1},#{opside_reason2},#{opside_reason3},#{opside_reason1_agree},#{opside_reason2_agree},#{opside_reason3_agree},#{opinion_detail},#{sp_tvtopics_type})
 	</insert>
-	<select id="selectOpinionDetail" resultType="com.innovest.dto.opinion_DTO">
+	<update id="opinion_update">
+		UPDATE sp_opinion SET sp_opinion_side=#{options_myside}, sp_opinion_reason1=#{myside_reason1}, sp_opinion_reason2=#{myside_reason2},
+		sp_opinion_reason3=#{myside_reason3}, sp_opinion_opreason1=#{opside_reason1}, sp_opinion_opreason1_agree=#{opside_reason1_agree}, sp_opinion_opreason2=#{opside_reason2},
+		sp_opinion_opreason2_agree=#{opside_reason2_agree}, sp_opinion_opreason3=#{opside_reason3}, sp_opinion_opreason3_agree=#{opside_reason3_agree},
+		sp_opinion_detail=#{opinion_detail} WHERE sp_opinion_rcdno = #{opinion_rcdno}
+	</update>
+	<delete id="opinion_delete">
+		DELETE FROM sp_opinion where sp_opinion_rcdno = #{opinion_rcdno}
+	</delete>
+	<update id="ranking_opinion_update">
+		UPDATE sp_users SET
+		<if test="sp_tvtopics_type.equals('show')">
+			ranking_opinion_show_total=ranking_opinion_show_total+1 WHERE rcdno = #{sp_tvtopics_writer}
+		</if>
+		<if test="sp_tvtopics_type.equals('normal')">
+			ranking_opinion_normal_total=ranking_opinion_normal_total+1 WHERE rcdno = #{sp_tvtopics_writer}
+		</if>
+	</update>
+
+
+	<select id="selectOpinionDetail" resultMap="opinion_withReply_ResultMap">
 		SELECT * from sp_opinion where sp_opinion_rcdno = #{opinion_rcdno}
 	</select>
-	<select id="selectAll_opinion_normal" resultType="com.innovest.dto.opinion_DTO">
-		SELECT * FROM
-		sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = 'normal' ORDER BY sp_opinion_datetime DESC
-	</select>
+
 	<!-- <select id="selectAll_opinion_show" resultType="com.innovest.dto.opinion_DTO"> SELECT * FROM sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = 'show' ORDER BY sp_opinion_datetime DESC </select> -->
 	<resultMap type="com.innovest.dto.opinion_withReply_DTO" id="opinion_withReply_ResultMap">
-		<result property="sp_opinion_rcdno" column="sp_opinion_rcdno" />
-		<result property="sp_opinion_topicrcdno" column="sp_opinion_topicrcdno" />
-		<result property="sp_opinion_topictitle" column="sp_opinion_topictitle" />
-		<result property="sp_opinion_datetime" column="sp_opinion_datetime" />
-		<result property="sp_opinion_writer" column="sp_opinion_writer" />
-		<result property="sp_opinion_side" column="sp_opinion_side" />
-		<result property="sp_opinion_reason1" column="sp_opinion_reason1" />
-		<result property="sp_opinion_reason2" column="sp_opinion_reason2" />
-		<result property="sp_opinion_reason3" column="sp_opinion_reason3" />
-		<result property="sp_opinion_opreason1" column="sp_opinion_opreason1" />
-		<result property="sp_opinion_opreason1_agree" column="sp_opinion_opreason1_agree" />
-		<result property="sp_opinion_opreason2" column="sp_opinion_opreason2" />
-		<result property="sp_opinion_opreason2_agree" column="sp_opinion_opreason2_agree" />
-		<result property="sp_opinion_opreason3" column="sp_opinion_opreason3" />
-		<result property="sp_opinion_opreason3_agree" column="sp_opinion_opreason3_agree" />
-		<result property="sp_opinion_detail" column="sp_opinion_detail" />
-		<result property="sp_opinion_warning" column="sp_opinion_warning" />
-		<result property="sp_opinion_good" column="sp_opinion_good" />
-		<result property="sp_opinion_type" column="sp_opinion_type" />
-		<result property="sp_opinion_type" column="sp_opinion_etc2" />
-		<result property="sp_opinion_type" column="sp_opinion_etc3" />
 		<collection property="opinionReplys" javaType="java.util.ArrayList" column="sp_opinion_rcdno" ofType="com.innovest.dto.opinionReply_DTO" select="get_opinionReplys" />
+		<collection property="writer_infomation" column="sp_opinion_writer" select="select_userInfo" />
 	</resultMap>
-	<select id="get_opinionReplys" resultType="com.innovest.dto.opinionReply_DTO">
+	<select id="get_opinionReplys" resultMap="Reply_withUserInfo_ResultMap">
 		SELECT * FROM
 		sp_opinion_replyboard WHERE sp_opinion_reply_opinionRcdno = #{sp_opinion_rcdno}
 	</select>
+	<resultMap type="com.innovest.dto.opinionReply_DTO" id="Reply_withUserInfo_ResultMap">
+		<collection property="writer_infomation" column="sp_opinion_reply_writer" select="select_userInfo" />
+	</resultMap>
+
 	<!-- 쇼피니언의견 -->
 	<select id="selectAll_opinion_show" resultMap="opinion_withReply_ResultMap">
 		SELECT * FROM
-		sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = #{opinion_type} 
-			<if test = "list_order==null or list_order.equals('sp_opinion_datetime')">ORDER BY sp_opinion_datetime	
-		DESC</if> 
-		<if test = "list_order!=null and list_order.equals('sp_opinion_thumbup')">ORDER BY sp_opinion_thumbup 	
-		DESC</if> 
-		
-	
+		sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_type = #{opinion_type}
+		<if test="list_order==null or list_order.equals('sp_opinion_datetime')">ORDER BY sp_opinion_datetime
+			DESC
+		</if>
+		<if test="list_order!=null and list_order.equals('sp_opinion_thumbup')">ORDER BY sp_opinion_thumbup
+			DESC, sp_opinion_datetime DESC
+		</if>
 	</select>
 
-	
+	<!-- 나의 의견 모두 구하기 -->
+	<select id="selectAll_my_opinion" resultMap="opinion_withReply_ResultMap">
+		SELECT * FROM
+		sp_opinion WHERE sp_opinion_topicrcdno = #{topic_rcdno} AND sp_opinion_writer = #{user_rcdno } ORDER BY sp_opinion_datetime DESC
+	</select>
+
+	<!-- 의견 추천받은 TOP 5 구하기 -->
+	<select id="opinion_top_five" resultMap="opinion_withReply_ResultMap">
+		SELECT * FROM
+		sp_opinion WHERE sp_opinion_writer = #{user_rcdno } ORDER BY sp_opinion_thumbup DESC, sp_opinion_datetime DESC LIMIT 5
+	</select>
+
+	<!-- 나의 의견 모두 구하기 -->
+	<select id="selectAll_my_opinion_history" resultMap="opinion_withReply_ResultMap">
+		SELECT * FROM
+		sp_opinion WHERE sp_opinion_writer = #{user_rcdno }  ORDER BY sp_opinion_datetime DESC
+	</select>
+
+
 	<!-- 의견 추천 및 신고 쿼리 -->
 	<insert id="opinion_recommend_process" parameterType="java.util.HashMap">
 		INSERT INTO sp_opinion_recommend(
@@ -68,6 +88,25 @@
 		#{bywhom}
 		)
 	</insert>
+	<select id="opinion_select_writer" resultType="int">
+		SELECT sp_opinion_writer FROM
+		sp_opinion WHERE sp_opinion_rcdno = #{opinion_rcdno}
+	</select>
+	<update id="ranking_thumbup_update">
+		UPDATE sp_users SET ranking_thumbup_total=ranking_thumbup_total+1 WHERE rcdno = #{opinion_writer}
+	</update>
+
+
+	<!-- 의견 추천 및 신고 쿼리 -->
+	<select id="opinion_recommend_already" resultType="int">
+		SELECT
+		count(sp_opinion_recommend_rcdno)
+		FROM
+		sp_opinion_recommend WHERE sp_opinion_recommend_opinionRcdno = #{opinion_rcdno}
+		AND sp_opinion_recommend_recom_type = #{recom_type} AND
+		sp_opinion_recommend_bywhom = #{bywhom}
+	</select>
+
 	<!-- 의견 추천 및 신고 세기 -->
 	<select id="counting_thumbup_opinion" resultType="int">
 		SELECT

@@ -5,6 +5,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!-- Listsize를 위한 jstl태그라이브러리 설정 -->
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
 <%
 	/* contextpath cp : /bagyo */
 	String cp = request.getContextPath();
@@ -60,6 +62,7 @@
 <!-- 내가 만든 custom css 파일 첨부 -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jjunest.css">
 
+
 <style>
 .mouseOverHighlight {
 	border-bottom: 1px solid blue;
@@ -107,13 +110,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-6">
-					<h4>Be SHOWPINIAN</h4>
-				</div>
-				<div class="col-sm-6 hidden-xs text-right">
-					<ol class="breadcrumb">
-						<li><a href="index.html">Home</a></li>
-						<li>Blank</li>
-					</ol>
+					<h4>Be Showpinion</h4>
 				</div>
 			</div>
 		</div>
@@ -123,17 +120,38 @@
 
 	<div class="container">
 		<div class="center-heading">
-			<h2>${detail_tvTopic.sp_tvtopics_title }</h2>
+
+			<h2>${detail_tvTopic.sp_tvtopics_title}</h2>
+			<!-- 주제 작성자와 현재 로그인한 작성자가 같을 시에만, 주제수정버튼과 주제 삭제 버튼을 보이게 한다.  -->
+			<c:if test="${detail_tvTopic.writer_infomation.rcdno eq loginUserInfo.rcdno}">
+				<div>
+					<a href="${pageContext.request.contextPath}/admin_edit_TVTopic?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno}" type="button" class="btn btn-primary" id="topic_edit_BT">주제 수정</a> <a type="button"
+						class="btn btn-primary" onclick="topic_deleteBT_click(${detail_tvTopic.sp_tvtopics_rcdno})" id="topic_deleteBT">주제 삭제</a>
+				</div>
+			</c:if>
+
 			<span class="center-line"></span>
 		</div>
 		<div class="row">
 			<div class="col-md-8">
 				<div class="blog-post">
 					<ul class="list-inline post-detail">
-						<li><i class="fa fa-user"></i><a href="#" data-toggle="tooltip" data-placement="top" title="본 주제에 대하여 정리를 해주신 jjunest 님께 깊은 감사를 드립니다. "><span>작성자:</span>${detail_tvTopic.sp_tvtopics_writer }</a></li>
-						<li><i class="fa fa-calendar"></i><span>작성일:</span> ${detail_tvTopic.sp_tvtopics_write_date }</li>
-						<li><i class="fa fas fa-eye"></i> <span>조회수:</span>${detail_tvTopic.sp_tvtopics_view }</li>
-						<li><i class="fa fa-comments"></i> <a href="#"><span>의견:</span>${fn:length(opinions_list_normal)}</a>개</li>
+						<!-- 작성자의 openName에 따라 공개되는 이름이 다르다. -->
+						<c:choose>
+							<c:when test="${detail_tvTopic.writer_infomation.openname eq '닉네임'}">
+								<c:set value="${detail_tvTopic.writer_infomation.nickname}" var="writerOpenName" />
+							</c:when>
+							<c:when test="${detail_tvTopic.writer_infomation.openname eq '이름'}">
+								<c:set value="${detail_tvTopic.writer_infomation.realname}" var="writerOpenName" />
+							</c:when>
+						</c:choose>
+
+						<li><i class="fa fa-user"></i>&nbsp<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${detail_tvTopic.writer_infomation.rcdno}" data-toggle="tooltip" data-placement="top"
+							title="본 주제에 대하여 정리를 해주신 ${writerOpenName}님께 깊은 감사를 드립니다. "><span>작성자:</span>${writerOpenName}</a></li>
+						<li><i class="fa fa-calendar"></i>&nbsp<span>작성일:</span> ${detail_tvTopic.sp_tvtopics_write_date }</li>
+						<li><i class="fa fas fa-eye"></i> &nbsp<span>조회수:</span>${detail_tvTopic.sp_tvtopics_view }회</li>
+						<li><i class="fa fa-comments"></i> &nbsp<a href="#"><span>의견:<c:out value="${fn:length(opinions_list_normal) + fn:length(opinions_list_show)}" />개
+							</span></a></li>
 					</ul>
 					<div class="divide30"></div>
 					<h3 class="heading">문제 상황</h3>
@@ -191,15 +209,24 @@
 			<!--col-->
 			<div class="col-md-3 col-md-offset-1">
 				<div class="row">
-					<div class="col-md-12 margin20">
-						<div class="team-wrap">
-							<img src="${pageContext.request.contextPath}/${detail_tvTopic.sp_tvtopics_tvshow_imgurl}" class="img-responsive" alt="">
-							<h4>${detail_tvTopic.sp_tvtopics_tvshow_name }</h4>
-							<span>방영 날짜:${detail_tvTopic.sp_tvtopics_tvshow_date }</span>
-							<p>방송 설명: ${detail_tvTopic.sp_tvtopics_tvshow_desc }</p>
+
+					<!-- TV 토론주제면 방송정보 보여주고, 일반 토론주제면 보여주지 말자   -->
+					<c:if test="${detail_tvTopic.sp_tvtopics_type eq 'tvshow'}">
+						<div class="col-md-12 margin20">
+							<div class="team-wrap">
+								<img src="${pageContext.request.contextPath}/${detail_tvTopic.sp_tvtopics_tvshow_imgurl}" onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_tvshow_img.png';" style="margin: 0 auto" class="img-responsive" alt="">
+								<h4>${detail_tvTopic.sp_tvtopics_tvshow_name }</h4>
+								<c:if test="${detail_tvTopic.sp_tvtopics_tvshow_date eq '0001-01-01'}">
+									<span>방영 날짜: 정보 없음</span>
+								</c:if>
+								<p>방송 설명: ${detail_tvTopic.sp_tvtopics_tvshow_desc }</p>
+							</div>
+							<!--team-wrap-->
 						</div>
-						<!--team-wrap-->
-					</div>
+					</c:if>
+					<c:if test="${detail_tvTopic.sp_tvtopics_type ne 'normal'}">
+					</c:if>
+
 					<!--team col-->
 					<div class="col-md-12 margin20">
 						<div class="team-wrap" id="showpinion_chart_div" style="border: 4px solid #59df57; border-radius: 5px;">
@@ -224,282 +251,159 @@
 	</div>
 	<!--blog full main container-->
 	<div class="divide60"></div>
-	<!-- 쇼피니언의견 시작 -->
+	<!-- 나의 의견 시작 -->
 	<div class="container">
 		<div class="row">
 			<h3 class="heading">
-				내가 남긴 의견 &nbsp&nbsp <span style="font-weight: normal; font-size: smaller; color: #b3bfdd"><i class="fa fa-comment"></i> 6</span>
+				내가 남긴 의견 &nbsp&nbsp <span style="font-weight: normal; font-size: smaller; color: #b3bfdd"><i class="fa fa-comment"></i> ${fn:length(my_opinions_list)} </span>
 			</h3>
 		</div>
-
 	</div>
 	<div class="container">
 		<!--row-->
 		<div class="row">
 			<div class="">
 				<div id="testi-carousel" class="owl-carousel owl-theme owl-spaced">
-					<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
-						<div class="row">
-							<div class="col-md-2" style="text-align: center">
-								<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
-								<p style="margin: 2px">jjunest</p>
-								<p style="font-size: 80%; color: gray; margin: 2px">2017-07-28</p>
-							</div>
-							<div class="col-md-6" style="">
 
-								<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">금융 실명제 도입이 필요한가?</h4>
+					<!-- 만약에 리스트에 단 한개도 존재하지 않으면.... -->
+					<c:if test="${fn:length(my_opinions_list) eq 0}">
+						<div class="about-author text_align_center" style="font: 20px; font-weight:bold; border-radius: 3%; border: 1px solid ${side_color}; border-radius: 5px;">
+							아직 등록된 의견이 없습니다. 자신의 의견을 등록해주세요. <a href="${pageContext.request.contextPath}/writeShowpinion?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" class="btn btn-theme-bg btn-ico btn-lg"
+								style="width: 90%; margin: 5px">의견 쓰기 &nbsp <i class="fas fa-pen-square"></i></a>
+						</div>
+					</c:if>
+
+					<c:forEach var="listValue_opinion" items="${my_opinions_list}">
+
+						<!-- 찬성 반대에 따라 겉을 둘러싸는 색이 달라짐 설정하기 -->
+						<c:choose>
+							<c:when test="${listValue_opinion.sp_opinion_side  eq 'pro'}">
+								<c:set var="side_color" value="#59df57" />
+							</c:when>
+							<c:otherwise>
+								<c:set var="side_color" value="#df5759" />
+							</c:otherwise>
+						</c:choose>
+						
+						<div class="about-author" style="border-radius: 3%; border: 4px solid ${side_color}; border-radius: 5px;">
+							<div class="row">
+								<div class="col-md-3" style="text-align: center">
+									<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_opinion.writer_infomation.rcdno }"><img
+										src="${pageContext.request.contextPath}/${listValue_opinion.writer_infomation.sp_user_picUrl }" onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_user_img.png';" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px"></a>
+									<!-- 이름, 닉네임 공개 여부에 따라 글쓴이의 정보 설정 -->
+									<p style="margin: 2px">
+										<c:if test="${listValue_opinion.writer_infomation.openname eq '이름'}">
+											<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_opinion.writer_infomation.rcdno }">${listValue_opinion.writer_infomation.realname}</a>
+										</c:if>
+										<c:if test="${listValue_opinion.writer_infomation.openname eq '닉네임'}">
+											<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_opinion.writer_infomation.rcdno }"> ${listValue_opinion.writer_infomation.nickname}</a>
+										</c:if>
+									</p>
+									<p style="font-size: 80%; color: gray; margin: 2px">${listValue_opinion.sp_opinion_datetime }</p>
+								</div>
+								<div class="col-md-5" style="">
+
+									<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">
+										<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_opinion.sp_opinion_topicrcdno }">${listValue_opinion.sp_opinion_topictitle }</a>
+									</h4>
+								</div>
+								<div class="col-md-4">
+									<div>
+										본 문제에 관하여
+										<c:if test="${listValue_opinion.sp_opinion_side eq 'pro'}">
+											<span style="color: #59df57; font-weight: bold;">찬성</span>
+										</c:if>
+										<c:if test="${listValue_opinion.sp_opinion_side eq 'con'}">
+											<span style="color: #df5759; font-weight: bold;">반대</span>
+										</c:if>
+										입장을 가지고 있습니다.
+									</div>
+									<p>
+										<!-- 해당부분은 쇼피니언 의견입니다. -->
+										<span data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다.">* 본 의견은 <c:if test="${listValue_opinion.sp_opinion_type eq 'normal'}">
+							'일반'
+						</c:if> <c:if test="${listValue_opinion.sp_opinion_type eq 'show'}">
+						'쇼피니언'
+						</c:if> 의견입니다 <i class="fa fa-question-circle"></i></span>
+									</p>
+								</div>
 							</div>
-							<div class="col-md-4">
-								<div style="width: 50px; height: 50px; border-radius: 50%; font-size: 50px; color: white; line-height: 500px; text-align: center; background: green;"></div>
-								<p>
-									<span>* 본 의견은 '쇼피니언' 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
-								</p>
+							<div class="row" style="margin-top: 5px">
+								<div class="col-md-6">
+									<p style="font-weight: bold;">
+										나의
+										<c:if test="${listValue_opinion.sp_opinion_side eq 'pro'}">
+							찬성
+						</c:if>
+										<c:if test="${listValue_opinion.sp_opinion_side eq 'con'}">
+						반대
+						</c:if>
+										근거
+									</p>
+									<p>
+										<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp ${listValue_opinion.sp_opinion_reason1 }
+									</p>
+									<p>
+										<c:if test="${listValue_opinion.sp_opinion_reason2 ne '0'}">
+											<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp ${listValue_opinion.sp_opinion_reason2 }
+							</c:if>
+
+									</p>
+									<p>
+										<c:if test="${listValue_opinion.sp_opinion_reason3 ne '0'}">
+											<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp ${listValue_opinion.sp_opinion_reason3 }
+							</c:if>
+									</p>
+								</div>
+								<div class="col-md-6" style="">
+									<p style="font-weight: bold;">공감하는 반대편 근거</p>
+									<p>
+										<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason1_agree }</span>%
+										</span>&nbsp ${listValue_opinion.sp_opinion_opreason1}
+									</p>
+									<p>
+										<c:if test="${listValue_opinion.sp_opinion_opreason2 ne '0'}">
+											<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason2_agree }</span>%
+											</span>&nbsp ${listValue_opinion.sp_opinion_opreason2}
+									</c:if>
+
+
+									</p>
+									<p>
+										<c:if test="${listValue_opinion.sp_opinion_opreason3 ne '0'}">
+											<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason3_agree }</span>%
+											</span>&nbsp ${listValue_opinion.sp_opinion_opreason3}
+									</c:if>
+									</p>
+								</div>
+							</div>
+
+							<div class="row" style="margin-top: 5px">
+
+								<div class="col-md-10" style="">
+									<div style="font-weight: bold;">상세 의견</div>
+
+									${listValue_opinion.sp_opinion_detail }
+								</div>
+							</div>
+							<!-- 의견_의댓글 부분 시작 -->
+							<div class="row" style="text-align: right;">
+
+								<a onclick="opinion_warning(${listValue_opinion.sp_opinion_rcdno})"><i class="fa fa-exclamation-circle"></i> 신고</a> <a onclick="opinion_thumbup(${listValue_opinion.sp_opinion_rcdno})"> <i
+									class="far fa-thumbs-up"></i> 추천+<span>${listValue_opinion.sp_opinion_thumbup}</span></a> <a
+									href="${pageContext.request.contextPath}/detail_opinion?opinion_rcdno=${listValue_opinion.sp_opinion_rcdno }"> <i class="fa fa-comments"></i>자세히보기
+								</a>
 							</div>
 
 						</div>
-
-						<div class="row" style="margin-top: 5px">
-							<div class="col-md-6" style="">
-								<p>나의 찬성 근거</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp 가나다라마바사아자차ㅋ타파
-								</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp 가나다라마바사아자차ㅋ타파
-								</p>
-							</div>
-							<div class="col-md-6" style="">
-								<p>인정하는 반대편 근거</p>
-								<p>
-									<span class="label label-default">인정: <span>80</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="label label-default">인정: <span>70</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="label label-default">인정: <span>30</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-							</div>
-						</div>
-						<div class="row" style="margin-top: 5px">
-
-							<div class="col-md-10" style="">
-								<div>상세 의견</div>
-
-								가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-								가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-							</div>
-						</div>
-						<div class="row" style="text-align: right;">
-
-							<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
-								class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
-						</div>
-					</div>
-					<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
-						<div class="row">
-							<div class="col-md-2" style="text-align: center">
-								<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
-								<p style="margin: 2px">jjunest</p>
-								<p style="font-size: 80%; color: gray; margin: 2px">2017-07-28</p>
-							</div>
-							<div class="col-md-6" style="">
-
-								<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">금융 실명제 도입이 필요한가?</h4>
-							</div>
-							<div class="col-md-4">
-								<div style="width: 50px; height: 50px; border-radius: 50%; font-size: 50px; color: white; line-height: 500px; text-align: center; background: green;"></div>
-								<p>
-									<span>* 본 의견은 '쇼피니언' 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
-								</p>
-							</div>
-
-						</div>
-
-						<div class="row" style="margin-top: 5px">
-							<div class="col-md-6" style="">
-								<p>나의 찬성 근거</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp 가나다라마바사아자차ㅋ타파
-								</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp 가나다라마바사아자차ㅋ타파
-								</p>
-							</div>
-							<div class="col-md-6" style="">
-								<p>인정하는 반대편 근거</p>
-								<p>
-									<span class="label label-default">인정: <span>80</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="label label-default">인정: <span>70</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="label label-default">인정: <span>30</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-							</div>
-						</div>
-						<div class="row" style="margin-top: 5px">
-
-							<div class="col-md-10" style="">
-								<div>상세 의견</div>
-
-								가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-								가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-							</div>
-						</div>
-						<div class="row" style="text-align: right;">
-
-							<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
-								class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
-						</div>
-					</div>
-					<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
-						<div class="row">
-							<div class="col-md-2" style="text-align: center">
-								<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
-								<p style="margin: 2px">jjunest</p>
-								<p style="font-size: 80%; color: gray; margin: 2px">2017-07-28</p>
-							</div>
-							<div class="col-md-6" style="">
-
-								<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">금융 실명제 도입이 필요한가?</h4>
-							</div>
-							<div class="col-md-4">
-								<div style="width: 50px; height: 50px; border-radius: 50%; font-size: 50px; color: white; line-height: 500px; text-align: center; background: green;"></div>
-								<p>
-									<span>* 본 의견은 '쇼피니언' 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
-								</p>
-							</div>
-
-						</div>
-
-						<div class="row" style="margin-top: 5px">
-							<div class="col-md-6" style="">
-								<p>나의 찬성 근거</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp 가나다라마바사아자차ㅋ타파
-								</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp 가나다라마바사아자차ㅋ타파
-								</p>
-							</div>
-							<div class="col-md-6" style="">
-								<p>인정하는 반대편 근거</p>
-								<p>
-									<span class="label label-default">인정: <span>80</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="label label-default">인정: <span>70</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="label label-default">인정: <span>30</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-							</div>
-						</div>
-						<div class="row" style="margin-top: 5px">
-
-							<div class="col-md-10" style="">
-								<div>상세 의견</div>
-
-								가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-								가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-							</div>
-						</div>
-						<div class="row" style="text-align: right;">
-
-							<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
-								class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
-						</div>
-					</div>
-					<div class="about-author" style="border-radius: 3%; border: 4px solid #59df57; border-radius: 5px;">
-						<div class="row">
-							<div class="col-md-2" style="text-align: center">
-								<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
-								<p style="margin: 2px">jjunest</p>
-								<p style="font-size: 80%; color: gray; margin: 2px">2017-07-28</p>
-							</div>
-							<div class="col-md-6" style="">
-
-								<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">금융 실명제 도입이 필요한가?</h4>
-							</div>
-							<div class="col-md-4">
-								<div style="width: 50px; height: 50px; border-radius: 50%; font-size: 50px; color: white; line-height: 500px; text-align: center; background: green;"></div>
-								<p>
-									<span>* 본 의견은 '쇼피니언' 의견입니다 <i class="fa fa-question-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="본인의 의견을 SNS에 올리시면, 쇼피니언 지수가 높아집니다."></i></span>
-								</p>
-							</div>
-
-						</div>
-
-						<div class="row" style="margin-top: 5px">
-							<div class="col-md-6" style="">
-								<p>나의 찬성 근거</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">결정적 이유</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">Top2</span>&nbsp 가나다라마바사아자차ㅋ타파
-								</p>
-								<p>
-									<span class="badge" style="text-align: left; border-radius: 15%">Top3</span>&nbsp 가나다라마바사아자차ㅋ타파
-								</p>
-							</div>
-							<div class="col-md-6" style="">
-								<p>인정하는 반대편 근거</p>
-								<p>
-									<span class="label label-default">인정: <span>80</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="label label-default">인정: <span>70</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-								<p>
-									<span class="label label-default">인정: <span>30</span>%
-									</span>&nbsp 가나다라마바사아자차ㅋ타파ㄴㅇㄹㅇㄴㄹㅇㄹㅇㄹㄴ123
-								</p>
-							</div>
-						</div>
-						<div class="row" style="margin-top: 5px">
-
-							<div class="col-md-10" style="">
-								<div>상세 의견</div>
-
-								가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-								가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜. 가나다라마바사아자차카타파 학나다라맙사아자차ㅏ타파 하간낟라ㅏ바상? ㅇ러댣ㅇㄹㄴㄹ멜.
-							</div>
-						</div>
-						<div class="row" style="text-align: right;">
-
-							<a href="#"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a href="#"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> 추천 <span>6개</span></a> <a href="#"> <i
-								class="fa fa-commenting-o" aria-hidden="true"></i> 댓글 <span> 3개</span></a>
-						</div>
-					</div>
-
+					</c:forEach>
 				</div>
 			</div>
 		</div>
 		<!--img slide row-->
 	</div>
+
+	<div class="divide80"></div>
 
 
 	<!-- 쇼피니언의견 시작 -->
@@ -516,7 +420,7 @@
 					<li role="presentation"><a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }&opinion_order=recent" role="menuitem" tabindex="-1">최신순</a></li>
 					<li role="presentation"><a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }&opinion_order=thumbup" role="menuitem" tabindex="-1">추천순</a></li>
 				</ul>
-				<button type="button" class="btn btn-primary">의견쓰기</button>
+				<a href="${pageContext.request.contextPath}/writeShowpinion?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" type="button" class="btn btn-primary">의견쓰기</a>
 			</div>
 
 			<!-- 만약에 리스트에 단 한개도 존재하지 않으면.... -->
@@ -526,7 +430,6 @@
 						style="width: 90%; margin: 5px">의견 쓰기 &nbsp <i class="fas fa-pen-square"></i></a>
 				</div>
 			</c:if>
-
 			<c:forEach var="listValue_opinion" items="${opinions_list_show}">
 				<!-- 찬성 반대에 따라 겉을 둘러싸는 색이 달라짐 설정하기 -->
 				<c:choose>
@@ -537,14 +440,26 @@
 						<c:set var="side_color" value="#df5759" />
 					</c:otherwise>
 				</c:choose>
+
 				<div class="about-author" style="border-radius: 3%; border: 4px solid ${side_color}; border-radius: 5px;">
+
 					<div class="row">
-						<div class="col-md-2" style="text-align: center">
-							<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
-							<p style="margin: 2px">jjunest</p>
+
+						<div class="col-md-3" style="text-align: center">
+							<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_opinion.writer_infomation.rcdno }"><img
+								src="${pageContext.request.contextPath}/${listValue_opinion.writer_infomation.sp_user_picUrl }" onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_user_img.png';" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px"></a>
+							<!-- 이름, 닉네임 공개 여부에 따라 글쓴이의 정보 설정 -->
+							<p style="margin: 2px">
+								<c:if test="${listValue_opinion.writer_infomation.openname eq '이름'}">
+									<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_opinion.writer_infomation.rcdno }">${listValue_opinion.writer_infomation.realname}</a>
+								</c:if>
+								<c:if test="${listValue_opinion.writer_infomation.openname eq '닉네임'}">
+									<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_opinion.writer_infomation.rcdno }"> ${listValue_opinion.writer_infomation.nickname}</a>
+								</c:if>
+							</p>
 							<p style="font-size: 80%; color: gray; margin: 2px">${listValue_opinion.sp_opinion_datetime }</p>
 						</div>
-						<div class="col-md-6" style="">
+						<div class="col-md-5" style="">
 
 							<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">
 								<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_opinion.sp_opinion_topicrcdno }">${listValue_opinion.sp_opinion_topictitle }</a>
@@ -629,14 +544,22 @@
 							${listValue_opinion.sp_opinion_detail }
 						</div>
 					</div>
-					<!-- 쇼피니언 댓글 부분 시작 -->
+					<!-- 의견_의댓글 부분 시작 -->
 					<div class="row" style="text-align: right;">
-						<a onclick="opinion_warning(${listValue_opinion.sp_opinion_rcdno})"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a
-							onclick="opinion_thumbup(${listValue_opinion.sp_opinion_rcdno})"> <i class="far fa-thumbs-up" aria-hidden="true"></i> 추천+<span>${listValue_opinion.sp_opinion_thumbup}</span></a> <a
-							class="opinion_replysave_BT" id="opinion_replysave_BT_${listValue_opinion.sp_opinion_rcdno}" name="opinion_replysave_BT_${listValue_opinion.sp_opinion_rcdno}"
-							onclick="opinion_reply_save(${listValue_opinion.sp_opinion_rcdno})" style="color: #286090"> <i class="fa fa-pen-square"></i> 댓글쓰기
-						</a> <a id="opinion_reply_showBT_${listValue_opinion.sp_opinion_rcdno}" onclick="opinion_reply_showBT(${listValue_opinion.sp_opinion_rcdno})"> <i class="fa fa-comments" aria-hidden="true"></i>
-							댓글 <span> <span class="opinion_reply_number" opinion_rcdno="${listValue_opinion.sp_opinion_rcdno}" id="opinion_re_reply_number_${listValue_opinion.sp_opinion_rcdno}">3</span>개
+						<!-- 의견 수정 및 삭제 버튼, 현재 로그인한 작성자가 같을 시에만, 보이게 한다 -->
+						<c:if test="${listValue_opinion.writer_infomation.rcdno eq loginUserInfo.rcdno}">
+							<div style="text-align: right;">
+								<a href="${pageContext.request.contextPath}/opinion_update?opinion_rcdno=${listValue_opinion.sp_opinion_rcdno}&user_rcdno=${listValue_opinion.sp_opinion_writer}" id="opinion_edit_BT"><i
+									class="fas fa-eraser"></i>수정</a> <a onclick="opinion_deleteBT_click(${listValue_opinion.sp_opinion_rcdno})" id="opinion_deleteBT"><i class="fas fa-trash-alt"></i>삭제</a>
+							</div>
+						</c:if>
+
+						<a onclick="opinion_warning(${listValue_opinion.sp_opinion_rcdno})"><i class="fa fa-exclamation-circle"></i> 신고</a> <a onclick="opinion_thumbup(${listValue_opinion.sp_opinion_rcdno})"> <i
+							class="far fa-thumbs-up"></i> 추천+<span>${listValue_opinion.sp_opinion_thumbup}</span></a> <a class="opinion_replysave_BT" id="opinion_replysave_BT_${listValue_opinion.sp_opinion_rcdno}"
+							name="opinion_replysave_BT_${listValue_opinion.sp_opinion_rcdno}" onclick="opinion_reply_save(${listValue_opinion.sp_opinion_rcdno})" style="color: #286090"> <i class="fa fa-pen-square"></i>
+							댓글쓰기
+						</a> <a id="opinion_reply_showBT_${listValue_opinion.sp_opinion_rcdno}" onclick="opinion_reply_showBT(${listValue_opinion.sp_opinion_rcdno})"> <i class="fa fa-comments"></i> 댓글 <span> <span
+								class="opinion_reply_number" opinion_rcdno="${listValue_opinion.sp_opinion_rcdno}" id="opinion_re_reply_number_${listValue_opinion.sp_opinion_rcdno}">3</span>개
 						</span></a>
 					</div>
 					<!-- 댓글 부분의 첫 번째 의견 남기는 textarea -->
@@ -671,19 +594,30 @@
 							</div>
 							<div class="col-md-6 text_align_right" style="">
 								<div>
-									<a onclick="opinion_reply_warning(${opinionReply.sp_opinion_reply_rcdno})"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></a><a
-										onclick="opinion_reply_thumbup(${opinionReply.sp_opinion_reply_rcdno})"> <i class="far fa-thumbs-up" aria-hidden="true"></i><span>+${opinionReply.sp_opinion_reply_thumbup } </span></a> <i
-										class="fa fa-user"></i>&nbsp${opinionReply.sp_opinion_reply_writer} &nbsp&nbsp&nbsp&nbsp <i class="fa fa-calendar"></i>&nbsp${opinionReply.sp_opinion_reply_datetime}
+									<a onclick="opinion_reply_warning(${opinionReply.sp_opinion_reply_rcdno})"><i class="fa fa-exclamation-circle"></i></a><a
+										onclick="opinion_reply_thumbup(${opinionReply.sp_opinion_reply_rcdno})"> <i class="far fa-thumbs-up"></i><span>+${opinionReply.sp_opinion_reply_thumbup } </span></a>
+									<c:if test="${opinionReply.writer_infomation.openname eq '이름'}">
+										<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${opinionReply.writer_infomation.rcdno }"><i class="fa fa-user"></i>&nbsp${opinionReply.writer_infomation.realname}
+											&nbsp&nbsp&nbsp&nbsp </a>
+									</c:if>
+									<c:if test="${opinionReply.writer_infomation.openname eq '닉네임'}">
+										<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${opinionReply.writer_infomation.rcdno }"> <i class="fa fa-user"></i>&nbsp${opinionReply.writer_infomation.nickname}
+											&nbsp&nbsp&nbsp&nbsp
+										</a>
+									</c:if>
+									<i class="fa fa-calendar"></i>&nbsp${opinionReply.sp_opinion_reply_datetime}
 									<!-- 부모 댓글에만 답글표시와 답글등록 버튼을 보이게 한다.  -->
 									<c:if test="${opinionReply.sp_opinion_reply_depth == '0'}">
 										<a class="opinion_re_reply_saveBT" style="color: #286090" id="opinion_re_reply_saveBT_${opinionReply.sp_opinion_reply_rcdno}"
-											onclick="opinion_re_reply_save(${opinionReply.sp_opinion_reply_opinionRcdno},${opinionReply.sp_opinion_reply_rcdno})"> <i class="fa fa-pen-square" aria-hidden="true"></i> <span>답글등록</span></a>
-										<a onclick="opinion_re_reply_showBT_Click(${opinionReply.sp_opinion_reply_rcdno},${opinionReply.sp_opinion_reply_parentRcdno})"> <i class="fa fa-comments" " aria-hidden="true"></i> +<span
+											onclick="opinion_re_reply_save(${opinionReply.sp_opinion_reply_opinionRcdno},${opinionReply.sp_opinion_reply_rcdno})"> <i class="fa fa-pen-square"></i> <span>답글등록</span></a>
+										<a onclick="opinion_re_reply_showBT_Click(${opinionReply.sp_opinion_reply_rcdno},${opinionReply.sp_opinion_reply_parentRcdno})"> <i class="fa fa-comments"></i> +<span
 											class="opinion_re_reply_number" reply_rcdno="${opinionReply.sp_opinion_reply_rcdno}" id="opinion_re_reply_number_${opinionReply.sp_opinion_reply_rcdno}">0</span></a>
 
 									</c:if>
-
-
+									<!-- 의견 _댓글 및 삭제 버튼, 현재 로그인한 작성자가 같을 시에만, 보이게 한다 -->
+									<c:if test="${opinionReply.writer_infomation.rcdno eq loginUserInfo.rcdno}">
+										<a onclick="opinionReply_deleteBT_click(${opinionReply.sp_opinion_reply_rcdno})" id="">삭제</a>
+									</c:if>
 								</div>
 								<div></div>
 							</div>
@@ -728,13 +662,12 @@
 					<li role="presentation"><a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }&opinion_order=recent" role="menuitem" tabindex="-1">최신순</a></li>
 					<li role="presentation"><a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }&opinion_order=thumbup" role="menuitem" tabindex="-1">추천순</a></li>
 				</ul>
-				<button type="button" class="btn btn-primary">의견 쓰기</button>
+				<a href="${pageContext.request.contextPath}/writeShowpinion?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" type="button" class="btn btn-primary">의견쓰기</a>
 			</div>
 
 			<!-- 만약에 리스트에 단 한개도 존재하지 않으면.... -->
 			<c:if test="${fn:length(opinions_list_normal) eq 0}">
 				<div class="about-author text_align_center" style="font: 20px; font-weight:bold; border-radius: 3%; border: 1px solid ${side_color}; border-radius: 5px;">
-
 					아직 등록된 의견이 없습니다. 자신의 의견을 등록해주세요. <a href="${pageContext.request.contextPath}/writeShowpinion?topic_rcdno=${detail_tvTopic.sp_tvtopics_rcdno }" class="btn btn-theme-bg btn-ico btn-lg"
 						style="width: 90%; margin: 5px">의견 쓰기 &nbsp <i class="fas fa-pen-square"></i></a>
 				</div>
@@ -750,15 +683,26 @@
 						<c:set var="side_color" value="#df5759" />
 					</c:otherwise>
 				</c:choose>
+
 				<div class="about-author" style="border-radius: 3%; border: 4px solid ${side_color}; border-radius: 5px;">
+
 					<div class="row">
-						<div class="col-md-2" style="text-align: center">
-							<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" class="img-responsive" alt="" style="border-radius: 50%; width: 60px; height: 60px">
-							<p style="margin: 2px">jjunest</p>
+
+						<div class="col-md-3" style="text-align: center">
+							<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_opinion.writer_infomation.rcdno }"><img
+								src="${pageContext.request.contextPath}/${listValue_opinion.writer_infomation.sp_user_picUrl }"  class="img-responsive" alt="" onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_user_img.png';" style="border-radius: 50%; width: 60px; height: 60px"></a>
+							<!-- 이름, 닉네임 공개 여부에 따라 글쓴이의 정보 설정 -->
+							<p style="margin: 2px">
+								<c:if test="${listValue_opinion.writer_infomation.openname eq '이름'}">
+									<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_opinion.writer_infomation.rcdno }">${listValue_opinion.writer_infomation.realname}</a>
+								</c:if>
+								<c:if test="${listValue_opinion.writer_infomation.openname eq '닉네임'}">
+									<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_opinion.writer_infomation.rcdno }"> ${listValue_opinion.writer_infomation.nickname}</a>
+								</c:if>
+							</p>
 							<p style="font-size: 80%; color: gray; margin: 2px">${listValue_opinion.sp_opinion_datetime }</p>
 						</div>
-						<div class="col-md-6" style="">
-
+						<div class="col-md-5" style="">
 							<h4 class="colored-text" style="height: 50px; line-height: 50px; white-space: nowrap;">
 								<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_opinion.sp_opinion_topicrcdno }">${listValue_opinion.sp_opinion_topictitle }</a>
 							</h4>
@@ -785,8 +729,8 @@
 						</div>
 					</div>
 					<div class="row" style="margin-top: 5px">
-						<div class="col-md-6" style="">
-							<p>
+						<div class="col-md-6">
+							<p style="font-weight: bold;">
 								나의
 								<c:if test="${listValue_opinion.sp_opinion_side eq 'pro'}">
 							찬성
@@ -812,7 +756,7 @@
 							</p>
 						</div>
 						<div class="col-md-6" style="">
-							<p>공감하는 반대편 근거</p>
+							<p style="font-weight: bold;">공감하는 반대편 근거</p>
 							<p>
 								<span class="label label-warning">공감: <span>${listValue_opinion.sp_opinion_opreason1_agree }</span>%
 								</span>&nbsp ${listValue_opinion.sp_opinion_opreason1}
@@ -837,19 +781,27 @@
 					<div class="row" style="margin-top: 5px">
 
 						<div class="col-md-10" style="">
-							<div>상세 의견</div>
+							<div style="font-weight: bold;">상세 의견</div>
 
 							${listValue_opinion.sp_opinion_detail }
 						</div>
 					</div>
-					<!-- 쇼피니언 댓글 부분 시작 -->
+					<!-- 의견_의댓글 부분 시작 -->
 					<div class="row" style="text-align: right;">
-						<a onclick="opinion_warning(${listValue_opinion.sp_opinion_rcdno})"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고</a> <a
-							onclick="opinion_thumbup(${listValue_opinion.sp_opinion_rcdno})"> <i class="far fa-thumbs-up" aria-hidden="true"></i> 추천+<span>${listValue_opinion.sp_opinion_thumbup}</span></a> <a
-							class="opinion_replysave_BT" id="opinion_replysave_BT_${listValue_opinion.sp_opinion_rcdno}" name="opinion_replysave_BT_${listValue_opinion.sp_opinion_rcdno}"
-							onclick="opinion_reply_save(${listValue_opinion.sp_opinion_rcdno})" style="color: #286090"> <i class="fa fa-pen-square"></i> 댓글쓰기
-						</a> <a id="opinion_reply_showBT_${listValue_opinion.sp_opinion_rcdno}" onclick="opinion_reply_showBT(${listValue_opinion.sp_opinion_rcdno})"> <i class="fa fa-comments" aria-hidden="true"></i>
-							댓글 <span> <span class="opinion_reply_number" opinion_rcdno="${listValue_opinion.sp_opinion_rcdno}" id="opinion_re_reply_number_${listValue_opinion.sp_opinion_rcdno}">3</span>개
+						<!-- 의견 수정 및 삭제 버튼, 현재 로그인한 작성자가 같을 시에만, 보이게 한다 -->
+						<c:if test="${listValue_opinion.writer_infomation.rcdno eq loginUserInfo.rcdno}">
+							<div style="text-align: right;">
+								<a href="${pageContext.request.contextPath}/opinion_update?opinion_rcdno=${listValue_opinion.sp_opinion_rcdno}&user_rcdno=${listValue_opinion.sp_opinion_writer}" id="opinion_edit_BT"><i
+									class="fas fa-eraser"></i>수정</a> <a onclick="opinion_deleteBT_click(${listValue_opinion.sp_opinion_rcdno})" id="opinion_deleteBT"><i class="fas fa-trash-alt"></i>삭제</a>
+							</div>
+						</c:if>
+
+						<a onclick="opinion_warning(${listValue_opinion.sp_opinion_rcdno})"><i class="fa fa-exclamation-circle"></i> 신고</a> <a onclick="opinion_thumbup(${listValue_opinion.sp_opinion_rcdno})"> <i
+							class="far fa-thumbs-up"></i> 추천+<span>${listValue_opinion.sp_opinion_thumbup}</span></a> <a class="opinion_replysave_BT" id="opinion_replysave_BT_${listValue_opinion.sp_opinion_rcdno}"
+							name="opinion_replysave_BT_${listValue_opinion.sp_opinion_rcdno}" onclick="opinion_reply_save(${listValue_opinion.sp_opinion_rcdno})" style="color: #286090"> <i class="fa fa-pen-square"></i>
+							댓글쓰기
+						</a> <a id="opinion_reply_showBT_${listValue_opinion.sp_opinion_rcdno}" onclick="opinion_reply_showBT(${listValue_opinion.sp_opinion_rcdno})"> <i class="fa fa-comments"></i> 댓글 <span> <span
+								class="opinion_reply_number" opinion_rcdno="${listValue_opinion.sp_opinion_rcdno}" id="opinion_re_reply_number_${listValue_opinion.sp_opinion_rcdno}">3</span>개
 						</span></a>
 					</div>
 					<!-- 댓글 부분의 첫 번째 의견 남기는 textarea -->
@@ -884,19 +836,30 @@
 							</div>
 							<div class="col-md-6 text_align_right" style="">
 								<div>
-									<a onclick="opinion_reply_warning(${opinionReply.sp_opinion_reply_rcdno})"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></a><a
-										onclick="opinion_reply_thumbup(${opinionReply.sp_opinion_reply_rcdno})"> <i class="far fa-thumbs-up" aria-hidden="true"></i><span>+${opinionReply.sp_opinion_reply_thumbup } </span></a> <i
-										class="fa fa-user"></i>&nbsp${opinionReply.sp_opinion_reply_writer} &nbsp&nbsp&nbsp&nbsp <i class="fa fa-calendar"></i>&nbsp${opinionReply.sp_opinion_reply_datetime}
+									<a onclick="opinion_reply_warning(${opinionReply.sp_opinion_reply_rcdno})"><i class="fa fa-exclamation-circle"></i></a><a
+										onclick="opinion_reply_thumbup(${opinionReply.sp_opinion_reply_rcdno})"> <i class="far fa-thumbs-up"></i><span>+${opinionReply.sp_opinion_reply_thumbup } </span></a>
+									<c:if test="${opinionReply.writer_infomation.openname eq '이름'}">
+										<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${opinionReply.writer_infomation.rcdno }"><i class="fa fa-user"></i>&nbsp${opinionReply.writer_infomation.realname}
+											&nbsp&nbsp&nbsp&nbsp </a>
+									</c:if>
+									<c:if test="${opinionReply.writer_infomation.openname eq '닉네임'}">
+										<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${opinionReply.writer_infomation.rcdno }"> <i class="fa fa-user"></i>&nbsp${opinionReply.writer_infomation.nickname}
+											&nbsp&nbsp&nbsp&nbsp
+										</a>
+									</c:if>
+									<i class="fa fa-calendar"></i>&nbsp${opinionReply.sp_opinion_reply_datetime}
 									<!-- 부모 댓글에만 답글표시와 답글등록 버튼을 보이게 한다.  -->
 									<c:if test="${opinionReply.sp_opinion_reply_depth == '0'}">
 										<a class="opinion_re_reply_saveBT" style="color: #286090" id="opinion_re_reply_saveBT_${opinionReply.sp_opinion_reply_rcdno}"
-											onclick="opinion_re_reply_save(${opinionReply.sp_opinion_reply_opinionRcdno},${opinionReply.sp_opinion_reply_rcdno})"> <i class="fa fa-pen-square" aria-hidden="true"></i> <span>답글등록</span></a>
-										<a onclick="opinion_re_reply_showBT_Click(${opinionReply.sp_opinion_reply_rcdno},${opinionReply.sp_opinion_reply_parentRcdno})"> <i class="fa fa-comments" " aria-hidden="true"></i> +<span
+											onclick="opinion_re_reply_save(${opinionReply.sp_opinion_reply_opinionRcdno},${opinionReply.sp_opinion_reply_rcdno})"> <i class="fa fa-pen-square"></i> <span>답글등록</span></a>
+										<a onclick="opinion_re_reply_showBT_Click(${opinionReply.sp_opinion_reply_rcdno},${opinionReply.sp_opinion_reply_parentRcdno})"> <i class="fa fa-comments"></i> +<span
 											class="opinion_re_reply_number" reply_rcdno="${opinionReply.sp_opinion_reply_rcdno}" id="opinion_re_reply_number_${opinionReply.sp_opinion_reply_rcdno}">0</span></a>
 
 									</c:if>
-
-
+									<!-- 의견 _댓글 및 삭제 버튼, 현재 로그인한 작성자가 같을 시에만, 보이게 한다 -->
+									<c:if test="${opinionReply.writer_infomation.rcdno eq loginUserInfo.rcdno}">
+										<a onclick="opinionReply_deleteBT_click(${opinionReply.sp_opinion_reply_rcdno})" id="">삭제</a>
+									</c:if>
 								</div>
 								<div></div>
 							</div>
@@ -947,7 +910,7 @@
 			</div>
 
 			<!-- 만약에 리스트에 단 한개도 존재하지 않으면.... -->
-			<c:if test="${fn:length(opinions_list_normal) eq 0}">
+			<c:if test="${fn:length(topic_reply_list) eq 0}">
 				<div class="about-author text_align_center" style="font: 20px; font-weight:bold; border-radius: 3%; border: 1px solid ${side_color}; border-radius: 5px;">아직 등록된 댓글이 없습니다.</div>
 			</c:if>
 
@@ -971,17 +934,36 @@
 									<c:if test="${listValue_reply.sp_topic_reply_depth == '1'}">
 										<img src="${pageContext.request.contextPath}/resources/img/comment_img.jpg" style="border-radius: 50%" class="img-responsive" alt="">
 									</c:if>
-									<img src="${pageContext.request.contextPath}/resources/img/customer-1.jpg" style="border-radius: 50%" class="img-responsive" alt=""> 작성자: ${listValue_reply.sp_topic_reply_writer} &nbsp
+
+									<!-- 이름, 닉네임 공개 여부에 따라 글쓴이의 정보 설정 -->
+									<c:if test="${listValue_reply.writer_infomation.openname eq '이름'}">
+										<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_reply.writer_infomation.rcdno}"><img
+											src="${pageContext.request.contextPath}/${listValue_reply.writer_infomation.sp_user_picUrl}" onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_user_img.png';" style="border-radius: 50%" class="img-responsive" alt=""> 작성자:
+											${listValue_reply.writer_infomation.realname} &nbsp</a>
+									</c:if>
+									<c:if test="${listValue_reply.writer_infomation.openname eq '닉네임'}">
+										<a href="${pageContext.request.contextPath}/userInfo?user_rcdno=${listValue_reply.writer_infomation.rcdno}"><img
+											src="${pageContext.request.contextPath}/${listValue_reply.writer_infomation.sp_user_picUrl}" onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_user_img.png';" style="border-radius: 50%" class="img-responsive" alt=""> 작성자:
+											${listValue_reply.writer_infomation.nickname} &nbsp</a>
+									</c:if>
+
+
 								</h4>
 								<p>${listValue_reply.sp_topic_reply_content}</p>
 								<div class="row" style="text-align: right;">
-									<a onclick="topic_reply_warning(${listValue_reply.sp_topic_reply_rcdno})"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 신고 |</a> <a
-										onclick="topic_reply_thumbup(${listValue_reply.sp_topic_reply_rcdno})"> <i class="far fa-thumbs-up" aria-hidden="true"></i> 추천<span>+ ${listValue_reply.sp_topic_reply_thumbup} </span>|
-									</a><span><i class="fa fa-calendar"></i> ${listValue_reply.sp_topic_reply_datetime} 에 작성됨 |</span>
+									<!-- 의견 댓글 및 삭제 버튼, 현재 로그인한 작성자가 같을 시에만, 보이게 한다 -->
+									<c:if test="${listValue_reply.writer_infomation.rcdno eq loginUserInfo.rcdno}">
+										<div style="text-align: right;">
+											<a onclick="topicReply_deleteBT_click(${listValue_reply.sp_topic_reply_rcdno})"><i class="fas fa-trash-alt"></i>삭제</a>
+										</div>
+									</c:if>
+									<a onclick="topic_reply_warning(${listValue_reply.sp_topic_reply_rcdno})"><i class="fa fa-exclamation-circle"></i> 신고 |</a> <a
+										onclick="topic_reply_thumbup(${listValue_reply.sp_topic_reply_rcdno})"> <i class="far fa-thumbs-up"></i> 추천<span>+ ${listValue_reply.sp_topic_reply_thumbup} </span>|
+									</a><span><i class="fa fa-calendar"></i> ${listValue_reply.sp_topic_reply_datetime}|</span>
 									<!-- 대댓글쓰기 버튼, 대댓글에는 대댓글쓰는 버튼이 없도록 만들었다. -->
 									<c:if test="${listValue_reply.sp_topic_reply_depth == '0'}">
-										<a id="re_reply_showBT_${listValue_reply.sp_topic_reply_rcdno}" onclick="re_reply_visibilitytoggle(${listValue_reply.sp_topic_reply_rcdno})"><i class="fa fa-comments" aria-hidden="true"></i>
-											<span class="topic_re_reply_number" reply_rcdno="${listValue_reply.sp_topic_reply_rcdno}" id="topic_re_reply_number_${listValue_reply.sp_topic_reply_rcdno}">0</span>개의 답글보기 |</a>
+										<a id="re_reply_showBT_${listValue_reply.sp_topic_reply_rcdno}" onclick="re_reply_visibilitytoggle(${listValue_reply.sp_topic_reply_rcdno})"><i class="fa fa-comments"></i> +<span
+											class="topic_re_reply_number" reply_rcdno="${listValue_reply.sp_topic_reply_rcdno}" id="topic_re_reply_number_${listValue_reply.sp_topic_reply_rcdno}">0</span>개 |</a>
 										<a type="button" class="btn btn-primary re_reply_writeBT" id="re_reply_writeBT_${listValue_reply.sp_topic_reply_rcdno}"
 											onclick="tvtopic_re_reply_save(${listValue_reply.sp_topic_reply_topicRcdno},${listValue_reply.sp_topic_reply_rcdno})"> <i class="fas fa-edit"></i> 답글등록
 										</a>
@@ -1014,6 +996,8 @@
 		</div>
 	</div>
 
+	<div class="divide60"></div>
+	<div class="divide60"></div>
 
 	<jsp:include page="footer.jsp"></jsp:include>
 
@@ -1048,6 +1032,8 @@
 	<!--customizable plugin edit according to your needs-->
 	<script src="${pageContext.request.contextPath}/resources/js/custom.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/isotope-custom.js" type="text/javascript"></script>
+	<!-- 내 자바스크립트 -->
+	<script src="${pageContext.request.contextPath}/resources/js/jjunest.js" type="text/javascript"></script>
 	<!-- 구글 차트를 위한 스크립트 추가 -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<!-- 부트스트랩 SLIDER SELECTOR를 위한 자바스크립트 추가  -->
@@ -1074,6 +1060,72 @@
 			list_order_dropdown_Setting();
 
 		});
+		
+		// 주제 댓글 삭제 버튼 onclick
+		function topicReply_deleteBT_click(topicReply_rcdno) {
+			var result = confirm('정말 해당 의견을 삭제하시겠습니까?');
+			if (result) {
+				// 값 셋팅
+				var objParams = {
+					topicReply_rcdno : topicReply_rcdno,
+				};
+				// ajax 호출
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/topicReply_delete_process",
+					data : objParams,
+					success : function(data) {
+						if (data == "success") {
+							alert("성공적으로 삭제했습니다");
+							location.reload();
+						} else {
+							alert("요청하신 서비스에 실패했습니다. 문제 상황 지속시 연락 부탁드립니다. 010 7272 9771");
+						}
+
+					},
+					error : function(e) {
+						alert('오류가 발생했습니다. 문제 상황 지속 시 연락 부탁드립니다. 010-7272-9771:' + e);
+					}
+				});
+
+			}
+
+		}
+		
+		//주제 삭제 버튼 클릭시
+		function topic_deleteBT_click(topic_rcdno){
+			var result = confirm('정말 해당 주제를 삭제하시겠습니까?'); 
+			if(result) {
+				//값 셋팅
+				var objParams = {
+						topic_rcdno : topic_rcdno,
+				};
+				//ajax 호출
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/tvtopic_delete_process",
+					data : objParams,
+					success : function(data) {
+						if (data == "success") {
+							alert("성공적으로 삭제했습니다");
+							location.href="${pageContext.request.contextPath}/all_TVshow_Topics";
+						} else {
+							alert("요청하신 서비스에 실패했습니다. 문제 상황 지속시 연락 부탁드립니다. 010 7272 9771");
+						}
+
+					},
+					error : function(e) {
+						alert('오류가 발생했습니다. 문제 상황 지속 시 연락 부탁드립니다. 010-7272-9771:'+e);
+					}
+				});
+				
+				
+			} else { 
+				
+			} 
+			
+		}
+		
 		function list_order_dropdown_Setting(){
 			var opinion_order;
 			<c:if test="${param.opinion_order}">
@@ -1094,39 +1146,108 @@
 			
 		}
 		
+
+		// 의견의 리플 삭제 버튼 시
+		function opinionReply_deleteBT_click(opinionReply_rcdno) {
+			var result = confirm('정말 해당 의견을 삭제하시겠습니까?');
+			if (result) {
+				// 값 셋팅
+				var objParams = {
+					opinionReply_rcdno : opinionReply_rcdno,
+				};
+				// ajax 호출
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/opinionReply_delete_process",
+					data : objParams,
+					success : function(data) {
+						if (data == "success") {
+							alert("성공적으로 삭제했습니다");
+							location.reload();
+						} else {
+							alert("요청하신 서비스에 실패했습니다. 문제 상황 지속시 연락 부탁드립니다. 010 7272 9771");
+						}
+
+					},
+					error : function(e) {
+						alert('오류가 발생했습니다. 문제 상황 지속 시 연락 부탁드립니다. 010-7272-9771:' + e);
+					}
+				});
+
+			}
+		}
+
+		//의견 삭제 버튼 클릭 시
+		function opinion_deleteBT_click(opinion_rcdno){
+			var result = confirm('정말 해당 의견을 삭제하시겠습니까?'); 
+			if(result) {
+				//값 셋팅
+				var objParams = {
+						opinion_rcdno : opinion_rcdno,
+				};
+				//ajax 호출
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/opinion_delete_process",
+					data : objParams,
+					success : function(data) {
+						if (data == "success") {
+							alert("성공적으로 삭제했습니다");
+							location.reload();
+						} else {
+							alert("요청하신 서비스에 실패했습니다. 문제 상황 지속시 연락 부탁드립니다. 010 7272 9771");
+						}
+
+					},
+					error : function(e) {
+						alert('오류가 발생했습니다. 문제 상황 지속 시 연락 부탁드립니다. 010-7272-9771:'+e);
+					}
+				});
+				
+			}
+			
+		}
+
 		//의견_의 좋아요 버튼 눌렀을 시 - onclick()
 		function opinion_thumbup(opinion_rcdno){
-			alert("this is opinion_thumbup:"+opinion_rcdno);
-			//값 셋팅
-			var objParams = {
-					opinion_rcdno : opinion_rcdno,
-					recom_type :"thumbup",
-					bywhom : "${user}"
-			};
-			
-			//ajax 호출
-			$.ajax({
-				url : "${pageContext.request.contextPath}/opinion_recommend_process",
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-				type : "post",
-				data : objParams,
-				success : function(retVal) {
+			//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+			if('${loginUserInfo}'==""){
+				alert("로그인이 필요합니다.")
+			}else{
+				//값 셋팅
+				var objParams = {
+						opinion_rcdno : opinion_rcdno,
+						recom_type :"thumbup",
+						bywhom :  "${loginUserInfo.rcdno}"
+				};
+				
+				//ajax 호출
+				$.ajax({
+					url : "${pageContext.request.contextPath}/opinion_recommend_process",
+					dataType : "json",
+					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+					type : "post",
+					data : objParams,
+					success : function(retVal) {
 
-					if (retVal.code == "OK") {
-						alert(retVal.message);
-						location.reload();
-					} else {
-						alert(retVal.message);
+						if (retVal.code == "OK") {
+							alert(retVal.message);
+							location.reload();
+						} else {
+							alert(retVal.message);
+						}
+
+					},
+					error : function(request, status, error) {
+						console.log("AJAX_ERROR");
 					}
-
-				},
-				error : function(request, status, error) {
-					console.log("AJAX_ERROR");
-				}
-			});
+				});
+				
+			}
+			
 		}
-		
+
+		//의견의 대댓글 버튼 클릭시
 		function opinion_re_reply_showBT_Click(sp_opinion_reply_rcdno, parentRcdno){
 			$("#opinion_ReReplyEditor_"+sp_opinion_reply_rcdno).toggle();
 			$(".opinion_re_reply_"+sp_opinion_reply_rcdno).toggle();
@@ -1135,131 +1256,149 @@
 		
 		//쇼피니언, 일반의견의 댓글 보기 누르기. onclick()함수 -댓글쓰기/댓글에디터/댓글들 토글하기.
 		function opinion_reply_showBT(opinionRcdno){
-			$("#opinion_replysave_BT_"+opinionRcdno).toggle();
+		 	$("#opinion_replysave_BT_"+opinionRcdno).toggle();
 			$("#opinion_ReplyEditor_"+opinionRcdno).toggle();
-			$(".opinion_reply_"+opinionRcdno).toggle();
+			$(".opinion_reply_"+opinionRcdno).toggle(); 
 		
 			
 		}
 		//의견_대댓글 버튼 등록 클릭 시 발생하는 함수. 답글등록 onClick() 함수
 		function opinion_re_reply_save(opinion_rcdno,parent_rcdno){
-			alert("this is opinion re_reply save and opinion_rcdno:"+opinion_rcdno+", parentRcd:"+parent_rcdno);
-			//널 검사
-			if ($("#opinion_ReReplyEditor_"+parent_rcdno).val().trim() == "") {
-				alert("답글 내용이 없습니다. 내용을 입력하고 답글등록을 해주세요.");
-				$("#opinion_ReReplyEditor_"+parent_rcdno).focus();
-				return false;
-			}
-			//에디터 내용 가져옴
-			var content = $("#opinion_ReReplyEditor_"+parent_rcdno).val().trim();
-			//값 셋팅
-			var objParams = {
-					opinion_rcdno : opinion_rcdno,
-					parent_rcdno :parent_rcdno,
-				depth:"1",
-				content : content,
-				writer : '${user}'
-			};
-			//ajax 호출
-			$.ajax({
-				url : "${pageContext.request.contextPath}/opinion_reply_save",
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-				type : "post",
-				data : objParams,
-				success : function(retVal) {
-
-					if (retVal.code == "OK") {
-						alert(retVal.message);
-						location.reload();
-					} else {
-						alert(retVal.message);
-					}
-
-				},
-				error : function(request, status, error) {
-					console.log("AJAX_ERROR");
+			//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+			if('${loginUserInfo}'==""){
+				alert("로그인이 필요합니다.")
+			}else{
+				//널 검사
+				if ($("#opinion_ReReplyEditor_"+parent_rcdno).val().trim() == "") {
+					alert("답글 내용이 없습니다. 내용을 입력하고 답글등록을 해주세요.");
+					$("#opinion_ReReplyEditor_"+parent_rcdno).focus();
+					return false;
 				}
-			});
+				//에디터 내용 가져옴
+				var content = $("#opinion_ReReplyEditor_"+parent_rcdno).val().trim();
+				//값 셋팅
+				var objParams = {
+						opinion_rcdno : opinion_rcdno,
+						parent_rcdno :parent_rcdno,
+					depth:"1",
+					content : content,
+					writer :  "${loginUserInfo.rcdno}"
+				};
+				//ajax 호출
+				$.ajax({
+					url : "${pageContext.request.contextPath}/opinion_reply_save",
+					dataType : "json",
+					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+					type : "post",
+					data : objParams,
+					success : function(retVal) {
+
+						if (retVal.code == "OK") {
+							alert(retVal.message);
+							location.reload();
+						} else {
+							alert(retVal.message);
+						}
+
+					},
+					error : function(request, status, error) {
+						console.log("AJAX_ERROR");
+					}
+				});
+				
+			}
+			
 		}
 		
 		
 		//의견_댓글 달기
 		function opinion_reply_save(opinion_rcdno){
-			alert("this is opinion save and opinion rcdno:"+opinion_rcdno);
-			//널 검사
-			if ($("#opinion_ReplyEditor_"+opinion_rcdno).val().trim() == "") {
-				alert("댓글 내용을 입력하세요.");
-				$("#opinion_ReplyEditor_"+opinion_rcdno).focus();
-				return false;
-			}
-			//에디터 내용 가져옴
-			var content = $("#opinion_ReplyEditor_"+opinion_rcdno).val().trim();
-
-			//값 셋팅
-			var objParams = {
-				opinion_rcdno : opinion_rcdno,
-				parent_rcdno : "0",
-				depth :"0",
-				content : content,
-				writer : '${user}'
-			};
-			//ajax 호출
-			$.ajax({
-				url : "${pageContext.request.contextPath}/opinion_reply_save",
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-				type : "post",
-				data : objParams,
-				success : function(retVal) {
-
-					if (retVal.code == "OK") {
-						alert(retVal.message);
-						location.reload();
-					} else {
-						alert(retVal.message);
-					}
-
-				},
-				error : function(request, status, error) {
-					console.log("AJAX_ERROR");
+			//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+			if('${loginUserInfo}'==""){
+				alert("로그인이 필요합니다.")
+			}else{
+				//널 검사
+				if ($("#opinion_ReplyEditor_"+opinion_rcdno).val().trim() == "") {
+					alert("댓글 내용을 입력하세요.");
+					$("#opinion_ReplyEditor_"+opinion_rcdno).focus();
+					return false;
 				}
-			});
+				//에디터 내용 가져옴
+				var content = $("#opinion_ReplyEditor_"+opinion_rcdno).val().trim();
+
+				//값 셋팅
+				var objParams = {
+					opinion_rcdno : opinion_rcdno,
+					parent_rcdno : "0",
+					depth :"0",
+					content : content,
+					writer :  "${loginUserInfo.rcdno}"
+				};
+				//ajax 호출
+				$.ajax({
+					url : "${pageContext.request.contextPath}/opinion_reply_save",
+					dataType : "json",
+					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+					type : "post",
+					data : objParams,
+					success : function(retVal) {
+
+						if (retVal.code == "OK") {
+							alert(retVal.message);
+							location.reload();
+						} else {
+							alert(retVal.message);
+						}
+
+					},
+					error : function(request, status, error) {
+						console.log("AJAX_ERROR");
+					}
+				});
+				
+			}
+			
 		}
 		
 		
 		
 		//의견_댓글의 신고 버튼 눌렀을 시 - onclick()
 		function opinion_reply_warning(opinion_reply_rcdno){
-			alert("this is opinionwarning:"+opinion_reply_rcdno);
-			//값 셋팅
-			var objParams = {
-					opinion_reply_rcdno : opinion_reply_rcdno,
-					recom_type :"warning",
-					bywhom : "${user}"
-			};
-			
-			//ajax 호출
-			$.ajax({
-				url : "${pageContext.request.contextPath}/opinion_reply_recommend_process",
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-				type : "post",
-				data : objParams,
-				success : function(retVal) {
+			//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+			if('${loginUserInfo}'==""){
+				alert("로그인이 필요합니다.");
+			}else{
+				
+				//값 셋팅
+				var objParams = {
+						opinion_reply_rcdno : opinion_reply_rcdno,
+						recom_type :"warning",
+						bywhom :  "${loginUserInfo.rcdno}"
+				};
+				
+				//ajax 호출
+				$.ajax({
+					url : "${pageContext.request.contextPath}/opinion_reply_recommend_process",
+					dataType : "json",
+					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+					type : "post",
+					data : objParams,
+					success : function(retVal) {
 
-					if (retVal.code == "OK") {
-						alert(retVal.message);
-						location.reload();
-					} else {
-						alert(retVal.message);
+						if (retVal.code == "OK") {
+							alert(retVal.message);
+							location.reload();
+						} else {
+							alert(retVal.message);
+						}
+
+					},
+					error : function(request, status, error) {
+						console.log("AJAX_ERROR");
 					}
-
-				},
-				error : function(request, status, error) {
-					console.log("AJAX_ERROR");
-				}
-			});
+				});
+			}
+			
 			
 		}
 		
@@ -1267,67 +1406,79 @@
 		
 		//의견_댓글의 좋아요 버튼 눌렀을 시 - onclick()
 		function opinion_reply_thumbup(opinion_reply_rcdno){
-			alert("this is opinion_reply_thumbup:"+opinion_reply_rcdno);
-			//값 셋팅
-			var objParams = {
-					opinion_reply_rcdno : opinion_reply_rcdno,
-					recom_type :"thumbup",
-					bywhom : "${user}"
-			};
-			
-			//ajax 호출
-			$.ajax({
-				url : "${pageContext.request.contextPath}/opinion_reply_recommend_process",
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-				type : "post",
-				data : objParams,
-				success : function(retVal) {
+			//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+			if('${loginUserInfo}'==""){
+				alert("로그인이 필요합니다.")
+			}else{
+				//값 셋팅
+				var objParams = {
+						opinion_reply_rcdno : opinion_reply_rcdno,
+						recom_type :"thumbup",
+						bywhom : "${loginUserInfo.rcdno}"
+				};
+				
+				//ajax 호출
+				$.ajax({
+					url : "${pageContext.request.contextPath}/opinion_reply_recommend_process",
+					dataType : "json",
+					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+					type : "post",
+					data : objParams,
+					success : function(retVal) {
 
-					if (retVal.code == "OK") {
-						alert(retVal.message);
-						location.reload();
-					} else {
-						alert(retVal.message);
+						if (retVal.code == "OK") {
+							alert(retVal.message);
+							location.reload();
+						} else {
+							alert(retVal.message);
+						}
+
+					},
+					error : function(request, status, error) {
+						console.log("AJAX_ERROR");
 					}
-
-				},
-				error : function(request, status, error) {
-					console.log("AJAX_ERROR");
-				}
-			});
+				});
+				
+			}
+			
 		}
 		//주제_댓글의 신고 버튼 눌렀을 시 - onclick()
 		function topic_reply_warning(sp_topic_reply_rcdno){
-			alert("this is warning:"+sp_topic_reply_rcdno);
-			//값 셋팅
-			var objParams = {
-					sp_topic_reply_rcdno : sp_topic_reply_rcdno,
-					recom_type :"warning",
-					bywhom : "${user}"
-			};
-			
-			//ajax 호출
-			$.ajax({
-				url : "${pageContext.request.contextPath}/topic_reply_recommend_process",
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-				type : "post",
-				data : objParams,
-				success : function(retVal) {
+			//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+			if('${loginUserInfo}'==""){
+				alert("로그인이 필요합니다.")
+			}else{
+				//값 셋팅
+				var objParams = {
+						sp_topic_reply_rcdno : sp_topic_reply_rcdno,
+						recom_type :"warning",
+						bywhom :  "${loginUserInfo.rcdno}"
+				};
+				
+				//ajax 호출
+				$.ajax({
+					url : "${pageContext.request.contextPath}/topic_reply_recommend_process",
+					dataType : "json",
+					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+					type : "post",
+					data : objParams,
+					success : function(retVal) {
 
-					if (retVal.code == "OK") {
-						alert(retVal.message);
-						location.reload();
-					} else {
-						alert(retVal.message);
+						if (retVal.code == "OK") {
+							alert(retVal.message);
+							location.reload();
+						} else {
+							alert(retVal.message);
+						}
+
+					},
+					error : function(request, status, error) {
+						console.log("AJAX_ERROR");
 					}
-
-				},
-				error : function(request, status, error) {
-					console.log("AJAX_ERROR");
-				}
-			});
+				});
+				
+				
+			}
 			
 		}
 		
@@ -1335,34 +1486,40 @@
 		
 		//주제_댓글의 좋아요 버튼 눌렀을 시 - onclick()
 		function topic_reply_thumbup(sp_topic_reply_rcdno){
-			//값 셋팅
-			var objParams = {
-					sp_topic_reply_rcdno : sp_topic_reply_rcdno,
-					recom_type :"thumbup",
-					bywhom : "${user}"
-			};
-			
-			//ajax 호출
-			$.ajax({
-				url : "${pageContext.request.contextPath}/topic_reply_recommend_process",
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-				type : "post",
-				data : objParams,
-				success : function(retVal) {
+			//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+			if('${loginUserInfo}'==""){
+				alert("로그인이 필요합니다.")
+			}else{
+				//값 셋팅
+				var objParams = {
+						sp_topic_reply_rcdno : sp_topic_reply_rcdno,
+						recom_type :"thumbup",
+						bywhom :  "${loginUserInfo.rcdno}"
+				};
+				
+				//ajax 호출
+				$.ajax({
+					url : "${pageContext.request.contextPath}/topic_reply_recommend_process",
+					dataType : "json",
+					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+					type : "post",
+					data : objParams,
+					success : function(retVal) {
 
-					if (retVal.code == "OK") {
-						alert(retVal.message);
-						location.reload();
-					} else {
-						alert(retVal.message);
+						if (retVal.code == "OK") {
+							alert(retVal.message);
+							location.reload();
+						} else {
+							alert(retVal.message);
+						}
+
+					},
+					error : function(request, status, error) {
+						console.log("AJAX_ERROR");
 					}
-
-				},
-				error : function(request, status, error) {
-					console.log("AJAX_ERROR");
-				}
-			});
+				});
+			}
+		
 		}
 		
 		//주제_대댓글이 몇개인지 표시하는 함수. 시작했을시, 클래스를 바탕으로 파악한다. 
@@ -1394,15 +1551,24 @@
 		function topic_replyBT_toggle_Setting(){
 			//
 				$("#reply_writing_start").click(function() {
-					$("#topicReply_Save").toggle();
-					$("#reply_writing_start").toggle();
-					$("#topicReplyEditor").toggle();
-					
+					//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+					if('${loginUserInfo}'==""){
+						alert("댓글 등록을 위해서는 로그인이 필요합니다.")
+					}else{
+						$("#topicReply_Save").toggle();
+						$("#reply_writing_start").toggle();
+						$("#topicReplyEditor").toggle();
+					}
 				});
 				$("#topicReply_Save").click(function() {
+					//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+					if('${loginUserInfo}'==""){
+						alert("댓글 등록을 위해서는 로그인이 필요합니다.")
+					}else{
 					$("#topicReply_Save").toggle();
 					$("#reply_writing_start").toggle();
 					$("#topicReplyEditor").toggle();
+					}
 				});
 		}
 		//페이지 로딩 시에 대댓글 Editor와 글 등록 버튼을 없애주는 토글 버튼.
@@ -1428,63 +1594,25 @@
 		
 		//주제_대댓글 버튼 등록 클릭 시 발생하는 함수. 답글등록 onClick() 함수
 		function tvtopic_re_reply_save(sp_tvtopics_rcdno,sp_topic_reply_rcdno){
-			//널 검사
-			if ($("#topic_ReReplyEditor_"+sp_topic_reply_rcdno).val().trim() == "") {
-				alert("답글 내용이 없습니다. 내용을 입력하고 답글등록을 해주세요.");
-				$("#topic_ReReplyEditor_"+sp_topic_reply_rcdno).focus();
-				return false;
-			}
-			//에디터 내용 가져옴
-			var content = $("#topic_ReReplyEditor_"+sp_topic_reply_rcdno).val().trim();
-			//값 셋팅
-			var objParams = {
-					tvtopic_rcdno : sp_tvtopics_rcdno,
-					parent_rcdno :sp_topic_reply_rcdno,
-				depth:"1",
-				content : content,
-				writer : '${user}'
-			};
-			//ajax 호출
-			$.ajax({
-				url : "${pageContext.request.contextPath}/topic_reply_save",
-				dataType : "json",
-				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-				type : "post",
-				data : objParams,
-				success : function(retVal) {
-
-					if (retVal.code == "OK") {
-						alert(retVal.message);
-						location.reload();
-					} else {
-						alert(retVal.message);
-					}
-
-				},
-				error : function(request, status, error) {
-					console.log("AJAX_ERROR");
-				}
-			});
-		}
-		//주제 댓글 등록 눌렀을 시 발생하는 동작
-		function topic_Reply_RegButton_Setting() {
-			$("#topicReply_Save").click(function() {
+			//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+			if('${loginUserInfo}'==""){
+				alert("로그인이 필요합니다.")
+			}else{
 				//널 검사
-				if ($("#topicReplyEditor").val().trim() == "") {
-					alert("댓글 내용을 입력하세요.");
-					$("#topicReplyEditor").focus();
+				if ($("#topic_ReReplyEditor_"+sp_topic_reply_rcdno).val().trim() == "") {
+					alert("답글 내용이 없습니다. 내용을 입력하고 답글등록을 해주세요.");
+					$("#topic_ReReplyEditor_"+sp_topic_reply_rcdno).focus();
 					return false;
 				}
 				//에디터 내용 가져옴
-				var content = $("#topicReplyEditor").val().trim();
-
+				var content = $("#topic_ReReplyEditor_"+sp_topic_reply_rcdno).val().trim();
 				//값 셋팅
 				var objParams = {
-					tvtopic_rcdno : '${detail_tvTopic.sp_tvtopics_rcdno }',
-					parent_rcdno : "0",
-					depth :"0",
+						tvtopic_rcdno : sp_tvtopics_rcdno,
+						parent_rcdno :sp_topic_reply_rcdno,
+					depth:"1",
 					content : content,
-					writer : '${user}'
+					writer : "${loginUserInfo.rcdno}"
 				};
 				//ajax 호출
 				$.ajax({
@@ -1507,8 +1635,61 @@
 						console.log("AJAX_ERROR");
 					}
 				});
+			}
+			
+		}
+		//주제 댓글 등록 눌렀을 시 발생하는 동작
+		function topic_Reply_RegButton_Setting() {
+		
+				$("#topicReply_Save").click(function() {
+					//만약 로그인이 안되어있으면 로그인을 하라고 요청하자.
+					if('${loginUserInfo}'==""){
+						alert("로그인이 필요합니다.")
+					}else{
+						//널 검사
+						if ($("#topicReplyEditor").val().trim() == "") {
+							alert("댓글 내용을 입력하세요.");
+							$("#topicReplyEditor").focus();
+							return false;
+						}
+						//에디터 내용 가져옴
+						var content = $("#topicReplyEditor").val().trim();
 
-			});
+						//값 셋팅
+						var objParams = {
+							tvtopic_rcdno : '${detail_tvTopic.sp_tvtopics_rcdno }',
+							parent_rcdno : "0",
+							depth :"0",
+							content : content,
+							writer :  "${loginUserInfo.rcdno}"
+						};
+						//ajax 호출
+						$.ajax({
+							url : "${pageContext.request.contextPath}/topic_reply_save",
+							dataType : "json",
+							contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+							type : "post",
+							data : objParams,
+							success : function(retVal) {
+
+								if (retVal.code == "OK") {
+									alert(retVal.message);
+									location.reload();
+								} else {
+									alert(retVal.message);
+								}
+
+							},
+							error : function(request, status, error) {
+								console.log("AJAX_ERROR");
+							}
+						});
+						
+					}
+				
+
+				});
+		
 
 		}
 		

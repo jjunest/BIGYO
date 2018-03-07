@@ -104,7 +104,7 @@ a:focus {
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-  color: #060606;
+  color: #687074;
   font-weight: 700;
   margin: 0;
   font-family: "Raleway", sans-serif;
@@ -218,7 +218,7 @@ pre:after, pre:before {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: -1px;
-  color: #000;
+  color: #687074;
   font-size: 30px;
 }
 
@@ -2021,7 +2021,7 @@ h1.typed-text {
 .services-box-info h4 {
   font-weight: 700;
   font-size: 15px;
-  color: #000;
+  color: #687074;
   text-transform: uppercase;
   margin-bottom: 5px;
 }
@@ -5321,7 +5321,7 @@ body.invoice {
 }
 
 .col-3-space .project-post {
-  width: 33.33%;
+  width: 30%;
   padding: 15px;
 }
 

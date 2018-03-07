@@ -6,10 +6,10 @@
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<!-- <property name="url" value="jdbc:mysql://127.0.0.1:3306/innovest?useUnicode=true&amp;characterEncoding=utf8" /> <property name="username" value="innovest" /> <property name="password" value="innovest1" /> -->
-		<property name="url" value="jdbc:mysql://127.0.0.1:3306/admindb?useUnicode=true&amp;characterEncoding=utf8" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
+	<!-- 	<property name="url" value="jdbc:mysql://127.0.0.1:3306/innovest?useUnicode=true&amp;characterEncoding=utf8" />
+		<property name="username" value="innovest" />
+		<property name="password" value="innovest1" /> -->
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/admindb?useUnicode=true&amp;characterEncoding=utf8" /> <property name="username" value="root" /> <property name="password" value="root" />
 	</bean>
 
 
@@ -35,6 +35,15 @@
 			<ref bean="sqlSession" />
 		</property>
 	</bean>
+
+
+	<bean id="boardao" class="com.innovest.dao.BoardDaoImpl">
+		<property name="sqlsession">
+			<ref bean="sqlSession" />
+		</property>
+	</bean>
+
+
 
 	<bean id="AuthenticationSuccessHandlerImpl" class="com.innovest.utils.AuthenticationSuccessHandlerImpl">
 		<property name="spdao">

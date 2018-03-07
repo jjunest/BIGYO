@@ -94,7 +94,7 @@
 
 		<!-- 숨겨진 부분에 같이 보내야할 정보들: tv쇼 주제 rcdno, tv쇼 타이틀, 작가 아이디,  -->
 		<input type="hidden" name="sp_tvtopics_rcdno" value="${detail_tvTopic.sp_tvtopics_rcdno }"> <input type="hidden" name="sp_tvtopics_title" value="${detail_tvTopic.sp_tvtopics_title }">
-		<input type="hidden" name="sp_tvtopics_writer" value="${detail_tvTopic.sp_tvtopics_writer }">
+		<input type="hidden" name="sp_tvtopics_writer" value="${loginUserInfo.rcdno }">
 
 		<div class="container">
 
@@ -130,12 +130,12 @@
 										<span class="label label-danger" style="margin-right: 10px">결정적</span>
 									</p>
 									<select class="selectpicker reason_selector myside_reason" data-width="100%" id="myside_reason1" name="myside_reason1">
-										<option value="0">찬성 근거 선택 안함</option>
+										<option value="0">찬성 주장 근거 선택안함</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro1 }">${detail_tvTopic.sp_tvtopics_pro1 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro2 }">${detail_tvTopic.sp_tvtopics_pro2 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro3 }">${detail_tvTopic.sp_tvtopics_pro3 }</option>
 										<option value="1">직접입력</option>
-									
+
 
 									</select> <input class="form-control reason_self_input" id="myside_reason1_self" name="myside_reason1_self" placeholder="자신이 생각한 근거를 30자로 축약해 직접 입력 하세요" type="text" maxlength="32">
 
@@ -145,7 +145,7 @@
 										<span class="label label-danger" style="margin-right: 10px">2순위</span>
 									</p>
 									<select class="selectpicker reason_selector myside_reason" data-width="100%" id="myside_reason2" name="myside_reason2">
-										<option value="0">찬성 근거 선택 안함</option>
+										<option value="0">찬성 주장 근거 선택안함</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro1 }">${detail_tvTopic.sp_tvtopics_pro1 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro2 }">${detail_tvTopic.sp_tvtopics_pro2 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro3 }">${detail_tvTopic.sp_tvtopics_pro3 }</option>
@@ -159,7 +159,7 @@
 										<span class="label label-danger" style="margin-right: 10px">3순위</span>
 									</p>
 									<select class="selectpicker reason_selector myside_reason" data-width="100%" id="myside_reason3" name="myside_reason3">
-										<option value="0">찬성 근거 선택 안함</option>
+										<option value="0">찬성 주장 근거 선택안함</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro1 }">${detail_tvTopic.sp_tvtopics_pro1 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro2 }">${detail_tvTopic.sp_tvtopics_pro2 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_pro3 }">${detail_tvTopic.sp_tvtopics_pro3 }</option>
@@ -178,7 +178,7 @@
 										<span class="label label-success" style="margin-right: 10px">1순위</span>
 									</p>
 									<select class="selectpicker reason_selector opside_reason" data-width="100%" id="opside_reason1" name="opside_reason1">
-										<option value="0">반대 근거 선택 안함</option>
+										<option value="0">반대 주장 근거 선택안함</option>
 										<option value="${detail_tvTopic.sp_tvtopics_con1 }">${detail_tvTopic.sp_tvtopics_con1 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_con2 }">${detail_tvTopic.sp_tvtopics_con2 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_con3 }">${detail_tvTopic.sp_tvtopics_con3 }</option>
@@ -197,7 +197,7 @@
 										<span class="label label-success" style="margin-right: 10px">2순위</span>
 									</p>
 									<select class="selectpicker reason_selector opside_reason" data-width="100%" id="opside_reason2" name="opside_reason2">
-										<option value="0">반대 근거 선택 안함</option>
+										<option value="0">반대 주장 근거 선택안함</option>
 										<option value="${detail_tvTopic.sp_tvtopics_con1 }">${detail_tvTopic.sp_tvtopics_con1 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_con2 }">${detail_tvTopic.sp_tvtopics_con2 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_con3 }">${detail_tvTopic.sp_tvtopics_con3 }</option>
@@ -216,7 +216,7 @@
 										<span class="label label-success" style="margin-right: 10px">3순위</span>
 									</p>
 									<select class="selectpicker reason_selector opside_reason" data-width="100%" id="opside_reason3" name="opside_reason3">
-										<option value="0">반대 근거 선택 안함</option>
+										<option value="0">반대 주장 근거 선택안함</option>
 										<option value="${detail_tvTopic.sp_tvtopics_con1 }">${detail_tvTopic.sp_tvtopics_con1 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_con2 }">${detail_tvTopic.sp_tvtopics_con2 }</option>
 										<option value="${detail_tvTopic.sp_tvtopics_con3 }">${detail_tvTopic.sp_tvtopics_con3 }</option>
@@ -252,15 +252,6 @@
 				<!--col-->
 				<div class="col-md-3 col-md-offset-1">
 					<div class="row">
-						<div class="col-md-12 margin20">
-							<div class="team-wrap">
-								<img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" class="img-responsive" alt="">
-								<h4>썰전</h4>
-								<span>방영 날짜: 2017-12-10</span>
-								<p>방송 설명: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lorem quam, adipiscing condimentum tristique vel, eleifend sed turpis</p>
-							</div>
-							<!--team-wrap-->
-						</div>
 						<!--team col-->
 						<div class="col-md-12 margin20">
 							<div class="team-wrap" style="border: 4px solid #59df57; border-radius: 5px;">
@@ -396,6 +387,7 @@
 						enctype : "multipart/form-data", // 여기에 url과 enctype은 꼭 지정해주어야 하는 부분이며 multipart로 지정해주지 않으면 controller로 파일을 보낼 수 없음
 						data : {},
 						processData : false,
+						timeout : 3000,
 						contentType : false,
 						success : function(data) {
 							var aJaxResult = data["aJaxResult"];
@@ -409,6 +401,9 @@
 								alert('실패');
 							}
 
+						},
+						error : function(request, status, error) {
+							alert('죄송합니다. 글 등록에 실패했습니다. 로그인을 다시 한 후 시도해주시기 바랍니다.');
 						}
 
 					}).submit();
@@ -438,9 +433,7 @@
 								alert('성공');
 								var sp_opinion_rcdno = data["sp_opinion_rcdno"];
 								location.href = "${pageContext.request.contextPath}/detail_opinion?opinion_rcdno=" + sp_opinion_rcdno;
-
 							} else {
-
 								alert('실패');
 							}
 
@@ -481,8 +474,6 @@
 						$("#myside_reason" + i + "").html(pro_options);
 						$("#opside_reason" + i + "").html(con_options);
 					}
-					$('.selectpicker').selectpicker('refresh');
-
 				} else if (this.value == 'con') {
 					//찬성으로 선택했을 시에, 내가 선택한 근거의 option을 con_options 로바꾸어준다.
 					for (var i = 1; i < 4; i++) {
@@ -491,10 +482,13 @@
 						$("#myside_reason" + i + "").html(con_options);
 						$("#opside_reason" + i + "").html(pro_options);
 					}
-
-					$('.selectpicker').selectpicker('refresh');
-
 				}
+				//모든 selectpicker 의 값 초기화하고
+				$('.selectpicker').selectpicker('refresh');
+				//인풋 테크 클리어 및 hide
+				$(".reason_self_input").val('');
+				$(".reason_self_input").hide();
+
 			});
 
 		}

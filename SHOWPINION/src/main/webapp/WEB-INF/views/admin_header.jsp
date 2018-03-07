@@ -36,7 +36,6 @@
 						</c:when>
 						<c:otherwise>
 							<li><a href="<c:url value="/j_spring_security_logout" />"><i class="fa fa-lock"></i> 로그아웃</a></li>
-
 						</c:otherwise>
 
 

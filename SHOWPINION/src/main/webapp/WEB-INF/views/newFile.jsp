@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!-- Listsize를 위한 jstl태그라이브러리 설정 -->
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%
 	/* contextpath cp : /bagyo */
 	String cp = request.getContextPath();
@@ -57,7 +58,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
 <!-- 내가 만든 custom css 파일 첨부 -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jjunest.css">
-
+<!-- 랭킹을 위한 데이터 테이블 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
 
 <style>
 .mouseOverHighlight {
@@ -137,7 +139,9 @@
 	<script src="http://malsup.github.com/jquery.form.js"></script>
 	<!-- fa class 추가  -->
 	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-
+	<!-- DataTable 테이블 랭킹을 위한 자바스크립트 CDN -->
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
+	<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			navMenuColorSetting();

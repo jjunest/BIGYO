@@ -1,25 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.innovest.dao.IDao">
-	<insert id="insertTVShowTopic" parameterType="java.util.HashMap">
+	<insert id="insertTVShowTopic" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="sp_tvtopics_rcdno">
 		INSERT INTO sp_tvtopics
-		(sp_tvtopics_title, sp_tvtopics_writer, sp_tvtopics_tvshow_imgurl, sp_tvtopics_tvshow_imgbyte, sp_tvtopics_tvshow_name, sp_tvtopics_tvshow_date, sp_tvtopics_tvshow_desc,sp_tvtopics_situation_desc,sp_tvtopics_pro1,sp_tvtopics_pro2,sp_tvtopics_pro3,sp_tvtopics_con1,sp_tvtopics_con2,sp_tvtopics_con3)
+		(sp_tvtopics_title, sp_tvtopics_writer, sp_tvtopics_tvshow_imgurl,sp_tvtopics_tvshow_imgOriname, sp_tvtopics_tvshow_imgbyte, sp_tvtopics_tvshow_name, sp_tvtopics_tvshow_date, sp_tvtopics_tvshow_desc,sp_tvtopics_situation_desc,sp_tvtopics_pro1,sp_tvtopics_pro2,sp_tvtopics_pro3,sp_tvtopics_con1,sp_tvtopics_con2,sp_tvtopics_con3,sp_tvtopics_type)
 		VALUES
-		(#{tvtopic_name_input},#{writer_name},#{imageUrl},#{originalFileBytes},#{tvtopic_tvshow_name},#{tvtopic_tvshow_date},#{tvtopic_tvshow_desc},#{tvtopic_desc_content},#{tvtopic_pro1_input},#{tvtopic_pro2_input},#{tvtopic_pro3_input},#{tvtopic_con1_input},#{tvtopic_con2_input},#{tvtopic_con3_input})
+		(#{tvtopic_name_input},#{writer_name},#{imageUrl},#{originFileName},#{originalFileBytes},#{tvtopic_tvshow_name},#{tvtopic_tvshow_date},#{tvtopic_tvshow_desc},#{tvtopic_desc_content},#{tvtopic_pro1_input},#{tvtopic_pro2_input},#{tvtopic_pro3_input},#{tvtopic_con1_input},#{tvtopic_con2_input},#{tvtopic_con3_input},#{sp_tvtopics_type})
 	</insert>
 	<!-- eventHospital 페이지를 위한 전체 목록 쿼리문 : select ALL DATA FROM DATABASE 시작 -->
 	<select id="selectAll_TVshow_TopicDTO" resultType="com.innovest.dto.tvTopic_DTO">
 		SELECT * FROM
-		sp_tvtopics
+		sp_tvtopics WHERE sp_tvtopics_delete = 'no' AND sp_tvtopics_type = #{topic_type} ORDER BY sp_tvtopics_write_date DESC
 	</select>
-
-	<select id="selectOne_TvTopic" resultType="com.innovest.dto.tvTopic_DTO">
+	<select id="tvshowtopic_select_thisweek" resultType="com.innovest.dto.tvTopic_DTO">
 		SELECT * FROM
-		sp_tvtopics where sp_tvtopics_rcdno = #{topic_rcdno}
+		sp_tvtopics WHERE sp_tvtopics_delete = 'no' AND sp_tvtopics_type = #{topic_type} AND sp_tvtopics_tvshow_date BETWEEN #{thisweekMonday,jdbcType=DATE} AND #{thisweekSunday,jdbcType=DATE} ORDER BY sp_tvtopics_write_date DESC
+	</select>
+	<select id="normaltopic_select_thisweek" resultType="com.innovest.dto.tvTopic_DTO">
+		SELECT * FROM
+		sp_tvtopics WHERE sp_tvtopics_delete = 'no' AND sp_tvtopics_type = #{topic_type} AND sp_tvtopics_write_date BETWEEN #{thisweekMonday,jdbcType=DATE} AND #{thisweekSunday,jdbcType=DATE} ORDER BY sp_tvtopics_write_date DESC
+	</select>
+	<!-- writerUserInfo를 가진 새로운 select쿼리문 시작 -->
+	<select id="selectOne_TvTopic" resultMap="TvTopicWithUserInfo">
+		SELECT * FROM sp_tvtopics where sp_tvtopics_rcdno = #{topic_rcdno} AND sp_tvtopics_delete = 'no'
+	</select>
+	<select id="topic_checkifdeleted" resultType="java.lang.String">
+		SELECT sp_tvtopics_delete FROM sp_tvtopics where sp_tvtopics_rcdno = #{topic_rcdno}
 	</select>
 
+	<resultMap id="TvTopicWithUserInfo" type="com.innovest.dto.tvTopic_DTO">
+		<collection property="writer_infomation" column="sp_tvtopics_writer" select="select_userInfo" />
+	</resultMap>
+	<select id="select_userInfo" resultType="com.innovest.dto.userDTO">
+		select * from sp_users where rcdno = #{writer}
+	</select>
+	<!-- writerUserInfo를 가진 새로운 select쿼리문 끝 -->
+	<update id="update_tvtopicInfo_byMap">
+		UPDATE sp_tvtopics SET sp_tvtopics_title=#{tvtopic_name_input}, sp_tvtopics_situation_desc=#{tvtopic_desc_content}, sp_tvtopics_tvshow_name=#{tvtopic_tvshow_name}, sp_tvtopics_tvshow_imgurl=#{imageUrl},
+		sp_tvtopics_tvshow_imgOriname=#{originFileName}, sp_tvtopics_tvshow_imgbyte=#{originalFileBytes}, sp_tvtopics_tvshow_date=#{tvtopic_tvshow_date}, sp_tvtopics_tvshow_desc=#{tvtopic_tvshow_desc},
+		sp_tvtopics_pro1=#{tvtopic_pro1_input}, sp_tvtopics_pro2=#{tvtopic_pro2_input}, sp_tvtopics_pro3=#{tvtopic_pro3_input},sp_tvtopics_con1=#{tvtopic_con1_input}, sp_tvtopics_con2=#{tvtopic_con2_input}, sp_tvtopics_con3=#{tvtopic_con3_input} where sp_tvtopics_rcdno = #{topic_rcdno}
+	</update>
+	<update id="deleteTVShowTopic">
+		UPDATE sp_tvtopics SET sp_tvtopics_delete='delete' where sp_tvtopics_rcdno = #{topic_rcdno}
+	</update>
 	<update id="update_DetailViewNumber">
 		UPDATE sp_tvtopics SET sp_tvtopics_view = sp_tvtopics_view + 1 WHERE sp_tvtopics_rcdno = #{topic_rcdno}
 	</update>
+	<select id="selectUserDTO" resultType="com.innovest.dto.userDTO">
+		SELECT * FROM
+		sp_users where rcdno = #{sp_tvtopics_writer}
+	</select>
+
+
 </mapper>
 

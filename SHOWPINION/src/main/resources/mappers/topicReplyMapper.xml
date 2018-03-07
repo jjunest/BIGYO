@@ -17,6 +17,11 @@
 		#{writer}
 		)
 	</insert>
+	<update id="topicReply_delete">
+		UPDATE sp_topic_replyboard SET sp_topic_reply_content='해당 댓글 내용은 삭제처리가 되었습니다.' where sp_topic_reply_rcdno = #{topicReply_rcdno}
+	</update>
+
+
 	<!-- 주제댓글 추천 및 신고 쿼리 -->
 	<insert id="topic_reply_recommend_process" parameterType="java.util.HashMap">
 		INSERT INTO sp_topic_replyboard_recommend(
@@ -29,6 +34,17 @@
 		#{bywhom}
 		)
 	</insert>
+		<!-- 주제댓글 추천 및 신고 쿼리 -->
+	<select id="topic_reply_recommend_already" resultType="int">
+		SELECT
+		count(topic_replyboard_recom_rcdno)
+		FROM
+		sp_topic_replyboard_recommend WHERE topic_replyboard_recom_replyRcdno = #{sp_topic_reply_rcdno} 
+		AND topic_replyboard_recom_type = #{recom_type} AND 
+		topic_replyboard_recom_bywhom = #{bywhom}
+	</select>
+	
+	
 
 	<!-- 주제댓글 추천 및 신고 쿼리 -->
 	<insert id="opinion_reply_recommend_process" parameterType="java.util.HashMap">
@@ -42,6 +58,16 @@
 		#{bywhom}
 		)
 	</insert>
+	<!-- 주제댓글 추천 및 신고 쿼리 -->
+	<select id="opinion_reply_recommend_already" resultType="int">
+		SELECT
+		count(opinion_replyboard_recom_rcdno)
+		FROM
+		sp_opinion_replyboard_recommend WHERE opinion_replyboard_recom_replyRcdno = #{opinion_reply_rcdno} 
+		AND opinion_replyboard_recom_type = #{recom_type} AND 
+		opinion_replyboard_recom_bywhom = #{bywhom}
+	</select>
+
 
 
 	<select id="counting_thumbup_topicReply" resultType="int">
@@ -83,103 +109,24 @@
 	</update>
 
 
-	
 
-	<select id="get_All_topic_reply" resultType="com.innovest.dto.tvTopicReply_DTO" parameterType="java.util.HashMap">
+
+	<select id="get_All_topic_reply" resultMap="TvTopicReplysWithUserInfo" parameterType="java.util.HashMap">
 		SELECT
 		*
 		FROM
 		sp_topic_replyboard WHERE sp_topic_reply_topicRcdno = #{topic_rcdno} ORDER BY sp_topic_reply_rcdno desc
 	</select>
+	<!-- writerUserInfo를 가진 새로운 select쿼리문 시작 -->
+	<resultMap id="TvTopicReplysWithUserInfo" type="com.innovest.dto.tvTopicReply_DTO">
+		<collection property="writer_infomation" column="sp_topic_reply_writer" select="select_userInfo" />
+	</resultMap>
+	<select id="select_userInfo" resultType="com.innovest.dto.userDTO">
+		select * from sp_users where rcdno = #{sp_topic_reply_writer}
+	</select>
+	<!-- writerUserInfo를 가진 새로운 select쿼리문 끝 -->
 
 
-	<select id="selectContentCnt" resultType="int" parameterType="java.util.HashMap">
-		select
-		count(id)
-		from
-		board
-	</select>
-	<select id="selectContent" resultType="com.innovest.dto.tvTopicReply_DTO" parameterType="java.util.HashMap">
-		select
-		id,
-		subject,
-		content,
-		writer,
-		date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
-		from
-		board
-		order by id
-		limit #{start}, #{end}
-	</select>
-	<select id="selectContentView" resultType="com.innovest.dto.tvTopicReply_DTO" parameterType="java.util.HashMap">
-		select
-		id,
-		subject,
-		content,
-		writer,
-		date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
-		from
-		board
-		where
-		id = #{id}
-	</select>
-	<insert id="insertBoardReply" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="reply_id">
-		insert into board_reply(
-		board_id,
-		parent_id,
-		depth,
-		reply_content,
-		reply_writer,
-		reply_password
-		)values(
-		#{board_id},
-		#{parent_id},
-		#{depth},
-		#{reply_content},
-		#{reply_writer},
-		#{reply_password}
-		)
-	</insert>
-	<select id="selectBoardReplyList" resultType="com.innovest.dto.BoardReply" parameterType="java.util.HashMap">
-		select
-		reply_id,
-		board_id,
-		parent_id,
-		depth,
-		reply_content,
-		reply_writer,
-		reply_password
-		from
-		board_reply
-		where
-		board_id = #{id}
-		order by reply_id asc
-	</select>
-	<delete id="deleteBoardReply" parameterType="java.util.HashMap">
-		delete
-		from
-		board_reply
-		where
-		reply_id = #{reply_id}
-		and reply_password = #{reply_password}
-	</delete>
-	<select id="selectBoardCnt" resultType="int" parameterType="java.util.HashMap">
-		select
-		count(id)
-		from
-		board
-		where
-		id = #{id}
-		and password = #{password}
-	</select>
-	<delete id="deleteBoard" parameterType="java.util.HashMap">
-		delete
-		from
-		board
-		where
-		id = #{id}
-		and password = #{password}
-	</delete>
 	<!-- 의견_추천 및 세기 -->
 	<select id="counting_thumbup_opinionReply" resultType="int">
 		SELECT
@@ -215,6 +162,10 @@
 		#{writer}
 		)
 	</insert>
+	<update id="opinionReply_delete">
+		UPDATE sp_opinion_replyboard SET sp_opinion_reply_content='해당 댓글 내용은 삭제처리가 되었습니다.' where sp_opinion_reply_rcdno = #{opinionReply_rcdno}
+	</update>
+
 
 </mapper>
 

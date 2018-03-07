@@ -70,117 +70,135 @@
 	<!-- 현재 접속해 있는 user ID 저장 -->
 	<c:set var="user" value="${pageContext.request.userPrincipal.name}" />
 
-	<!-- HEADER FILE INCLUDE  -->
-	<jsp:include page="admin_header.jsp"></jsp:include>
 	<div class="breadcrumb-wrap">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-6">
-					<h4>새로운 TV토론 주제 입력하기</h4>
+					<h4>쇼피니언 관리자 페이지</h4>
 				</div>
 				<div class="col-sm-6 hidden-xs text-right">
 					<ol class="breadcrumb">
-						<li><a href="index.html">Home</a></li>
-						<li>Blank</li>
+						<li><a href="${pageContext.request.contextPath}/admin">관리자 페이지로 가기 </a></li>
+						<li><a href="${pageContext.request.contextPath}/index">일반 사용자 페이지로 가기 </a></li>
 					</ol>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<div class="divide60"></div>
 	<!--breadcrumbs-->
-	<div class="divide80"></div>
-	<form role="form" id="tvtopic_insert_form" method="post" enctype="multipart/form-data" action="tvshowtopic_insert_process">
-		<div class="container">
-
-			<div class="center-heading" style="text-align: center">
-				<h2>
-					주제 제목 <input class="form-control" id="tvtopic_name_input" placeholder="TV토론 주제 제목" name="tvtopic_name_input" type="text" style="width: 80%; margin: 0 auto;">
-				</h2>
-				<span class="center-line"></span>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3" style="margin-top: 30px">
+				<!-- HEADER FILE INCLUDE  -->
+				<jsp:include page="admin_sidenav.jsp"></jsp:include>
 			</div>
+			<!--search sidebar col end-->
+			<div class="col-sm-9">
+				<!-- 관리자 부분의 CONTENT는 이부분이다.  -->
+				<form role="form" id="tvtopic_insert_form" method="post" enctype="multipart/form-data" action="tvshowtopic_insert_process">
+					<div class="container">
+
+						<div class="center-heading" style="text-align: center">
+							<h2>
+								TV 토론쇼 주제 제목 입력하기 <input class="form-control" id="tvtopic_name_input" placeholder="TV토론 주제 제목" name="tvtopic_name_input" type="text" style="width: 80%; margin: 0 auto;">
+							</h2>
+							<span class="center-line"></span>
+						</div>
 
 
-			<div class="row">
-				<div class="col-md-8">
-					<div class="blog-post">
-						<ul class="list-inline post-detail">
-							<li><i class="fa fa-user"></i><a href="#" data-toggle="tooltip" data-placement="top" title="본 주제에 대하여 정리를 해주신 jjunest 님께 깊은 감사를 드립니다. "><span>작성자:</span>${user}</a> <input type="hidden"
-								name="writer_name" value="${user}"></li>
-						</ul>
-						<div class="divide30"></div>
-						<h3 class="heading">문제 상황</h3>
-						<p>
-							<textarea id="tvtopic_situation_desc" name="tvtopic_situation_desc" rows="10" cols="80" style="margin: 0 auto"></textarea>
-						</p>
-						<div class="divide50"></div>
-						<h3 class="heading">찬성 반대 근거</h3>
 						<div class="row">
-							<div class="col-sm-6 margin30">
-								<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="찬성측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
-									<h4>30자 찬성 측 주요 근거</h4>
+							<div class="col-md-8">
+								<div class="blog-post">
+									<ul class="list-inline post-detail">
+										<li><i class="fa fa-user"></i><a href="#" data-toggle="tooltip" data-placement="top" title="본 주제에 대하여 정리를 해주신 jjunest 님께 깊은 감사를 드립니다. "><span>작성자:</span>${user}</a> <input type="hidden"
+											name="writer_name" value="${loginUserInfo.rcdno }"></li>
+									</ul>
+									<div class="divide30"></div>
+									<h3 class="heading">문제 상황</h3>
 									<p>
-										찬성1.<input class="form-control" id="tvtopic_pro1_input" name="tvtopic_pro1_input" placeholder="찬성측 근거" type="text" maxlength="32">
+										<textarea id="tvtopic_situation_desc" name="tvtopic_situation_desc" rows="10" cols="80" style="margin: 0 auto"></textarea>
 									</p>
-									<p>
-										찬성2.<input class="form-control" id="tvtopic_pro2_input" name="tvtopic_pro2_input" placeholder="찬성측 근거" type="text" maxlength="32">
-									</p>
-									<p>
-										찬성3.<input class="form-control" id="tvtopic_pro3_input" name="tvtopic_pro3_input" placeholder="찬성측 근거" type="text" maxlength="32">
-									</p>
+									<div class="divide50"></div>
+									<h3 class="heading">찬성 반대 근거</h3>
+									<div class="row">
+										<div class="col-sm-6 margin30">
+											<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="찬성측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
+												<h4>30자 찬성 측 주요 근거</h4>
+												<p>
+													찬성1.<input class="form-control" id="tvtopic_pro1_input" name="tvtopic_pro1_input" placeholder="찬성측 근거" type="text" maxlength="32">
+												</p>
+												<p>
+													찬성2.<input class="form-control" id="tvtopic_pro2_input" name="tvtopic_pro2_input" placeholder="찬성측 근거" type="text" maxlength="32">
+												</p>
+												<p>
+													찬성3.<input class="form-control" id="tvtopic_pro3_input" name="tvtopic_pro3_input" placeholder="찬성측 근거" type="text" maxlength="32">
+												</p>
+											</div>
+										</div>
+										<div class="col-sm-6 margin30">
+											<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="반대측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
+												<h4>30자 반대 측 주요 근거</h4>
+												<p>
+													반대1.<input class="form-control" id="tvtopic_con1_input" name="tvtopic_con1_input" placeholder="반대측 근거" type="text" maxlength="32">
+												</p>
+												<p>
+													반대2.<input class="form-control" id="tvtopic_con2_input" name="tvtopic_con2_input" placeholder="반대측 근거" type="text" maxlength="32">
+												</p>
+												<p>
+													반대3.<input class="form-control" id="tvtopic_con3_input" name="tvtopic_con3_input" placeholder="반대측 근거" type="text" maxlength="32">
+												</p>
+											</div>
+										</div>
+									</div>
+									<div style="text-align: center">
+										<a href="#" id="tvtopic_submit" class="btn btn-theme-bg btn-ico btn-lg" style="width: 90%; margin: 5px">TV토론 주제 등록하기 <i class="fa fa-pencil-square-o"></i></a>
+									</div>
 								</div>
-							</div>
-							<div class="col-sm-6 margin30">
-								<div class="grid-boxed" data-toggle="tooltip" data-placement="top" title="반대측 주요 근거" style="border: 4px solid #59df57; border-radius: 5px;">
-									<h4>30자 반대 측 주요 근거</h4>
-									<p>
-										반대1.<input class="form-control" id="tvtopic_con1_input" name="tvtopic_con1_input" placeholder="반대측 근거" type="text" maxlength="32">
-									</p>
-									<p>
-										반대2.<input class="form-control" id="tvtopic_con2_input" name="tvtopic_con2_input" placeholder="반대측 근거" type="text" maxlength="32">
-									</p>
-									<p>
-										반대3.<input class="form-control" id="tvtopic_con3_input" name="tvtopic_con3_input" placeholder="반대측 근거" type="text" maxlength="32">
-									</p>
-								</div>
-							</div>
-						</div>
-						<div style="text-align: center">
-							<a href="#" id="tvtopic_submit" class="btn btn-theme-bg btn-ico btn-lg" style="width: 90%; margin: 5px">TV토론 주제 등록하기 <i class="fa fa-pencil-square-o"></i></a>
-						</div>
-					</div>
-					<!--blog post-->
+								<!--blog post-->
 
-				</div>
-				<!--col-->
-				<div class="col-md-3 col-md-offset-1">
-					<div class="row">
-						<div class="col-md-12 margin20">
-							<div class="team-wrap">
-								<input type="file" id="tvtopic_tvshow_img" name="tvtopic_tvshow_img" />
-								<div class="img_wrap">
-									<img id="preview_img" style="margin: 0 auto;" class="img-responsive">
-								</div>
-								<h4>
-									방송이름 <select class="selectpicker" data-width="100%" id="tvtopic_tvshow_name" name="tvtopic_tvshow_name" style="width: 80%">
-										<option value="tvshowname_ssul">썰전</option>
-										<option value="tvshowname_100min">100분 토론</option>
-										<option value="tvshowname_gangJuk">강적들</option>
-									</select>
-								</h4>
-								<span>방영 날짜<input type="date" class="form-control" id="tvtopic_tvshow_date" name="tvtopic_tvshow_date" style="width: 80%; margin: 0 auto;"></span>
-								<p>방송 설명</p>
-								<textarea style="width: 90%" rows="7" id="tvtopic_tvshow_desc" name="tvtopic_tvshow_desc"></textarea>
 							</div>
-							<!--team-wrap-->
+							<!--col-->
+							<div class="col-md-3 col-md-offset-1">
+								<div class="row">
+									<div class="col-md-12 margin20">
+										<div class="team-wrap">
+											<input type="file" id="tvtopic_tvshow_img" name="tvtopic_tvshow_img" />
+											<div class="img_wrap">
+												<img id="preview_img" style="margin: 0 auto;" class="img-responsive">
+											</div>
+											<h4>
+												방송이름 <select class="selectpicker" data-width="100%" id="tvtopic_tvshow_name" name="tvtopic_tvshow_name" style="width: 80%">
+													<option value="tvshowname_ssul">썰전</option>
+													<option value="tvshowname_100min">100분 토론</option>
+													<option value="tvshowname_gangJuk">강적들</option>
+												</select>
+											</h4>
+											<span>방영 날짜<input type="date" class="form-control" id="tvtopic_tvshow_date" name="tvtopic_tvshow_date" style="width: 80%; margin: 0 auto;"></span>
+											<p>방송 설명</p>
+											<textarea style="width: 90%" rows="7" id="tvtopic_tvshow_desc" name="tvtopic_tvshow_desc"></textarea>
+										</div>
+										<!--team-wrap-->
+									</div>
+								</div>
+							</div>
+							<!--row for blog post-->
 						</div>
 					</div>
-				</div>
-				<!--row for blog post-->
+					<!--blog full main container-->
+					<div class="divide60"></div>
+				</form>
 			</div>
 		</div>
-		<!--blog full main container-->
-		<div class="divide60"></div>
-	</form>
+	</div>
+	<!--search results container end-->
+
+
+
+	<!--breadcrumbs-->
+	<div class="divide80"></div>
+
 
 	<jsp:include page="footer.jsp"></jsp:include>
 	<!--scripts and plugins -->
@@ -246,23 +264,28 @@
 					var tvtopic_tvshow_desc_content = $("#tvtopic_tvshow_desc").val();
 					tvtopic_tvshow_desc_content = tvtopic_tvshow_desc_content.replace(/(?:\r\n|\r|\n)/g, '<br />');
 					$("#tvtopic_tvshow_desc").val(tvtopic_tvshow_desc_content);
-					
-					
+
 					// If you want to add an extra field for the FormData
 					$('#tvtopic_insert_form').ajaxForm({
 						url : "${pageContext.request.contextPath}/tvshowtopic_insert_process",
 						enctype : "multipart/form-data", // 여기에 url과 enctype은 꼭 지정해주어야 하는 부분이며 multipart로 지정해주지 않으면 controller로 파일을 보낼 수 없음
 						data : {
-							"tvtopic_desc_content" : tvtopic_desc_content
+							"tvtopic_desc_content" : tvtopic_desc_content,
+							"sp_tvtopics_type" : "tvshow",
 						},
 
 						processData : false,
 						contentType : false,
-						success : function(result) {
-							if (result == "success") {
-								alert('성공적으로 글이 등록 되었습니다.');
+						success : function(data) {
+							var aJaxResult = data["aJaxResult"];
+							if (aJaxResult == "success") {
+								alert('성공');
+								var sp_tvtopics_rcdno = data["sp_tvtopics_rcdno"];
+								location.href = "${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=" + sp_tvtopics_rcdno;
+
 							} else {
-								alert('토론주제 등록 실패하였습니다. 지속적으로 문제 발생 시 연락부탁드립니다. 010-7272-9771');
+
+								alert('실패');
 							}
 						}
 
@@ -324,8 +347,8 @@
 			/* navigation menu 주소에 따라서 active 설정 시작 */
 			var urlpath = $(location).attr("pathname");
 			//서버용
-			if (urlpath.indexOf("/coinCalendar") != -1) {
-				$("#navmenu_coinCalendar").css("color", "#39a1f4");
+			if (urlpath.indexOf("/admin_insert_TVTopic") != -1) {
+				$("#admin_sidenav_insertTVTopic").css("color", "#39a1f4");
 			}
 
 		}

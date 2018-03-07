@@ -9,16 +9,15 @@ public class opinionReply_DTO {
 	Integer sp_opinion_reply_parentRcdno;
 	Integer sp_opinion_reply_depth;
 	String sp_opinion_reply_content;
-	String sp_opinion_reply_writer;
+	Integer sp_opinion_reply_writer;
 	String sp_opinion_reply_password;
 	Timestamp sp_opinion_reply_datetime;
 	Integer sp_opinion_reply_warning;
 	Integer sp_opinion_reply_thumbup;
-	
-	
+	userDTO writer_infomation;
 	public opinionReply_DTO(Integer sp_opinion_reply_rcdno, Integer sp_opinion_reply_opinionRcdno,
 			Integer sp_opinion_reply_parentRcdno, Integer sp_opinion_reply_depth,
-			String sp_opinion_reply_content, String sp_opinion_reply_writer,
+			String sp_opinion_reply_content, Integer sp_opinion_reply_writer,
 			String sp_opinion_reply_password, Timestamp sp_opinion_reply_datetime,
 			Integer sp_opinion_reply_warning, Integer sp_opinion_reply_thumbup) {
 		super();
@@ -33,7 +32,6 @@ public class opinionReply_DTO {
 		this.sp_opinion_reply_warning = sp_opinion_reply_warning;
 		this.sp_opinion_reply_thumbup = sp_opinion_reply_thumbup;
 	}
-	
 	public Integer getSp_opinion_reply_rcdno() {
 		return sp_opinion_reply_rcdno;
 	}
@@ -64,10 +62,10 @@ public class opinionReply_DTO {
 	public void setSp_opinion_reply_content(String sp_opinion_reply_content) {
 		this.sp_opinion_reply_content = sp_opinion_reply_content;
 	}
-	public String getSp_opinion_reply_writer() {
+	public Integer getSp_opinion_reply_writer() {
 		return sp_opinion_reply_writer;
 	}
-	public void setSp_opinion_reply_writer(String sp_opinion_reply_writer) {
+	public void setSp_opinion_reply_writer(Integer sp_opinion_reply_writer) {
 		this.sp_opinion_reply_writer = sp_opinion_reply_writer;
 	}
 	public String getSp_opinion_reply_password() {
@@ -94,7 +92,12 @@ public class opinionReply_DTO {
 	public void setSp_opinion_reply_thumbup(Integer sp_opinion_reply_thumbup) {
 		this.sp_opinion_reply_thumbup = sp_opinion_reply_thumbup;
 	}
-
+	public userDTO getWriter_infomation() {
+		return writer_infomation;
+	}
+	public void setWriter_infomation(userDTO writer_infomation) {
+		this.writer_infomation = writer_infomation;
+	}
 	
 
 }

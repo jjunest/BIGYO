@@ -15,7 +15,9 @@ public interface I_Reply_Dao {
 	// boardTest DAO
 	// 토픽 주제_ 댓글 저장하기.
 	int topic_reply_save(Map<String, Object> paramMap);
-
+	// 토픽 주제_ 댓글 삭제하기
+	int topicReply_delete(Map<String, Object> paramMap);
+		
 	// 토픽 주제_ 대댓글 저장하기
 	int topic_re_reply_save(Map<String, Object> paramMap);
 	
@@ -55,9 +57,18 @@ public interface I_Reply_Dao {
 	
 	//주제_댓글 추천 및 신고
 	int topic_reply_recommend_process(Map<String, Object> paramMap);
+	
+	int topic_reply_recommend_already(Map<String, Object> paramMap);
+	
+	
+	
 	//의견_댓글 추천 및 신고
 	int opinion_reply_recommend_process(Map<String, Object> paramMap);
+	//의견_댓글 추천 및 신고
+	int opinion_reply_recommend_already(Map<String, Object> paramMap);
 	
+	
+	int opinionReply_delete(Map<String, Object> paramMap);
 	
 	
 	int counting_thumbup_topicReply(Integer reply_rcdno);

@@ -6,12 +6,13 @@ import java.sql.Timestamp;
 public class tvTopic_DTO {
 	Integer sp_tvtopics_rcdno;
 	String sp_tvtopics_title;
-	String sp_tvtopics_writer;
+	Integer sp_tvtopics_writer;
 	Timestamp sp_tvtopics_write_date;
 	Integer sp_tvtopics_view;
 	String sp_tvtopics_situation_desc;
 	String sp_tvtopics_tvshow_name;
 	String sp_tvtopics_tvshow_imgurl;
+	String sp_tvtopics_tvshow_imgOriname;
 	Integer sp_tvtopics_tvshow_imgbyte;
 	Date sp_tvtopics_tvshow_date;
 	String sp_tvtopics_tvshow_desc;
@@ -28,18 +29,22 @@ public class tvTopic_DTO {
 	String sp_tvtopics_con3;
 	String sp_tvtopics_con4;
 	String sp_tvtopics_con5;
-	
+	String sp_tvtopics_delete;
+	String sp_tvtopics_type;
+	userDTO writer_infomation;
 	
 	
 	public tvTopic_DTO(Integer sp_tvtopics_rcdno, String sp_tvtopics_title,
-			String sp_tvtopics_writer, Timestamp sp_tvtopics_write_date, Integer sp_tvtopics_view,
+			Integer sp_tvtopics_writer, Timestamp sp_tvtopics_write_date, Integer sp_tvtopics_view,
 			String sp_tvtopics_situation_desc, String sp_tvtopics_tvshow_name,
-			String sp_tvtopics_tvshow_imgurl, Integer sp_tvtopics_tvshow_imgbyte,
-			Date sp_tvtopics_tvshow_date, String sp_tvtopics_tvshow_desc, String sp_tvtopics_etc1,
-			String sp_tvtopics_etc2, String sp_tvtopics_etc3, String sp_tvtopics_pro1,
-			String sp_tvtopics_pro2, String sp_tvtopics_pro3, String sp_tvtopics_pro4,
-			String sp_tvtopics_pro5, String sp_tvtopics_con1, String sp_tvtopics_con2,
-			String sp_tvtopics_con3, String sp_tvtopics_con4, String sp_tvtopics_con5) {
+			String sp_tvtopics_tvshow_imgurl, String sp_tvtopics_tvshow_imgOriname,
+			Integer sp_tvtopics_tvshow_imgbyte, Date sp_tvtopics_tvshow_date,
+			String sp_tvtopics_tvshow_desc, String sp_tvtopics_etc1, String sp_tvtopics_etc2,
+			String sp_tvtopics_etc3, String sp_tvtopics_pro1, String sp_tvtopics_pro2,
+			String sp_tvtopics_pro3, String sp_tvtopics_pro4, String sp_tvtopics_pro5,
+			String sp_tvtopics_con1, String sp_tvtopics_con2, String sp_tvtopics_con3,
+			String sp_tvtopics_con4, String sp_tvtopics_con5, String sp_tvtopics_delete,
+			String sp_tvtopics_type) {
 		super();
 		this.sp_tvtopics_rcdno = sp_tvtopics_rcdno;
 		this.sp_tvtopics_title = sp_tvtopics_title;
@@ -49,6 +54,7 @@ public class tvTopic_DTO {
 		this.sp_tvtopics_situation_desc = sp_tvtopics_situation_desc;
 		this.sp_tvtopics_tvshow_name = sp_tvtopics_tvshow_name;
 		this.sp_tvtopics_tvshow_imgurl = sp_tvtopics_tvshow_imgurl;
+		this.sp_tvtopics_tvshow_imgOriname = sp_tvtopics_tvshow_imgOriname;
 		this.sp_tvtopics_tvshow_imgbyte = sp_tvtopics_tvshow_imgbyte;
 		this.sp_tvtopics_tvshow_date = sp_tvtopics_tvshow_date;
 		this.sp_tvtopics_tvshow_desc = sp_tvtopics_tvshow_desc;
@@ -65,6 +71,8 @@ public class tvTopic_DTO {
 		this.sp_tvtopics_con3 = sp_tvtopics_con3;
 		this.sp_tvtopics_con4 = sp_tvtopics_con4;
 		this.sp_tvtopics_con5 = sp_tvtopics_con5;
+		this.sp_tvtopics_delete = sp_tvtopics_delete;
+		this.sp_tvtopics_type = sp_tvtopics_type;
 	}
 	public Integer getSp_tvtopics_rcdno() {
 		return sp_tvtopics_rcdno;
@@ -78,10 +86,10 @@ public class tvTopic_DTO {
 	public void setSp_tvtopics_title(String sp_tvtopics_title) {
 		this.sp_tvtopics_title = sp_tvtopics_title;
 	}
-	public String getSp_tvtopics_writer() {
+	public Integer getSp_tvtopics_writer() {
 		return sp_tvtopics_writer;
 	}
-	public void setSp_tvtopics_writer(String sp_tvtopics_writer) {
+	public void setSp_tvtopics_writer(Integer sp_tvtopics_writer) {
 		this.sp_tvtopics_writer = sp_tvtopics_writer;
 	}
 	public Timestamp getSp_tvtopics_write_date() {
@@ -113,6 +121,12 @@ public class tvTopic_DTO {
 	}
 	public void setSp_tvtopics_tvshow_imgurl(String sp_tvtopics_tvshow_imgurl) {
 		this.sp_tvtopics_tvshow_imgurl = sp_tvtopics_tvshow_imgurl;
+	}
+	public String getSp_tvtopics_tvshow_imgOriname() {
+		return sp_tvtopics_tvshow_imgOriname;
+	}
+	public void setSp_tvtopics_tvshow_imgOriname(String sp_tvtopics_tvshow_imgOriname) {
+		this.sp_tvtopics_tvshow_imgOriname = sp_tvtopics_tvshow_imgOriname;
 	}
 	public Integer getSp_tvtopics_tvshow_imgbyte() {
 		return sp_tvtopics_tvshow_imgbyte;
@@ -210,7 +224,25 @@ public class tvTopic_DTO {
 	public void setSp_tvtopics_con5(String sp_tvtopics_con5) {
 		this.sp_tvtopics_con5 = sp_tvtopics_con5;
 	}
-
+	public String getSp_tvtopics_delete() {
+		return sp_tvtopics_delete;
+	}
+	public void setSp_tvtopics_delete(String sp_tvtopics_delete) {
+		this.sp_tvtopics_delete = sp_tvtopics_delete;
+	}
+	public String getSp_tvtopics_type() {
+		return sp_tvtopics_type;
+	}
+	public void setSp_tvtopics_type(String sp_tvtopics_type) {
+		this.sp_tvtopics_type = sp_tvtopics_type;
+	}
+	public userDTO getWriter_infomation() {
+		return writer_infomation;
+	}
+	public void setWriter_infomation(userDTO writer_infomation) {
+		this.writer_infomation = writer_infomation;
+	}
+	
 	
 
 }

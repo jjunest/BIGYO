@@ -30,22 +30,18 @@
 
 					<!-- 페이지를 검색해보고, SECURITY LOGIN이 되어 있으면 로그아웃을 보여주고, 아니면 로그인 메뉴를 보여준다  -->
 					<c:set var="user" value="${pageContext.request.userPrincipal.name}" />
-					<c:choose>
-						<c:when test="${empty user}">
-							<li><a href="${pageContext.request.contextPath}/login_custom"><i class="fa fa-lock"></i> 로그인</a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a href="<c:url value="/j_spring_security_logout" />"><i class="fa fa-lock"></i> 로그아웃</a></li>
-
-						</c:otherwise>
-
-
-
-					</c:choose>
-
+					<c:if test="${!empty loginUserInfo}">
+						<li><a href="<c:url value="/j_spring_security_logout" />"><i class="fa fa-lock"></i> 로그아웃</a></li>
+					</c:if>
+					<c:if test="${empty loginUserInfo}">
+						<li><a href="${pageContext.request.contextPath}/login_custom"><i class="fa fa-lock"></i> 로그인</a></li>
+					</c:if>
 
 					<li><a href="${pageContext.request.contextPath}/sign_up"><i class="fa fa-user"></i> 회원 가입</a></li>
-					<li class=""><a href="${pageContext.request.contextPath}/admin">관리자 페이지 가기 </a></li>
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<li class=""><a href="${pageContext.request.contextPath}/admin">관리자 페이지 가기 </a></li>
+					</sec:authorize>
+
 				</ul>
 				<div class="search">
 					<form role="form">
@@ -70,18 +66,20 @@
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="index.html"><img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="SHOWPINION"></a>
+			<a class="navbar-brand" href="index.html" style="width: 230px; margin-bottom: 10px" ><img  style="width: 230px; margin-bottom: 10px" src="${pageContext.request.contextPath}/resources/img/logo4.png" alt="SHOWPINION"></a>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li class=""><a href="#">홈 </a></li>
-				<li class=""><a href="#">쇼피니언 소개 </a></li>
-				<li class=""><a href="${pageContext.request.contextPath}/thisWeekTopics">이번주 쇼피니언 주제 </a></li>
-				<li class=""><a href="${pageContext.request.contextPath}/all_TVshow_Topics">역대 TV토론 주제 </a></li>
-				<li class=""><a href="${pageContext.request.contextPath}/all_Showpinion_Topics">역대 쇼피니언 선정 주제 </a></li>
-				<li class=""><a href="${pageContext.request.contextPath}/rankings">랭킹 </a></li>
-				<li class=""><a href="${pageContext.request.contextPath}/userInfo">프로필 </a></li>
-				<li class=""><a href="${pageContext.request.contextPath}/writeTVTwopics">(관)TV토론 주제 </a></li>
+				<li class=""><a id="navmenu_main" href="${pageContext.request.contextPath}/main">홈 </a></li>
+				<li class=""><a id="navmenu_introduce" href="${pageContext.request.contextPath}/introduce">쇼피니언 소개 </a></li>
+				<li class=""><a id="navmenu_thisWeekTopics" href="${pageContext.request.contextPath}/thisWeekTopics">이번주 쇼피니언 주제 </a></li>
+				<li class=""><a id="navmenu_all_TVshow_Topics" href="${pageContext.request.contextPath}/all_TVshow_Topics">역대 TV토론 주제 </a></li>
+				<li class=""><a id="navmenu_all_Showpinion_Topics" href="${pageContext.request.contextPath}/all_Showpinion_Topics">역대 쇼피니언 선정 주제 </a></li>
+				<li class=""><a id="navmenu_rankings" href="${pageContext.request.contextPath}/rankings">랭킹 </a></li>
+				<li class=""><a id="navmenu_boardList" href="${pageContext.request.contextPath}/boardList">자유게시판 </a></li>
+				<c:if test="${!empty loginUserInfo}">
+					<li class=""><a id = "navmenu_userInfo" href="${pageContext.request.contextPath}/userInfo?user_rcdno=${loginUserInfo.rcdno }">내프로필 </a></li>
+				</c:if>
 
 				<!--features-->
 				<!--menu Features li end here-->

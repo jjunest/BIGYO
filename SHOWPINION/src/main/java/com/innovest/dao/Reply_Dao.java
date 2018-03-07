@@ -31,6 +31,12 @@ public class Reply_Dao {
 		int result = dao.topic_reply_save(paramMap);
 		return result;
 	}
+	// 주제_ 댓글 삭제하기
+	public int topicReply_delete(Map<String, Object> paramMap) {
+		I_Reply_Dao dao = sqlsession.getMapper(I_Reply_Dao.class);
+		int result = dao.topicReply_delete(paramMap);
+		return result;
+	}
 	
 	// 주제_ 댓글 추천 및 신고기능
 	public int topic_reply_recommend_process(Map<String, Object> paramMap) {
@@ -38,6 +44,12 @@ public class Reply_Dao {
 		int result = dao.topic_reply_recommend_process(paramMap);
 		return result;
 	}
+	public int topic_reply_recommend_already(Map<String, Object> paramMap) {
+		I_Reply_Dao dao = sqlsession.getMapper(I_Reply_Dao.class);
+		int result = dao.topic_reply_recommend_already(paramMap);
+		return result;
+	}
+	
 	// 주제_ 댓글 추천수 세기
 	public int counting_thumbup_topicReply(Integer param) {
 		I_Reply_Dao dao = sqlsession.getMapper(I_Reply_Dao.class);
@@ -126,12 +138,32 @@ public class Reply_Dao {
 		return result;
 	}
 	
+	public int opinionReply_delete(Map<String, Object> paramMap) {
+		I_Reply_Dao dao = sqlsession.getMapper(I_Reply_Dao.class);
+		int result = dao.opinionReply_delete(paramMap);
+		return result;
+	}
+	
+	
+	
+	
+	
 	// 의견_ 댓글 추천 및 신고기능
 	public int opinion_reply_recommend_process(Map<String, Object> paramMap) {
 		I_Reply_Dao dao = sqlsession.getMapper(I_Reply_Dao.class);
 		int result = dao.opinion_reply_recommend_process(paramMap);
 		return result;
 	}
+	
+	// 의견_ 댓글 추천 및 신고 중복 체크
+	public int opinion_reply_recommend_already(Map<String, Object> paramMap) {
+		I_Reply_Dao dao = sqlsession.getMapper(I_Reply_Dao.class);
+		int result = dao.opinion_reply_recommend_already(paramMap);
+		return result;
+	}
+	
+	
+	
 	
 	public int getContentCnt(Map<String, Object> paramMap) {
 		return sqlsession.selectOne("selectContentCnt", paramMap);

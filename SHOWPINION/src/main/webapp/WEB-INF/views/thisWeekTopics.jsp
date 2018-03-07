@@ -69,13 +69,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-6">
-					<h4>- 이번주 쇼피니언 주제</h4>
-				</div>
-				<div class="col-sm-6 hidden-xs text-right">
-					<ol class="breadcrumb">
-						<li><a href="index.html">TV 토론</a></li>
-						<li>쇼피니언 선정</li>
-					</ol>
+					<h4>이번주 쇼피니언 주제</h4>
 				</div>
 			</div>
 		</div>
@@ -88,7 +82,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="center-heading">
-					<h2>이번주 TV토론 주제</h2>
+					<h2>이번주 TV토론 주제 &nbsp +${fn:length(result_list_thisweek_tvtopics)}</h2>
 					<span class="center-line"></span>
 				</div>
 				<!--center-heading-->
@@ -98,32 +92,36 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div id="thisWeek_tvTopics-carousel" class="owl-carousel owl-theme owl-spaced">
-					<div>
+					<!--ITEM 시작 -->
+					<c:forEach var="listValue_topic" items="${result_list_thisweek_tvtopics}">
+						<div>
+							<div class="item-img-wrap" style="border: 4px solid #59df57; border-radius: 5px;">
+								<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_topic.sp_tvtopics_rcdno}"> <img
+									src="${pageContext.request.contextPath}/${listValue_tvtopic.sp_tvtopics_tvshow_imgurl}"
+									onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_tvshow_img.png';" class="img-responsive" alt="workimg">
+								</a>
 
-						<div class="item-img-wrap" style="border: 4px solid #59df57; border-radius: 5px;">
-							<a href="${pageContext.request.contextPath}/detail_TVshow_Topics"> <img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" class="img-responsive" alt="workimg">
-							</a>
-
-						</div>
-						<!--item img wrap-->
-						<div class="work-desc">
-							<h3>
-								<a href="portfolio-single.html">금융실명제 도입이 필요한가?</a>
-							</h3>
-							<span>방송날짜 :</span> <span id="tvShowDate"> 2017-08-12</span>
-							<p>
-							<h3 class="heading-progress">
-								실시간 쇼피니언 지수 <span class="pull-right">중립 우세</span>
-							</h3>
-							<div class="progress">
-								<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
-								<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
-								<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
 							</div>
+							<!--item img wrap-->
+							<div class="work-desc">
+								<h3>
+									<a href="portfolio-single.html">${listValue_topic.sp_tvtopics_title}</a>
+								</h3>
+								<span>방송날짜 :</span> <span id="tvShowDate"> ${listValue_topic.sp_tvtopics_tvshow_date}</span>
+								<p>
+								<h3 class="heading-progress">
+									실시간 쇼피니언 지수 <span class="pull-right">중립 우세</span>
+								</h3>
+								<div class="progress">
+									<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
+									<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
+									<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
+								</div>
+							</div>
+							<!--work desc-->
 						</div>
-						<!--work desc-->
-					</div>
-					<!--owl item-->
+						<!--owl item-->
+					</c:forEach>
 				</div>
 
 			</div>
@@ -139,7 +137,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="center-heading">
-					<h2>이번주 쇼피니언 선정 주제</h2>
+					<h2>이번주 쇼피니언 선정 주제 +${fn:length(result_list_thisweek_normaltopics)}</h2>
 					<span class="center-line"></span>
 				</div>
 				<!--center-heading-->
@@ -148,33 +146,37 @@
 		<!--row-->
 		<div class="row">
 			<div class="col-md-12">
-				<div id="thisWeek_showpinionTopics-carousel" class="owl-carousel owl-theme owl-spaced">
-					<div>
+				<div id="thisWeek_normalTopics-carousel" class="owl-carousel owl-theme owl-spaced">
+					<!--ITEM 시작 -->
+					<c:forEach var="listValue_topic" items="${result_list_thisweek_normaltopics}">
+						<div>
+							<div class="item-img-wrap" style="border: 4px solid #59df57; border-radius: 5px;">
+								<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_topic.sp_tvtopics_rcdno}"> <img
+									src="${pageContext.request.contextPath}/${listValue_tvtopic.sp_tvtopics_tvshow_imgurl}"
+									onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_tvshow_img.png';" class="img-responsive" alt="workimg">
+								</a>
 
-						<div class="item-img-wrap " style="border: 4px solid #59df57; border-radius: 5px;">
-							<a href="${pageContext.request.contextPath}/detail_TVshow_Topics"> <img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" class="img-responsive" alt="workimg">
-							</a>
-
-						</div>
-						<!--item img wrap-->
-						<div class="work-desc">
-							<h3>
-								<a href="portfolio-single.html">금융실명제 도입이 필요한가?</a>
-							</h3>
-							<span>작성자:</span> <span id="tvShowDate"> jjunest </span>
-							<p>
-							<h3 class="heading-progress">
-								실시간 쇼피니언 지수 <span class="pull-right">중립 우세</span>
-							</h3>
-							<div class="progress">
-								<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
-								<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
-								<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
 							</div>
+							<!--item img wrap-->
+							<div class="work-desc">
+								<h3>
+									<a href="portfolio-single.html">${listValue_topic.sp_tvtopics_title}</a>
+								</h3>
+								<span>주제등록 :</span> <span id="tvShowDate"> ${listValue_topic.sp_tvtopics_write_date}</span>
+								<p>
+								<h3 class="heading-progress">
+									실시간 쇼피니언 지수 <span class="pull-right">중립 우세</span>
+								</h3>
+								<div class="progress">
+									<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
+									<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
+									<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
+								</div>
+							</div>
+							<!--work desc-->
 						</div>
-						<!--work desc-->
-					</div>
-					<!--owl item-->
+						<!--owl item-->
+					</c:forEach>
 				</div>
 
 			</div>
@@ -244,7 +246,7 @@
 				}
 			});
 
-			$("#thisWeek_showpinionTopics-carousel").owlCarousel({
+			$("#thisWeek_normalTopics-carousel").owlCarousel({
 				loop : true,
 				margin : 0,
 				nav : false,
@@ -267,9 +269,9 @@
 			/* navigation menu 주소에 따라서 active 설정 시작 */
 			var urlpath = $(location).attr("pathname");
 			//서버용
-			if (urlpath.indexOf("/coinCalendar") != -1) {
+			if (urlpath.indexOf("/thisWeekTopics") != -1) {
 
-				$("#navmenu_coinCalendar").css("color", "#39a1f4");
+				$("#navmenu_thisWeekTopics").css("color", "#39a1f4");
 
 			}
 

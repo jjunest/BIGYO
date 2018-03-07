@@ -5,9 +5,11 @@
 .text_align_right {
 	text-align: right;
 }
+
 .text_align_center {
 	text-align: center;
 }
+
 .reply {
 	border-top: 0.5px double #ddd;
 	margin-top: 30px;
@@ -15,31 +17,88 @@
 }
 
 .re_reply {
-	display : none;
+	display: none;
 	margin-top: 30px;
 	padding-top: 30px;
 	padding-left: 50px;
 	width: 100%;
 }
 
-a{
+a {
 	cursor: pointer;
 }
 
-.text_color_blue{
+.text_color_blue {
 	color: #286090;
-	
 }
 
-.color_pro{
+.color_pro {
 	color: #59df57;
-	
 }
-.color_con{
-	color:#df5759;
-	
+
+.color_con {
+	color: #df5759;
 }
-.color_neu{
-	color:#df5759;
-	
+
+.color_neu {
+	color: #df5759;
 }
+
+/* A 태그가 범위를 넘어 설 시에 ... 만들기 css */
+.aTag_ellipsis {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+/*  일정 라인을 넘어설 경우 생략  css */
+.max-lines {
+   display: block; /* or inline-block */
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 150px;
+  line-height: 1.8em;
+}
+
+
+/* input 태크 글릭 시 placeholder 없어지게 하는 css 시작 */
+input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholder { /* WebKit browsers */
+	color: transparent;
+}
+
+input:focus:-moz-placeholder, textarea:focus:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	color: transparent;
+}
+
+input:focus::-moz-placeholder, textarea:focus::-moz-placeholder { /* Mozilla Firefox 19+ */
+	color: transparent;
+}
+
+input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder { /* Internet Explorer 10+ */
+	color: transparent;
+}
+/* input 태크 글릭 시 placeholder 없어지게 하는 css 끝 */
+
+/* MODAL 창 중간으로 띄우기, 시작 */
+.modal {
+	text-align: center;
+	padding: 0 !important;
+}
+
+.modal:before {
+	content: '';
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+	margin-right: -4px;
+}
+
+.modal-dialog {
+	display: inline-block;
+	text-align: left;
+	vertical-align: middle;
+}
+/* MODAL 창 중간으로 띄우기, 끝 */
+
+

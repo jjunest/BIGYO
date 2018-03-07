@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.innovest.dao.IDao">
+	<select id="duplicateIdCheck" resultType="int">
+		SELECT COUNT(*) from m2_users where userid = #{user_inputId}
+	</select>
+
+	<select id="report_select_articlelist" resultType="com.innovest.dto.reportDTO">
+		SELECT * from m2_report where m2_report_onNews = 'yes'
+		<if test="order==null or order.equals('thumbup')">ORDER BY m2_report_thumbup
+			DESC, m2_report_date DESC
+		</if>
+		<if test="order!=null and order.equals('new')">ORDER BY m2_report_date
+			DESC
+		</if>
+
+	</select>
+
+	<select id="report_select_normallist" resultType="com.innovest.dto.reportDTO">
+		SELECT * from m2_report where m2_report_onNews = 'no'
+		<if test="order==null or order.equals('thumbup')">ORDER BY m2_report_thumbup
+			DESC, m2_report_date DESC
+		</if>
+		<if test="order!=null and order.equals('new')">ORDER BY m2_report_date
+			DESC
+		</if>
+
+	</select>
+
+
+	<select id="report_detail" resultType="com.innovest.dto.reportDTO">
+		SELECT * from m2_report where m2_report_rcdno = #{report_rcdno}
+	</select>
+
+	<select id="report_passwordCheck" resultType="int">
+		SELECT COUNT(*) from m2_report where m2_report_rcdno = #{report_rcdno} AND m2_report_password = #{report_password}
+	</select>
+
+	<select id="report_thumbup_already" resultType="int">
+		SELECT COUNT(*) from m2_report_thumbup where thumbup_reportRcdno = #{report_rcdno} AND thumbup_bywhom = #{bywhom}
+	</select>
+	<insert id="report_thumbup">
+		INSERT INTO m2_report_thumbup(thumbup_reportRcdno, thumbup_bywhom) values (#{report_rcdno},#{bywhom})
+	</insert>
+	<update id="report_thumbup_plusone">
+		UPDATE m2_report SET m2_report_thumbup = m2_report_thumbup+1 WHERE m2_report_rcdno=#{report_rcdno}
+	</update>
+	<select id="report_warning_already" resultType="int">
+		SELECT COUNT(*) from m2_report_warning where warning_reportRcdno = #{report_rcdno} AND warning_bywhom = #{bywhom}
+	</select>
+	<insert id="report_warning">
+		INSERT INTO m2_report_warning(warning_reportRcdno, warning_bywhom) values (#{report_rcdno},#{bywhom})
+	</insert>
+	<update id="report_warning_plusone">
+		UPDATE m2_report SET m2_report_warning = m2_report_warning+1 WHERE m2_report_rcdno=#{report_rcdno}
+	</update>
+
+	<insert id="insert_user_ByMap">
+		INSERT INTO m2_users
+		(userid, password, enabled, username)
+		VALUES
+		(#{userid},#{password},#{enabled},#{username})
+	</insert>
+	<insert id="insert_userrole_byMap">
+		INSERT INTO m2_user_roles (userid, role) VALUES
+		(#{userid}, #{role})
+	</insert>
+
+	<insert id="insert_report_ByMap" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="m2_report_rcdno">
+		INSERT INTO m2_report (m2_report_Aname , m2_report_Aage, m2_report_Aispublic, m2_report_Agroup, m2_report_Ajob, m2_report_Rname,m2_report_Rage, m2_report_Rphone, m2_report_Rgroup, m2_report_Rjob, m2_report_Ropen, m2_report_title, m2_report_content, m2_report_onNews, m2_report_password,m2_report_link) VALUES
+		(#{A_name}, #{A_age}, #{A_ispublic}, #{A_group}, #{A_job}, #{R_name}, #{R_age}, #{R_phone}, #{R_group}, #{R_job}, #{agreeCheckbox_R_open}, #{report_title}, #{report_content}, #{onNews}, #{report_password}, #{m2_report_link})
+	</insert>
+	<update id="update_report_ByMap" parameterType="java.util.HashMap">
+		UPDATE m2_report SET
+		m2_report_Aname = #{A_name},
+		m2_report_Aage = #{A_age},
+		m2_report_Aispublic =#{A_ispublic},
+		m2_report_Agroup =#{A_group},
+		m2_report_Ajob =#{A_job},
+		m2_report_Rname =#{R_name},
+		m2_report_Rage =#{R_age},
+		m2_report_Rphone =#{R_phone},
+		m2_report_Rgroup =#{R_group},
+		m2_report_Rjob =#{R_job},
+		m2_report_Ropen =#{agreeCheckbox_R_open},
+		m2_report_title =#{report_title},
+		m2_report_content =#{report_content},
+		m2_report_onNews= #{onNews},
+		m2_report_password =#{report_password},
+		m2_report_link = #{m2_report_link}
+		WHERE
+		m2_report_rcdno=#{report_rcdno}
+	</update>
+	<delete id="report_delete">
+		DELETE FROM m2_report WHERE m2_report_rcdno = #{report_rcdno}
+	</delete>
+
+	<insert id="insertBoardReply_report" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="reply_id">
+		insert into m2_report_reply(
+		board_id,
+		parent_id,
+		depth,
+		reply_content,
+		reply_writer,
+		reply_password
+		)values(
+		#{board_id},
+		#{parent_id},
+		#{depth},
+		#{reply_content},
+		#{reply_writer},
+		#{reply_password}
+		)
+	</insert>
+	<select id="selectBoardReplyList_report" resultType="com.innovest.dto.BoardReply" parameterType="java.util.HashMap">
+		select
+		reply_id,
+		board_id,
+		parent_id,
+		depth,
+		reply_content,
+		reply_writer,
+		reply_password
+		from
+		m2_report_reply
+		where
+		board_id = #{report_rcdno}
+		order by reply_id asc
+	</select>
+	<update id="deleteBoardReply_report" parameterType="java.util.HashMap">
+		UPDATE m2_report_reply SET
+		reply_content = '본 댓글은 작성자에 의해 삭제되었습니다'
+		where
+		reply_id = #{reply_id}
+		and reply_password = #{reply_password}
+	</update>
+
+
+
+
+
+	<!-- 자유게시판 MAPPER 시작-->
+	<insert id="insertContent" parameterType="java.util.HashMap">
+		insert into m2_board(
+		id,
+		subject,
+		content,
+		writer,
+		password
+		)values(
+		#{id},
+		#{subject},
+		#{content},
+		#{writer},
+		#{password}
+		)on duplicate key update
+		subject = #{subject},
+		content = #{content},
+		writer = #{writer},
+		password = #{password}
+	</insert>
+	<select id="selectContentCnt" resultType="int" parameterType="java.util.HashMap">
+		select
+		count(id)
+		from
+		m2_board
+	</select>
+	<select id="selectContent" resultType="com.innovest.dto.Board" parameterType="java.util.HashMap">
+		select
+		id,
+		subject,
+		content,
+		writer,
+		date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
+		from
+		m2_board
+		order by register_datetime DESC
+		limit #{start}, #{end}
+	</select>
+	<select id="selectContentView" resultType="com.innovest.dto.Board" parameterType="java.util.HashMap">
+		select
+		id,
+		subject,
+		content,
+		writer,
+		date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
+		from
+		m2_board
+		where
+		id = #{id}
+	</select>
+	<insert id="insertBoardReply" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="reply_id">
+		insert into m2_board_reply(
+		board_id,
+		parent_id,
+		depth,
+		reply_content,
+		reply_writer,
+		reply_password
+		)values(
+		#{board_id},
+		#{parent_id},
+		#{depth},
+		#{reply_content},
+		#{reply_writer},
+		#{reply_password}
+		)
+	</insert>
+	<select id="selectBoardReplyList" resultType="com.innovest.dto.BoardReply" parameterType="java.util.HashMap">
+		select
+		reply_id,
+		board_id,
+		parent_id,
+		depth,
+		reply_content,
+		reply_writer,
+		reply_password
+		from
+		m2_board_reply
+		where
+		board_id = #{id}
+		order by reply_id asc
+	</select>
+	<update id="deleteBoardReply" parameterType="java.util.HashMap">
+		UPDATE m2_board_reply SET
+		reply_content = '본 댓글은 작성자에 의해 삭제되었습니다'
+		where
+		reply_id = #{reply_id}
+		and reply_password = #{reply_password}
+	</update>
+	<select id="selectBoardCnt" resultType="int" parameterType="java.util.HashMap">
+		select
+		count(id)
+		from
+		m2_board
+		where
+		id = #{id}
+		and password = #{password}
+	</select>
+	<update id="deleteBoard" parameterType="java.util.HashMap">
+		UPDATE m2_board SET
+		content = '본 글은 작성자에 의해 삭제되었습니다',
+		subject = '본 글은 작성자에 의해 삭제되었습니다'
+		where id = #{id} AND password = #{password}
+	</update>
+	<!-- 자유게시판 MAPPER 끝 -->
+</mapper>
+

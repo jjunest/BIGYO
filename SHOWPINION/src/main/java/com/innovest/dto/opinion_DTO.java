@@ -7,7 +7,7 @@ public class opinion_DTO {
 	Integer sp_opinion_topicrcdno;
 	String sp_opinion_topictitle;
 	Timestamp sp_opinion_datetime;
-	String sp_opinion_writer;
+	Integer sp_opinion_writer;
 	String sp_opinion_side;
 	String sp_opinion_reason1;
 	String sp_opinion_reason2;
@@ -24,11 +24,9 @@ public class opinion_DTO {
 	String sp_opinion_type;
 	String sp_opinion_etc2;
 	String sp_opinion_etc3;
-	
-	
-	
+	userDTO writer_infomation;
 	public opinion_DTO(Integer sp_opinion_rcdno, Integer sp_opinion_topicrcdno,
-			String sp_opinion_topictitle, Timestamp sp_opinion_datetime, String sp_opinion_writer,
+			String sp_opinion_topictitle, Timestamp sp_opinion_datetime, Integer sp_opinion_writer,
 			String sp_opinion_side, String sp_opinion_reason1, String sp_opinion_reason2,
 			String sp_opinion_reason3, String sp_opinion_opreason1,
 			Integer sp_opinion_opreason1_agree, String sp_opinion_opreason2,
@@ -83,10 +81,10 @@ public class opinion_DTO {
 	public void setSp_opinion_datetime(Timestamp sp_opinion_datetime) {
 		this.sp_opinion_datetime = sp_opinion_datetime;
 	}
-	public String getSp_opinion_writer() {
+	public Integer getSp_opinion_writer() {
 		return sp_opinion_writer;
 	}
-	public void setSp_opinion_writer(String sp_opinion_writer) {
+	public void setSp_opinion_writer(Integer sp_opinion_writer) {
 		this.sp_opinion_writer = sp_opinion_writer;
 	}
 	public String getSp_opinion_side() {
@@ -185,7 +183,15 @@ public class opinion_DTO {
 	public void setSp_opinion_etc3(String sp_opinion_etc3) {
 		this.sp_opinion_etc3 = sp_opinion_etc3;
 	}
+	public userDTO getWriter_infomation() {
+		return writer_infomation;
+	}
+	public void setWriter_infomation(userDTO writer_infomation) {
+		this.writer_infomation = writer_infomation;
+	}
 	
+	
+
 
 
 }

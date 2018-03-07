@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.innovest.dao.IDao">
+
+
+	<!-- 자유게시판 MAPPER 시작-->
+	<insert id="insertContent" parameterType="java.util.HashMap">
+		insert into sp_board(
+		id,
+		subject,
+		content,
+		writer,
+		password
+		)values(
+		#{id},
+		#{subject},
+		#{content},
+		#{writer},
+		#{password}
+		)on duplicate key update
+		subject = #{subject},
+		content = #{content},
+		writer = #{writer},
+		password = #{password}
+	</insert>
+	<select id="selectContentCnt" resultType="int" parameterType="java.util.HashMap">
+		select
+		count(id)
+		from
+		sp_board
+	</select>
+	<select id="selectContent" resultType="com.innovest.dto.Board" parameterType="java.util.HashMap">
+		select
+		id,
+		subject,
+		content,
+		writer,
+		date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
+		from
+		sp_board
+		order by register_datetime DESC
+		limit #{start}, #{end}
+	</select>
+	<select id="selectContentView" resultType="com.innovest.dto.Board" parameterType="java.util.HashMap">
+		select
+		id,
+		subject,
+		content,
+		writer,
+		date_format(register_datetime, '%Y-%m-%d %H:%i:%s') register_datetime
+		from
+		sp_board
+		where
+		id = #{id}
+	</select>
+	<insert id="insertBoardReply" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="reply_id">
+		insert into sp_board_reply(
+		board_id,
+		parent_id,
+		depth,
+		reply_content,
+		reply_writer,
+		reply_password
+		)values(
+		#{board_id},
+		#{parent_id},
+		#{depth},
+		#{reply_content},
+		#{reply_writer},
+		#{reply_password}
+		)
+	</insert>
+	<select id="selectBoardReplyList" resultType="com.innovest.dto.BoardReply" parameterType="java.util.HashMap">
+		select
+		reply_id,
+		board_id,
+		parent_id,
+		depth,
+		reply_content,
+		reply_writer,
+		reply_password
+		from
+		sp_board_reply
+		where
+		board_id = #{id}
+		order by reply_id asc
+	</select>
+	<update id="deleteBoardReply" parameterType="java.util.HashMap">
+		UPDATE sp_board_reply SET
+		reply_content = '본 댓글은 작성자에 의해 삭제되었습니다'
+		where
+		reply_id = #{reply_id}
+		and reply_password = #{reply_password}
+	</update>
+	<select id="selectBoardCnt" resultType="int" parameterType="java.util.HashMap">
+		select
+		count(id)
+		from
+		sp_board
+		where
+		id = #{id}
+		and password = #{password}
+	</select>
+	<update id="deleteBoard" parameterType="java.util.HashMap">
+		UPDATE sp_board SET
+		content = '본 글은 작성자에 의해 삭제되었습니다',
+		subject = '본 글은 작성자에 의해 삭제되었습니다'
+		where id = #{id} AND password = #{password}
+	</update>
+	<!-- 자유게시판 MAPPER 끝 -->
+	
+	
+</mapper>

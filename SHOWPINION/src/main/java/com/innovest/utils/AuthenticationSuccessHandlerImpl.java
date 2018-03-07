@@ -44,24 +44,6 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
 		param.put("user_email_id",user_email_id);
 		userDTO loginUserInfo = spdao.get_userDTO(param);
 
-		//userInfo의 상황을 분석해서, 공개된 활동명, 그룹명, sns공개여부, 등을 설정한다. 
-		if(loginUserInfo.getOpenname().equals("이름")) {
-			loginUserInfo.setOpenname(loginUserInfo.getRealname());
-		}else if(loginUserInfo.getOpenname().equals("닉네임")) {
-			loginUserInfo.setOpenname(loginUserInfo.getNickname());
-		}
-		//userInfo의 상황을 분석해서, 공개된 활동명, 그룹명, sns공개여부, 등을 설정한다. 
-		if(loginUserInfo.getGroupname_open().equals("on")) {
-			loginUserInfo.setGroupname("비공개");
-		}else if(loginUserInfo.getGroupname_open().equals("off")) {
-			loginUserInfo.setGroupname("비공개");
-		}
-		//userInfo의 상황을 분석해서, 공개된 활동명, 그룹명, sns공개여부, 등을 설정한다. 
-		if(loginUserInfo.getSns_open().equals("on")) {
-		
-		}else if(loginUserInfo.getSns_open().equals("off")) {
-			loginUserInfo.setSns("비공개");
-		}
 		request.getSession().setAttribute("loginUserInfo", loginUserInfo);
 		// 로그인 성공 시에, 이전 페이지로 돌아가는 코드이다.
 		HttpSession session = request.getSession();

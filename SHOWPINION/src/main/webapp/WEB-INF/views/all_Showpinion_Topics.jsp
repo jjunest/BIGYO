@@ -51,6 +51,14 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+<!-- bootstrap SLIDER 라이브러리 CSS 추가 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
+<!-- bootsstrap SELECT 라이브러리 CSS 추가 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<!-- 내가 만든 custom css 파일 첨부 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jjunest.css">
+<!-- 랭킹을 위한 데이터 테이블 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
 
 </head>
 <body>
@@ -62,12 +70,6 @@
 				<div class="col-sm-6">
 					<h4>역대 쇼피니언 선정 주제</h4>
 				</div>
-				<div class="col-sm-6 hidden-xs text-right">
-					<ol class="breadcrumb">
-						<li><a href="index.html">Portfolio</a></li>
-						<li>Masonry portfolio 3 columns</li>
-					</ol>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -75,105 +77,31 @@
 	<div class="divide80"></div>
 	<div class="blog-masonary-wrapper">
 		<div class="container mas-boxes">
-		<!-- GALLERY ITEM START -->
-			<div class="mas-boxes-inner"  style="border: 4px solid #59df57; border-radius: 5px;">
-				<a href = "${pageContext.request.contextPath}/detailTopics"><img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" alt="" class="img-responsive"></a>
-				<div class="mas-blog-inner">
-					<h3>
-						<a href="#">금융실명제 도입이 필요한가?</a>
-					</h3>
-					<ul class="list-inline post-detail">
-						<li>방송국: <a href="#">JTBC</a></li>
-						<li><i class="fa fa-calendar"> 방송 날짜:</i> 2017-08-12</li>
-						<li>중립우세</li>
-					</ul>
-					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.lley of type and scrambled it to make a type specimen book.</p>
-
-					<div class="progress">
-						<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
-						<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
-						<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
-					</div>
-
-				</div>
-				<!--blog inner-->
-			</div>
-			<!-- GALLERY ITEM END -->
+			<c:forEach var="listValue_tvtopic" items="${result_list_normaltopics}">
 				<!-- GALLERY ITEM START -->
-			<div class="mas-boxes-inner"  style="border: 4px solid #59df57; border-radius: 5px;">
-				<a href = "#"><img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" alt="" class="img-responsive"></a>
-				<div class="mas-blog-inner">
-					<h3>
-						<a href="#">금융실명제 도입이 필요한가?</a>
-					</h3>
-					<ul class="list-inline post-detail">
-						<li>방송국: <a href="#">JTBC</a></li>
-						<li><i class="fa fa-calendar"> 방송 날짜:</i> 2017-08-12</li>
-						<li>중립우세</li>
-					</ul>
-					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.lley of type and scrambled it to make a type specimen book.</p>
-
-					<div class="progress">
-						<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
-						<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
-						<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
+				<div class="mas-boxes-inner" style="border: 4px solid #59df57; border-radius: 5px;">
+					<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_tvtopic.sp_tvtopics_rcdno}"><img style="margin: 10px auto"
+						src="${pageContext.request.contextPath}/${listValue_tvtopic.sp_tvtopics_tvshow_imgurl}" onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_tvshow_img.png';" alt="" class="img-responsive"></a>
+					<div class="mas-blog-inner">
+						<h3>
+							<a class="aTag_ellipsis" style="text-align: center" href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_tvtopic.sp_tvtopics_rcdno}">${listValue_tvtopic.sp_tvtopics_title}</a>
+						</h3>
+						<ul class="list-inline post-detail">
+							<li><i class="fa fa-calendar"> 작성일: ${listValue_tvtopic.sp_tvtopics_write_date }</i></li>
+							<li><i class="fa fa-users"></i>조회: </span> ${listValue_tvtopic.sp_tvtopics_view }</a></li>
+						</ul>
+						<div class = "max-lines" style="margin-bottom: 5px">
+							<p>${listValue_tvtopic.sp_tvtopics_situation_desc }</p>
+						</div>
+						<div class="progress">
+							<div class="progress-bar " style="width: 40%; background-color: #59df57" role="progressbar">찬성</div>
+							<div class="progress-bar " style="width: 60%; background-color: #df5759" role="progressbar">반대</div>
+						</div>
 					</div>
-
+					<!--blog inner-->
 				</div>
-				<!--blog inner-->
-			</div>
-			<!-- GALLERY ITEM END -->
-			<!-- GALLERY ITEM START -->
-			<div class="mas-boxes-inner"  style="border: 4px solid #59df57; border-radius: 5px;">
-				<a href = "#"><img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" alt="" class="img-responsive"></a>
-				<div class="mas-blog-inner">
-					<h3>
-						<a href="#">금융실명제 도입이 필요한가?</a>
-					</h3>
-					<ul class="list-inline post-detail">
-						<li>방송국: <a href="#">JTBC</a></li>
-						<li><i class="fa fa-calendar"> 방송 날짜:</i> 2017-08-12</li>
-						<li>중립우세</li>
-					</ul>
-					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.lley of type and scrambled it to make a type specimen book.</p>
-
-					<div class="progress">
-						<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
-						<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
-						<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
-					</div>
-
-				</div>
-				<!--blog inner-->
-			</div>
-			<!-- GALLERY ITEM END -->
-			
-		<!-- GALLERY ITEM START -->
-			<div class="mas-boxes-inner"  style="border: 4px solid #59df57; border-radius: 5px;">
-				<a href = "#"><img src="${pageContext.request.contextPath}/resources/img/tvshow_poster_SSULJON.jpg" alt="" class="img-responsive"></a>
-				<div class="mas-blog-inner">
-					<h3>
-						<a href="#">금융실명제 도입이 필요한가?</a>
-					</h3>
-					<ul class="list-inline post-detail">
-						<li>방송국: <a href="#">JTBC</a></li>
-						<li><i class="fa fa-calendar"> 방송 날짜:</i> 2017-08-12</li>
-						<li>중립우세</li>
-					</ul>
-					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.lley of type and scrambled it to make a type specimen book.</p>
-
-					<div class="progress">
-						<div class="progress-bar " style="width: 20%; background-color: blue" role="progressbar">찬성</div>
-						<div class="progress-bar " style="width: 40%; background-color: green" role="progressbar">중립</div>
-						<div class="progress-bar " style="width: 40%; background-color: red" role="progressbar">반대</div>
-					</div>
-
-				</div>
-				<!--blog inner-->
-			</div>
-			<!-- GALLERY ITEM END -->
-			
-
+				<!-- GALLERY ITEM END -->
+			</c:forEach>
 		</div>
 	</div>
 	<!--masonary wrapper-->
@@ -220,5 +148,23 @@
 	<!--customizable plugin edit according to your needs-->
 	<script src="${pageContext.request.contextPath}/resources/js/custom.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/masonary-custom.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			navMenuColorSetting();
+		});
+
+		function navMenuColorSetting() {
+			/* navigation menu 주소에 따라서 active 설정 시작 */
+			var urlpath = $(location).attr("pathname");
+			//서버용
+			if (urlpath.indexOf("/all_Showpinion_Topics") != -1) {
+
+				$("#navmenu_all_Showpinion_Topics").css("color", "#39a1f4");
+
+			}
+
+		}
+	</script>
+
 </body>
 </html>

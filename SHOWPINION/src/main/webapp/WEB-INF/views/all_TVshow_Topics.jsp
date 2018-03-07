@@ -52,6 +52,14 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+<!-- bootstrap SLIDER 라이브러리 CSS 추가 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
+<!-- bootsstrap SELECT 라이브러리 CSS 추가 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<!-- 내가 만든 custom css 파일 첨부 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jjunest.css">
+<!-- 랭킹을 위한 데이터 테이블 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
 
 </head>
 <body>
@@ -62,12 +70,6 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<h4>역대 TV 토론 주제</h4>
-				</div>
-				<div class="col-sm-6 hidden-xs text-right">
-					<ol class="breadcrumb">
-						<li><a href="index.html">Portfolio</a></li>
-						<li>Masonry portfolio 3 columns</li>
-					</ol>
 				</div>
 			</div>
 		</div>
@@ -89,22 +91,30 @@
 
 		</ul>
 		<div class="row">
-			<div class="portfolio-box iso-call col-3-space">
+			<div class="portfolio-box iso-call col-3-space" style="">
 				<c:forEach var="listValue_tvtopic" items="${result_list_tvtopics}">
 					<!-- GALLERY ITEM START -->
-					<div class="project-post photography web-design ${listValue_tvtopic.sp_tvtopics_tvshow_name}">
+					<div class="project-post photography web-design ${listValue_tvtopic.sp_tvtopics_tvshow_name}" style="">
 						<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_tvtopic.sp_tvtopics_rcdno}"><img
-							src="${pageContext.request.contextPath}/${listValue_tvtopic.sp_tvtopics_tvshow_imgurl}" alt="" class="img-responsive" style="border: 4px solid #59df57; border-radius: 5px;"> </a>
+							 src="${pageContext.request.contextPath}/${listValue_tvtopic.sp_tvtopics_tvshow_imgurl}" onError="this.src='${pageContext.request.contextPath}/resources/img/default_imgs/default_tvshow_img.png';" alt="" class="img-responsive" style="margin: 10px auto; border: 4px solid #59df57; border-radius: 5px;">
+						</a>
 						<div class="mas-blog-inner">
 							<h3>
-								<a href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_tvtopic.sp_tvtopics_rcdno}">${listValue_tvtopic.sp_tvtopics_title}</a>
+								<a class="aTag_ellipsis" href="${pageContext.request.contextPath}/detail_TVshow_Topics?topic_rcdno=${listValue_tvtopic.sp_tvtopics_rcdno}">${listValue_tvtopic.sp_tvtopics_title}</a>
 							</h3>
 							<ul class="list-inline post-detail">
+								<!-- 방송 방영일이 딮폴트 값이면 정보 없음으로 처리해 준다.  -->
+								<c:if test="${listValue_tvtopic.sp_tvtopics_tvshow_date eq '0001-01-01'}">
+									<li><i class="fa fa-calendar"> 방영일:</i>정보 없음</li>
+								</c:if>
+								<c:if test="${listValue_tvtopic.sp_tvtopics_tvshow_date ne '0001-01-01'}">
+									<li><i class="fa fa-calendar"> 방영일:</i>${listValue_tvtopic.sp_tvtopics_tvshow_date}</li>
+								</c:if>
 								<li><i class="fa fa-users"></i> <span>조회: </span> ${listValue_tvtopic.sp_tvtopics_view }</li>
-								<li><i class="fa fa-calendar"> 방영일:</i>${listValue_tvtopic.sp_tvtopics_tvshow_date}</li>
-								<li><span>중립</span>우세</li>
 							</ul>
-							<p style="font-weight: bold">실시간 쇼피니언지수</p>
+							<div class="max-lines" style="margin-bottom: 5px">
+								<p>${listValue_tvtopic.sp_tvtopics_situation_desc }</p>
+							</div>
 							<div class="progress">
 								<div class="progress-bar " style="width: 40%; background-color: #59df57" role="progressbar">찬성</div>
 								<div class="progress-bar " style="width: 60%; background-color: #df5759" role="progressbar">반대</div>
@@ -119,12 +129,12 @@
 		</div>
 	</div>
 	<!--container-->
-<!-- 	<div class="container">
+	<div class="container">
 
 		<ul class="pager">
 			<li class=""><a href="#" style="width: 100%">더보기</a></li>
 		</ul>
-	</div> -->
+	</div>
 	<div class="divide60"></div>
 
 	<jsp:include page="footer.jsp"></jsp:include>
@@ -169,9 +179,9 @@
 			/* navigation menu 주소에 따라서 active 설정 시작 */
 			var urlpath = $(location).attr("pathname");
 			//서버용
-			if (urlpath.indexOf("/coinCalendar") != -1) {
+			if (urlpath.indexOf("/all_TVshow_Topics") != -1) {
 
-				$("#navmenu_coinCalendar").css("color", "#39a1f4");
+				$("#navmenu_all_TVshow_Topics").css("color", "#39a1f4");
 
 			}
 
